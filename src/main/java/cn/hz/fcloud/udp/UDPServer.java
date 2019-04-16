@@ -49,12 +49,7 @@ public class UDPServer {
 
 	@PostConstruct
 	public void startUdp(){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				start();
-			}
-		}).start();
+		new Thread(()->{start();}).start();
 	}
 
 }

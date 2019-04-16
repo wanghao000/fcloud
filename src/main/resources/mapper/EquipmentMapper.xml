@@ -11,7 +11,7 @@
     <insert id="addEquipment" parameterType="cn.hz.fcloud.entity.Equipment">
         insert into equipment values(#{id,jdbcType=BIGINT},#{code},#{name},#{type},#{province},#{city},#{district},#{address},#{lng},#{lat},#{create_user},#{create_time},#{is_deleted},#{company_id},#{remark})
     </insert>
-    <delete id="delEquipment" parameterType="int">
-        delete equipment where code=#{code}
-    </delete>
+    <update id="delEquipment" parameterType="int">
+        update equipment set is_deleted=1 where code=#{code}
+    </update>
 </mapper>

@@ -9,6 +9,6 @@
         select * from equipment_data where code=#{imei}
     </select>
     <insert id="addRecord" parameterType="cn.hz.fcloud.entity.EquipmentData">
-        insert into equipment_data(code, info, create_time) values(#{code}, #{info}, #{createTime})
+        insert into equipment_data values(#{id,jdbcType=BIGINT}, #{code}, #{info}, #{createTime})
     </insert>
 </mapper>

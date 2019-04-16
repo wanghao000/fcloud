@@ -3,6 +3,7 @@ package cn.hz.fcloud.entity;
 import java.util.Date;
 
 public class Equipment {
+    private int id;
     private String code;
     private String name;
     private int type;
@@ -21,7 +22,8 @@ public class Equipment {
     @Override
     public String toString() {
         return "Equipment{" +
-                "code='" + code + '\'' +
+                "id=" + id +
+                ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", province=" + province +
@@ -56,6 +58,14 @@ public class Equipment {
     }
 
     public Equipment() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCode() {

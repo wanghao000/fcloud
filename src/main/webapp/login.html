@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理系统</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <link href="statics/css/style.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <!-- <div>
+
+             <h1 class="logo-name">MVC</h1>
+
+         </div>-->
+        <h2>响应式后台管理系统</h2>
+
+        <form class="m-t" role="form" action="#" onsubmit="return false;">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="用户名" id="username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="密码" id="password">
+            </div>
+            <button id="submit" class="btn btn-primary block full-width m-b">登 录</button>
+        </form>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="statics/js/jquery.min.js"></script>
+<script src="statics/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- Sweet alert -->
+<script src="statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    $("#submit").click(function () {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var data = "username="+username+"&password="+password;
+        $.ajax({
+            type: "POST",
+            url: "sys/login",
+            data: data,
+            dataType: "json",
+            success: function(result){
+                if(result.code == 0){//登录成功
+                    parent.location.href ='index.html';
+                }else{
+                    swal("登录错误",result.msg,"error" );
+                }
+            }
+        });
+
+    });
+</script>
+
+
+</body>
+
+</html>

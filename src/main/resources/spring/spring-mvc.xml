@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <mvc:annotation-driven/>
+    <mvc:default-servlet-handler/>
+    <context:component-scan base-package="cn.hz.fcloud.controller"/>
+    <!-- Velocity视图解析器    默认视图  -->
+    <bean class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="toolboxConfigLocation" value="/WEB-INF/velocity-toolbox.xml" />
+        <property name="layoutUrl" value="layout/layout.vm"/>
+        <property name="suffix" value=".vm"/>
+        <property name="dateToolAttribute" value="date" />
+        <property name="numberToolAttribute" value="number" />
+        <property name="requestContextAttribute" value="rc"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/page/" />
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

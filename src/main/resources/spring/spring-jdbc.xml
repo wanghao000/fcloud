@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <!-- 读取db.properties -->
+    <util:properties id="dbConfig" location="classpath:db.properties" />
+    <!-- 数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="url" value="#{dbConfig.url}" />
+        <property name="username" value="#{dbConfig.username}" />
+        <property name="password" value="#{dbConfig.password}" />
+        <property name="initialSize" value="#{dbConfig.initialSize}" />
+        <property name="maxActive" value="#{dbConfig.maxActive}" />
+    </bean>
+    <!-- 配置SqlSessionFactory对象 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dataSource" />
+        <!-- 配置MyBaties全局配置文件:mybatis-config.xml -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <!-- 扫描entity包 使用别名 -->
+        <property name="typeAliasesPackage" value="cn.hz.fcloud.entity" />
+        <!-- 扫描sql配置文件:mapper需要的xml文件 -->
+        <property name="mapperLocations" value="classpath:mapper/**/*.xml" />
+    </bean>
+
+    <!-- 配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="cn.hz.fcloud.dao" />
+    </bean>
+</beans>

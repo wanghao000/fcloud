@@ -9,4 +9,5 @@ public interface EquipmentMapper {
     Equipment findOne(int code);
     void addEquipment(Equipment equipment);
     void delEquipment(int code);
+    void updateReportTimeAndOnline(Equipment equipment);
 }

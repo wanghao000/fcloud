@@ -1,7 +1,9 @@
 package cn.hz.fcloud.udp;
 
+import cn.hz.fcloud.entity.Equipment;
 import cn.hz.fcloud.entity.EquipmentData;
 import cn.hz.fcloud.service.EquipmentDataService;
+import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.UDPServerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
 
 public class UDPServerThread extends Thread {
 
@@ -20,12 +23,15 @@ public class UDPServerThread extends Thread {
 	private byte[] b;
 	private DatagramPacket p;
 	private DatagramSocket socket;
+	private EquipmentService equipmentService;
 	private EquipmentDataService equipmentDataService;
+	private Timer timer = new Timer();
 
-	public UDPServerThread(byte[] b, DatagramPacket p, DatagramSocket socket, EquipmentDataService equipmentDataService) {
+	public UDPServerThread(byte[] b, DatagramPacket p, DatagramSocket socket,EquipmentService equipmentService, EquipmentDataService equipmentDataService) {
 		this.b = b;
 		this.p = p;
 		this.socket = socket;
+		this.equipmentService = equipmentService;
 		this.equipmentDataService = equipmentDataService;
 	}
 
@@ -47,6 +53,7 @@ public class UDPServerThread extends Thread {
 			rb = ("F581"+imei+"0D0A").getBytes();
 		}
 		if (receive.startsWith("FA02")) {
+			equipmentService.updateReportTimeAndOnline(new Equipment(imei, 1, new Date()));
 			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
 			String formatTime = sdf.format(new Date());
 			rb = ("F582"+imei+formatTime+"0D0A").getBytes();

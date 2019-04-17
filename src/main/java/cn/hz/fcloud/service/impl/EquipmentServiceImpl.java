@@ -33,4 +33,9 @@ public class EquipmentServiceImpl implements EquipmentService {
     public void delEquipment(int code) {
         equipmentMapper.delEquipment(code);
     }
+
+    @Override
+    public void updateReportTimeAndOnline(Equipment equipment) {
+        equipmentMapper.updateReportTimeAndOnline(equipment);
+    }
 }

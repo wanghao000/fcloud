@@ -15,9 +15,9 @@
         update equipment set is_deleted=0 where code=#{code}
     </update>
     <update id="updateReportTimeAndOnline" parameterType="cn.hz.fcloud.entity.Equipment">
-        update equipment set is_online=#{isOnline},
+        update equipment set is_online=#{isOnline}
         <if test="lastReportTime != null">
-            last_report_time=#{lastReportTime}
+            ,last_report_time=#{lastReportTime}
         </if>
         where code=#{code}
     </update>

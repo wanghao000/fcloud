@@ -56,7 +56,12 @@ public class UDPServer {
 
 	@PostConstruct
 	public void startUdp(){
-		new Thread(()->{start();}).start();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				start();
+			}
+		}).start();
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override

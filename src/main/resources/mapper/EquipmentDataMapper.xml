@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hz.fcloud.dao.EquipmentDataMapper">
+    <select id="findAll" resultType="cn.hz.fcloud.entity.EquipmentData">
+        select * from equipment_data
+    </select>
+    <select id="findOne" parameterType="string" resultType="cn.hz.fcloud.entity.EquipmentData">
+        select * from equipment_data where code=#{imei}
+    </select>
+    <insert id="addRecord" parameterType="cn.hz.fcloud.entity.EquipmentData">
+        insert into equipment_data values(#{id,jdbcType=BIGINT}, #{code}, #{info}, #{type}, #{createTime})
+    </insert>
+    <select id="findType" parameterType="int" resultType="cn.hz.fcloud.entity.EquipmentData">
+        select * from equipment_data where type=#{type}
+    </select>
+</mapper>

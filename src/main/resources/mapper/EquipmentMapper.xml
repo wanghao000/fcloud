@@ -13,4 +13,5 @@
     </insert>
 	<update id="delEquipment" parameterType="int">
         update equipment set is_deleted=1 where code=#{code}
-    </update></mapper>
+    </update>
+</mapper>

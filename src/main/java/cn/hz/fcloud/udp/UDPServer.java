@@ -61,7 +61,7 @@ public class UDPServer {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				UDPServerUtil.findExceedTimeRecord(equipmentService);
+				UDPServerUtil.findExceedTimeRecord(equipmentService, 1000*60*2*1);
 			}
 		}, 10000, 1000*60*10);
 	}

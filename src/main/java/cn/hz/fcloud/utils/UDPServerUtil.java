@@ -15,12 +15,12 @@ public class UDPServerUtil {
         return jsonObject.toString();
     }
 
-    public static void findExceedTimeRecord(EquipmentService equipmentService){
+    public static void findExceedTimeRecord(EquipmentService equipmentService, long limitTime){
         List<Equipment> all = equipmentService.findAll();
         for (Equipment equipment : all) {
             System.out.println(equipment);
             System.out.println(equipment.getLastReportTime());
-            if (System.currentTimeMillis()-equipment.getLastReportTime().getTime()>1000*60*2*1){
+            if (System.currentTimeMillis()-equipment.getLastReportTime().getTime()>limitTime){
                 equipmentService.updateReportTimeAndOnline(new Equipment(equipment.getCode(), 0, null));
             }
         }

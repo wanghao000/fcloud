@@ -14,6 +14,7 @@ public class Equipment {
     private String lng;
     private String lat;
     private int create_user;
+    private int is_online;
     private Date create_time;
     private int is_deleted;
     private int company_id;
@@ -33,6 +34,7 @@ public class Equipment {
                 ", lng='" + lng + '\'' +
                 ", lat='" + lat + '\'' +
                 ", create_user=" + create_user +
+                ", is_online=" + is_online +
                 ", create_time=" + create_time +
                 ", is_deleted=" + is_deleted +
                 ", company_id=" + company_id +
@@ -40,7 +42,7 @@ public class Equipment {
                 '}';
     }
 
-    public Equipment(String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int create_user, Date create_time, int is_deleted, int company_id, String remark) {
+    public Equipment(String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int create_user, int is_online, Date create_time, int is_deleted, int company_id, String remark) {
         this.code = code;
         this.name = name;
         this.type = type;
@@ -51,6 +53,7 @@ public class Equipment {
         this.lng = lng;
         this.lat = lat;
         this.create_user = create_user;
+        this.is_online = is_online;
         this.create_time = create_time;
         this.is_deleted = is_deleted;
         this.company_id = company_id;
@@ -58,6 +61,14 @@ public class Equipment {
     }
 
     public Equipment() {
+    }
+
+    public int getIs_online() {
+        return is_online;
+    }
+
+    public void setIs_online(int is_online) {
+        this.is_online = is_online;
     }
 
     public int getId() {

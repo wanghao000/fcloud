@@ -2,7 +2,7 @@ package cn.hz.fcloud.udp;
 
 import cn.hz.fcloud.entity.EquipmentData;
 import cn.hz.fcloud.service.EquipmentDataService;
-import org.json.JSONObject;
+import cn.hz.fcloud.utils.UDPServerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,50 +65,29 @@ public class UDPServerThread extends Thread {
 			System.out.println("date:  "+year+"/"+month+"/"+day+" "+hour+":"+minute+":"+seconds);
 			
 			switch (flag) {
-				case "1111":{
+				case "1111":
 					System.out.println("火灾报警");
-					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("code", flag);
-					jsonObject.put("msg", "火灾报警");
-					jsonObject.put("datetime", date);
-                    equipmentDataService.addRecord(new EquipmentData(imei, jsonObject.toString(), new Date()));
-					break;
-				}
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "火灾报警", date), 0, new Date()));
+				break;
 				case "3111":
 					System.out.println("火灾自动报警恢复");
-					{
-						JSONObject jsonObject = new JSONObject();
-						jsonObject.put("code", flag);
-						jsonObject.put("msg", "火灾自动报警恢复");
-						jsonObject.put("datetime", date);
-                        equipmentDataService.addRecord(new EquipmentData(imei, jsonObject.toString(), new Date()));
-					}
-					break;
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "火灾自动报警恢复", date), 1, new Date()));
+				break;
 				case "1384":
 					System.out.println("电池低电压报警");
-					{
-						JSONObject jsonObject = new JSONObject();
-						jsonObject.put("code", flag);
-						jsonObject.put("msg", "电池低电压报警");
-						jsonObject.put("datetime", date);
-                        equipmentDataService.addRecord(new EquipmentData(imei, jsonObject.toString(), new Date()));
-					}
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "电池低电压报警", date), 0, new Date()));
 					break;
 				case "3384":
 					System.out.println("电池低电压恢复");
-					{
-						JSONObject jsonObject = new JSONObject();
-						jsonObject.put("code", flag);
-						jsonObject.put("msg", "电池低电压恢复");
-						jsonObject.put("datetime", date);
-                        equipmentDataService.addRecord(new EquipmentData(imei, jsonObject.toString(), new Date()));
-					}
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "电池低电压恢复", date), 1, new Date()));
 					break;
 				case "1601":
 					System.out.println("手动测试报告");
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "手动测试报告", date), 0, new Date()));
 					break;
 				case "1800":
 					System.out.println("手动解除报警");
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "手动解除报警", date), 1, new Date()));
 					break;
 				default:
 					break;

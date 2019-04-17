@@ -6,6 +6,7 @@ public class EquipmentData {
     private int id;
     private String code;
     private String info;
+    private int type;
     private Date createTime;
 
     @Override
@@ -14,17 +15,27 @@ public class EquipmentData {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", info='" + info + '\'' +
+                ", type='" + type + '\'' +
                 ", createTime=" + createTime +
                 '}';
     }
 
-    public EquipmentData(String code, String info, Date createTime) {
+    public EquipmentData(String code, String info, int type, Date createTime) {
         this.code = code;
         this.info = info;
+        this.type = type;
         this.createTime = createTime;
     }
 
     public EquipmentData() {
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public int getId() {

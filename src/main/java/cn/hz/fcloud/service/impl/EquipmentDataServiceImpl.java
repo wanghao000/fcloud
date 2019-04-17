@@ -28,4 +28,9 @@ public class EquipmentDataServiceImpl implements EquipmentDataService {
     public void addRecord(EquipmentData equipmentData) {
         equipmentDataMapper.addRecord(equipmentData);
     }
+
+    @Override
+    public List<EquipmentData> findType(int type) {
+        return equipmentDataMapper.findType(type);
+    }
 }

@@ -11,4 +11,7 @@
     <insert id="addRecord" parameterType="cn.hz.fcloud.entity.EquipmentData">
         insert into equipment_data values(#{id,jdbcType=BIGINT}, #{code}, #{info}, #{type}, #{createTime})
     </insert>
+    <select id="findType" parameterType="int" resultType="cn.hz.fcloud.entity.EquipmentData">
+        select * from equipment_data where type=#{type}
+    </select>
 </mapper>

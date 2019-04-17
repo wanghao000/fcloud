@@ -8,4 +8,5 @@ public interface EquipmentDataService {
     List<EquipmentData> findAll();
     List<EquipmentData> findOne(String imei);
     void addRecord(EquipmentData equipmentData);
+    List<EquipmentData> findType(int type);
 }

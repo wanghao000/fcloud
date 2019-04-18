@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface EquipmentService {
     List<Equipment> findAll();
-    Equipment findOne(int code);
+    Equipment findOne(String code);
     void addEquipment(Equipment equipment);
-    void delEquipment(int code);
+    void delEquipment(String code);
 	void updateReportTimeAndOnline(Equipment equipment);	int lineCount();
     int countAll();
     List<Equipment> getEquipmentList(Long id);}

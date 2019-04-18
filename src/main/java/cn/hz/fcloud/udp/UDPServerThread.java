@@ -2,11 +2,11 @@ package cn.hz.fcloud.udp;
 
 import cn.hz.fcloud.entity.Equipment;
 import cn.hz.fcloud.entity.EquipmentData;
+import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.EquipmentDataService;
 import cn.hz.fcloud.service.EquipmentService;
+import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.UDPServerUtil;
-import cn.hz.fcloud.websocket.CigaretteWebsocketHandler;
-import cn.hz.fcloud.websocket.CigaretteWebsocketHandlerInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,20 +27,23 @@ public class UDPServerThread extends Thread {
 	private DatagramSocket socket;
 	private EquipmentService equipmentService;
 	private EquipmentDataService equipmentDataService;
+	private SysUserService sysUserService;
+	private CompanyService companyService;
 	private Timer timer = new Timer();
 
-	public UDPServerThread(byte[] b, DatagramPacket p, DatagramSocket socket,EquipmentService equipmentService, EquipmentDataService equipmentDataService) {
+	public UDPServerThread(byte[] b, DatagramPacket p, DatagramSocket socket,EquipmentService equipmentService, EquipmentDataService equipmentDataService, SysUserService sysUserService, CompanyService companyService) {
 		this.b = b;
 		this.p = p;
 		this.socket = socket;
 		this.equipmentService = equipmentService;
 		this.equipmentDataService = equipmentDataService;
+		this.sysUserService = sysUserService;
+		this.companyService = companyService;
 	}
 
 	@Override
 	public void run() {
 		String receive = new String(b, 0, p.getLength());
-//		System.out.println("receive:  "+receive);
 		logger.info("receive:  "+receive);
 		
 		InetAddress address = p.getAddress();
@@ -69,37 +72,38 @@ public class UDPServerThread extends Thread {
 			String hour = receive.substring(29, 31);
 			String minute = receive.substring(31, 33);
 			String seconds = receive.substring(33, 35);
-//			System.out.println("flag:  "+flag);
-//			System.out.println("date:  "+date);
 			System.out.println("date:  "+year+"/"+month+"/"+day+" "+hour+":"+minute+":"+seconds);
-			
+			String msg;
 			switch (flag) {
 				case "1111":
-					System.out.println("火灾报警");
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "火灾报警", date), 0, new Date()));
-//					CigaretteWebsocketHandler.sendMessageToUsers("火灾报警");
-					System.out.println(CigaretteWebsocketHandlerInterceptor.username);
-					CigaretteWebsocketHandler.sendMessageToUser("admin", "火灾报警");
+					msg = "火灾报警";
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
 					break;
 				case "3111":
-					System.out.println("火灾自动报警恢复");
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "火灾自动报警恢复", date), 1, new Date()));
-				break;
+					msg = "火灾自动报警恢复";
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
+					break;
 				case "1384":
-					System.out.println("电池低电压报警");
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "电池低电压报警", date), 0, new Date()));
+					msg = "电池低电压报警";
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
 					break;
 				case "3384":
-					System.out.println("电池低电压恢复");
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "电池低电压恢复", date), 1, new Date()));
+					msg = "电池低电压恢复";
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
 					break;
 				case "1601":
-					System.out.println("手动测试报告");
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "手动测试报告", date), 0, new Date()));
+					msg = "手动测试报告";
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
 					break;
 				case "1800":
-					System.out.println("手动解除报警");
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "手动解除报警", date), 1, new Date()));
+					msg = "手动解除报警";
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
 					break;
 				default:
 					break;

@@ -39,6 +39,7 @@ public class CigaretteWebsocketHandler extends TextWebSocketHandler {
         String username= (String) session.getAttributes().get("WEBSOCKET_USERNAME");
         System.out.println("用户"+username+"已退出！");
         users.remove(session);
+        CigaretteWebsocketHandlerInterceptor.usernames.remove(username);
         System.out.println("剩余在线用户"+users.size());
     }
 

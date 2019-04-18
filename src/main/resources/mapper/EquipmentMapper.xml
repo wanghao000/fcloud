@@ -5,7 +5,7 @@
     <select id="findAll" resultType="cn.hz.fcloud.entity.Equipment">
         select * from equipment
     </select>
-    <select id="findOne" parameterType="int" resultType="cn.hz.fcloud.entity.Equipment">
+    <select id="findOne" parameterType="string" resultType="cn.hz.fcloud.entity.Equipment">
         select * from equipment where code=#{code}
     </select>
     <insert id="addEquipment" parameterType="cn.hz.fcloud.entity.Equipment">

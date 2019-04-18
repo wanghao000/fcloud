@@ -1,7 +1,9 @@
 package cn.hz.fcloud.udp;
 
+import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.EquipmentDataService;
 import cn.hz.fcloud.service.EquipmentService;
+import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.UDPServerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,12 @@ public class UDPServer {
 
 	@Autowired
 	private EquipmentService equipmentService;
-
 	@Autowired
 	private EquipmentDataService equipmentDataService;
+	@Autowired
+	private SysUserService sysUserService;
+	@Autowired
+	private CompanyService companyService;
 
 	private static volatile DatagramSocket socket;
 	static {
@@ -42,7 +47,7 @@ public class UDPServer {
 		try {
 			while (true) {
 				socket.receive(packet);
-				new UDPServerThread(b, packet, socket, equipmentService, equipmentDataService).start();
+				new UDPServerThread(b, packet, socket, equipmentService, equipmentDataService, sysUserService, companyService).start();
 				Thread.sleep(100);
 			}
 		} catch (SocketException e) {

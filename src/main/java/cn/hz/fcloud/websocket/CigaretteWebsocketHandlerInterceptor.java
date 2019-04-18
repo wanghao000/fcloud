@@ -7,10 +7,12 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CigaretteWebsocketHandlerInterceptor extends HttpSessionHandshakeInterceptor {
-    public static String username;
+    public static List<String> usernames = new ArrayList<String>();
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
@@ -29,7 +31,8 @@ public class CigaretteWebsocketHandlerInterceptor extends HttpSessionHandshakeIn
 //            }
 
 //            String username = ((ServletServerHttpRequest) request).getServletRequest().getParameter("username");
-            username = ShiroUtil.getUserEntity().getUsername();
+            String username = ShiroUtil.getUserEntity().getUsername();
+            usernames.add(username);
             attributes.put("WEBSOCKET_USERNAME", username);
         }
         return super.beforeHandshake(request, response, wsHandler, attributes);

@@ -33,9 +33,21 @@ public class EquipmentServiceImpl implements EquipmentService {
     public void delEquipment(int code) {
         equipmentMapper.delEquipment(code);
     }
-
-    @Override
+	@Override
     public void updateReportTimeAndOnline(Equipment equipment) {
         equipmentMapper.updateReportTimeAndOnline(equipment);
     }
-}
+	@Override
+    public int lineCount() {
+        return equipmentMapper.lineCount();
+    }
+
+    @Override
+    public int countAll() {
+        return equipmentMapper.countAll();
+    }
+
+    @Override
+    public List<Equipment> getEquipmentList(Long id) {
+        return equipmentMapper.selectByCompanyId(id);
+    }}

@@ -9,5 +9,6 @@ public interface EquipmentService {
     Equipment findOne(int code);
     void addEquipment(Equipment equipment);
     void delEquipment(int code);
-    void updateReportTimeAndOnline(Equipment equipment);
-}
+	void updateReportTimeAndOnline(Equipment equipment);	int lineCount();
+    int countAll();
+    List<Equipment> getEquipmentList(Long id);}

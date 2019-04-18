@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>H+ 后台主题UI框架 - 首页示例二</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox-title">
+                <h5>企业信息</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <img src="http://file3.znwwhl.com/noPicture.png?imageMogr2/thumbnail/x120/interlace/1" width="120px">
+                    </div>
+                    <div class="col-sm-6">
+                       <div class="row">
+                           <ul class="list-unstyled m-t-md">
+                               <li>
+                                   <span class="fa fa-home m-r-xs"></span>
+                                   <span id="company_name"></span>
+                               </li>
+                               <li>
+                                   <label>编号:</label>
+                                   <span id="company_code"></span>
+                               </li>
+                               <li>
+                                   <label>电话:</label>
+                                   <span id="company_phone"></span>
+                               </li>
+                               <li>
+                                   <label>地址:</label>
+                                   <span id="company_address"></span>
+                               </li>
+                           </ul>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox-title">
+                <h5>推送信息</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="list-unstyled m-t-md">
+                            <li>
+                                <span class="fa fa-mobile m-r-xs"></span>
+                                推送号码
+                                <span class="fa fa-check-circle m-r-xs"></span>
+                                已设置
+                            </li>
+                            <li>
+                                <span class="fa fa-user m-r-xs"></span>
+                                15968141967
+                            </li>
+                            <li>
+                                <span class="fa fa-weixin m-r-xs"></span>微信账号
+                                <span class="fa fa-check-circle m-r-xs"></span>未绑定
+                            </li>
+                            <li>
+                                <label>未绑定如何微信</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox-title">
+                <h5>服务信息</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="list-unstyled m-t-md">
+                            <li>
+                                <span class="fa fa-building m-r-xs"></span>
+                                <label>服务公司：</label>
+                                <span id="provider_name"></span>
+                            </li>
+                            <li>
+                                <span class="fa fa-phone"></span>
+                                <label>客服电话：</label>
+                                <span id="provider_phone"></span>
+                            </li>
+                            <li>
+                                <span class="fa fa-hourglass"></span>
+                                <label>服务状态：</label>
+                                <span id="provider_state"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>总览</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <h5>设备总览</h5>
+                            <div class="widget style1 lazur-bg">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-cloud fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> 设备接入总数 </span>
+                                        <h2 class="font-bold" id="equipmentCount"></h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget style1 yellow-bg">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-warning fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> 今日告警数 </span>
+                                        <h2 class="font-bold" id="alarmCount"></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <h5>实时告警列表</h5>
+                            <table class="table table-hover no-margins">
+                                <thead>
+                                <tr>
+                                    <th>告警设备</th>
+                                    <th>告警信息</th>
+                                    <th>告警时间</th>
+                                    <th>详情</th>
+                                </tr>
+                                </thead>
+                                <tbody id="data_table">
+                                <tr>
+                                    <td> 鑫达电镀厂（亨达）</td>
+                                    <td>8</td>
+                                    <td>04-16 16:15</td>
+                                    <td>测试</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        jQuery.ajax({
+            url:"$rc.contextPath/sys/main/info",
+            type: "GET",
+            dataType:"json",
+            success:function (result) {
+                if(result.code == 0){
+                    console.log(result.info)
+                    $("#company_name").text(result.info.company.name);
+                    $("#company_address").text(result.info.company.address);
+                    $("#company_code").text(result.info.company.code);
+                    $("#company_phone").text(result.info.company.phone);
+                    $("#provider_name").text(result.info.provider.name);
+                    $("#provider_phone").text(result.info.provider.phone);
+                    $("#provider_state").text(result.info.provider.isDelete?"正常":"关闭");
+                    $("#equipmentCount").text(result.info.equipmentCount);
+                    $("#alarmCount").text(result.info.alarmCount);
+                    for(var obj in result.info.dataList){
+                        $("#data_table").append(
+                        "<tr>"+
+                        "<td> 鑫达电镀厂（亨达）</td>"+
+                        "<td>8</td>"+
+                        "<td>04-16 16:15</td>"+
+                        "<td>测试</td>"+
+                        "</tr>"
+                        );
+                    }
+                }else{
+                    console.log(result)
+                }
+            }
+        })
+    })
+</script>
+
+
+</body>
+
+</html>

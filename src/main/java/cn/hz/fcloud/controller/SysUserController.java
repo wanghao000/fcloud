@@ -3,6 +3,7 @@ package cn.hz.fcloud.controller;
 import cn.hz.fcloud.entity.SysUser;
 import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.R;
+import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
+    @RequestMapping("/info")
+    public R currentInfo(){
+        return R.ok().put("user",ShiroUtil.getUserEntity());
+    }
     @RequestMapping("/list")
     @RequiresPermissions("sys:user:list")
     public TableReturn list(){

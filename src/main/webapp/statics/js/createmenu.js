@@ -12,6 +12,23 @@ $(document).ready(function(){
             }
         }
     });
+
+    $.ajax({
+        type: "POST",
+        url: "sys/user/info",
+        dataType: "json",
+        success: function(result){
+            if(result.code == 0){
+                if(result.user.type==3){
+                    $("iframe[name=iframe0]").attr("src","sys/main_1.vm").attr("data-id","sys/main_1.vm");
+                }
+                $("#nickname").text(result.user.nickname);
+                $("#username").text(result.user.username);
+            }else{
+                swal("用户信息加载失败" );
+            }
+        }
+    });
 });
 function create(data) {
 

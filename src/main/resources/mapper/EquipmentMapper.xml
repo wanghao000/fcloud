@@ -21,4 +21,13 @@
         </if>
         where code=#{code}
     </update>
+    <select id="lineCount" resultType="int">
+        select count(*) from equipment where is_online = 0
+    </select>
+    <select id="countAll" resultType="int">
+        select count(*) from equipment
+    </select>
+    <select id="selectByCompanyId" resultType="cn.hz.fcloud.entity.Equipment">
+        select * from equipment where company_id = #{value}
+    </select>
 </mapper>

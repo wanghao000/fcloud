@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hz.fcloud.dao.SysChinaMapper">
+    <select id="selectByleveltype" resultType="cn.hz.fcloud.entity.SysChina">
+        select * from sys_china where level_type = #{level}
+    </select>
+
+    <select id="selectByParentid" resultType="cn.hz.fcloud.entity.SysChina">
+        select * from sys_china where parent_id = #{parentid}
+    </select>
+</mapper>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - Bootstrap Table</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+    <!--下拉框-->
+    <link href="$rc.contextPath/statics/plugins/select/nice-select.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+
+        <div class="ibox-content">
+            <div class="row row-lg">
+
+                <div class="col-sm-12">
+                    <!-- Example Events -->
+                    <div class="example-wrap">
+                        <div id="toolbar" class="btn-group" >
+                            #if($shiro.hasPermission("sys:user:save"))
+                                <button type="button" class="btn btn-default" onclick="load('sys/user_add.vm');">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                                </button>
+                            #end
+                        </div>
+                        <table id="tb_content"></table>
+                    </div>
+                    <!-- End Example Events -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!-- Bootstrap table -->
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="$rc.contextPath/statics/js/tableIndex.js"></script>
+<script src="$rc.contextPath/statics/plugins/select/jquery.nice-select.min.js"></script>
+<!-- Sweet alert -->
+<script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    $(function() {
+        //1. 定义表格列
+        var columns = [{
+            field: 'username',
+            title: '用户名'
+        }, {
+            field: 'nickname',
+            title: '姓名'
+        }, {
+            field: 'type',
+            title: '类型',
+            formatter:function (value,row,index) {
+                var data = new Array(
+                        '<span class="label label-danger">运维用户</span>',
+                        '<span class="label label-primary">服务商用户</span>',
+                        '<span class="label label-success">企业用户</span>');
+                return data[value-1];
+            }
+        }, {
+            field: 'company_id',
+            title: '所属企业'
+        }, {
+            field: 'provider_id',
+            title: '所属服务商'
+        }, {
+            field: 'rootname',
+            title: '操作',
+            formatter:function (value,row,index) {
+                return [
+                    '<a class="btn btn-info"><i class="fa fa-wrench"> </i> 权限配置</a> ',
+                    '<a class="btn btn-info" onclick="load(\'sys/user_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
+                    #if($shiro.hasPermission("sys:user:delete"))
+                        ,'<a class="btn btn-danger" onclick="del('+row.id+')"><i class="fa fa-trash-o"> </i> 删除</a> '
+                    #end
+                ].join('');
+            }
+        }
+        ];
+        //2.初始化Table
+        var  oTable = new TableInit('$rc.contextPath/sys/user/list',columns);
+        oTable.Init();
+        Query();
+    })
+
+    function GetQueryParams() {
+        //以下参数，为各具体功能根据查询条件进行修改
+        //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+        var temp = {
+
+        };
+        return temp;
+    }
+
+    function load(url) {
+        var name = window.name;
+        var f = parent.document.getElementsByName(name)[0];
+        $(f).attr("src",url);
+    }
+
+    function del(id) {
+        jQuery.ajax({
+            type: "POST",
+            url: "$rc.contextPath/sys/user/delete/"+id,
+            dataType: "json",
+            success: function(result){
+                if(result.code == 0){//返回成功
+                    swal("执行成功",'您已经删除该用户',"success" );
+                    $("#tb_content").bootstrapTable('refresh');
+                }else{
+                    swal("错误",result.msg,"error" );
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

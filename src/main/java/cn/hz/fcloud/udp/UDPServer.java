@@ -1,6 +1,10 @@
 package cn.hz.fcloud.udp;
 
+import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.EquipmentDataService;
+import cn.hz.fcloud.service.EquipmentService;
+import cn.hz.fcloud.service.SysUserService;
+import cn.hz.fcloud.utils.UDPServerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +13,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author 田国栋
@@ -17,7 +23,13 @@ import java.net.SocketException;
 public class UDPServer {
 
 	@Autowired
+	private EquipmentService equipmentService;
+	@Autowired
 	private EquipmentDataService equipmentDataService;
+	@Autowired
+	private SysUserService sysUserService;
+	@Autowired
+	private CompanyService companyService;
 
 	private static volatile DatagramSocket socket;
 	static {
@@ -35,7 +47,7 @@ public class UDPServer {
 		try {
 			while (true) {
 				socket.receive(packet);
-				new UDPServerThread(b, packet, socket, equipmentDataService).start();
+				new UDPServerThread(b, packet, socket, equipmentService, equipmentDataService, sysUserService, companyService).start();
 				Thread.sleep(100);
 			}
 		} catch (SocketException e) {
@@ -49,7 +61,19 @@ public class UDPServer {
 
 	@PostConstruct
 	public void startUdp(){
-		new Thread(()->{start();}).start();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				start();
+			}
+		}).start();
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				UDPServerUtil.findExceedTimeRecord(equipmentService, 1000*60*2*1);
+			}
+		}, 10000, 1000*60*10);
 	}
 
 }

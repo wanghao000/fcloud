@@ -20,7 +20,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public Equipment findOne(int code) {
+    public Equipment findOne(String code) {
         return equipmentMapper.findOne(code);
     }
 
@@ -30,7 +30,24 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public void delEquipment(int code) {
+    public void delEquipment(String code) {
         equipmentMapper.delEquipment(code);
     }
-}
+	@Override
+    public void updateReportTimeAndOnline(Equipment equipment) {
+        equipmentMapper.updateReportTimeAndOnline(equipment);
+    }
+	@Override
+    public int lineCount() {
+        return equipmentMapper.lineCount();
+    }
+
+    @Override
+    public int countAll() {
+        return equipmentMapper.countAll();
+    }
+
+    @Override
+    public List<Equipment> getEquipmentList(Long id) {
+        return equipmentMapper.selectByCompanyId(id);
+    }}

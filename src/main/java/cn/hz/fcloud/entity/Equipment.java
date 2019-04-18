@@ -13,11 +13,12 @@ public class Equipment {
     private String address;
     private String lng;
     private String lat;
-    private int create_user;
-    private int is_online;
-    private Date create_time;
-    private int is_deleted;
-    private int company_id;
+    private int createUser;
+    private int isOnline;
+    private Date lastReportTime;
+    private Date createTime;
+    private int isDeleted;
+    private int companyId;
     private String remark;
 
     @Override
@@ -33,16 +34,24 @@ public class Equipment {
                 ", address='" + address + '\'' +
                 ", lng='" + lng + '\'' +
                 ", lat='" + lat + '\'' +
-                ", create_user=" + create_user +
-                ", is_online=" + is_online +
-                ", create_time=" + create_time +
-                ", is_deleted=" + is_deleted +
-                ", company_id=" + company_id +
+                ", createUser=" + createUser +
+                ", isOnline=" + isOnline +
+                ", lastReportTime=" + lastReportTime +
+                ", createTime=" + createTime +
+                ", isDeleted=" + isDeleted +
+                ", companyId=" + companyId +
                 ", remark='" + remark + '\'' +
                 '}';
     }
 
-    public Equipment(String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int create_user, int is_online, Date create_time, int is_deleted, int company_id, String remark) {
+    public Equipment(String code, int isOnline, Date lastReportTime) {
+        this.code = code;
+        this.isOnline = isOnline;
+        this.lastReportTime = lastReportTime;
+    }
+
+    public Equipment(int id, String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int createUser, int isOnline, Date lastReportTime, Date createTime, int isDeleted, int companyId, String remark) {
+        this.id = id;
         this.code = code;
         this.name = name;
         this.type = type;
@@ -52,23 +61,16 @@ public class Equipment {
         this.address = address;
         this.lng = lng;
         this.lat = lat;
-        this.create_user = create_user;
-        this.is_online = is_online;
-        this.create_time = create_time;
-        this.is_deleted = is_deleted;
-        this.company_id = company_id;
+        this.createUser = createUser;
+        this.isOnline = isOnline;
+        this.lastReportTime = lastReportTime;
+        this.createTime = createTime;
+        this.isDeleted = isDeleted;
+        this.companyId = companyId;
         this.remark = remark;
     }
 
     public Equipment() {
-    }
-
-    public int getIs_online() {
-        return is_online;
-    }
-
-    public void setIs_online(int is_online) {
-        this.is_online = is_online;
     }
 
     public int getId() {
@@ -151,36 +153,52 @@ public class Equipment {
         this.lat = lat;
     }
 
-    public int getCreate_user() {
-        return create_user;
+    public int getCreateUser() {
+        return createUser;
     }
 
-    public void setCreate_user(int create_user) {
-        this.create_user = create_user;
+    public void setCreateUser(int createUser) {
+        this.createUser = createUser;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public int getIsOnline() {
+        return isOnline;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setIsOnline(int isOnline) {
+        this.isOnline = isOnline;
     }
 
-    public int getIs_deleted() {
-        return is_deleted;
+    public Date getLastReportTime() {
+        return lastReportTime;
     }
 
-    public void setIs_deleted(int is_deleted) {
-        this.is_deleted = is_deleted;
+    public void setLastReportTime(Date lastReportTime) {
+        this.lastReportTime = lastReportTime;
     }
 
-    public int getCompany_id() {
-        return company_id;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCompany_id(int company_id) {
-        this.company_id = company_id;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     public String getRemark() {

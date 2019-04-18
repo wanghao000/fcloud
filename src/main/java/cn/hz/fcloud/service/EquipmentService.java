@@ -9,4 +9,10 @@ public interface EquipmentService {
     Equipment findOne(int code);
     void addEquipment(Equipment equipment);
     void delEquipment(int code);
+
+    int lineCount();
+
+    int countAll();
+
+    List<Equipment> getEquipmentList(Long id);
 }

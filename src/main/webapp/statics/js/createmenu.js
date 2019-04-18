@@ -19,7 +19,6 @@ $(document).ready(function(){
         dataType: "json",
         success: function(result){
             if(result.code == 0){
-                console.log(result.user);
                 if(result.user.type==3){
                     $("iframe[name=iframe0]").attr("src","sys/main_1.vm").attr("data-id","sys/main_1.vm");
                 }

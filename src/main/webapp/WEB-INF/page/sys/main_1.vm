@@ -33,20 +33,19 @@
                            <ul class="list-unstyled m-t-md">
                                <li>
                                    <span class="fa fa-home m-r-xs"></span>
-                                   王军五金加工厂
-
+                                   <span id="company_name"></span>
                                </li>
                                <li>
                                    <label>编号:</label>
-                                   i@zi-han.net
+                                   <span id="company_code"></span>
                                </li>
                                <li>
                                    <label>电话:</label>
-                                   i@zi-han.net
+                                   <span id="company_phone"></span>
                                </li>
                                <li>
                                    <label>地址:</label>
-                                   i@zi-han.net
+                                   <span id="company_address"></span>
                                </li>
                            </ul>
                        </div>
@@ -94,15 +93,18 @@
                         <ul class="list-unstyled m-t-md">
                             <li>
                                 <span class="fa fa-building m-r-xs"></span>
-                                <label>服务公司：</label>温州安建智能科技有限公司
+                                <label>服务公司：</label>
+                                <span id="provider_name"></span>
                             </li>
                             <li>
                                 <span class="fa fa-phone"></span>
-                                <label>客服电话：</label>无
+                                <label>客服电话：</label>
+                                <span id="provider_phone"></span>
                             </li>
                             <li>
                                 <span class="fa fa-hourglass"></span>
-                                <label>服务状态：</label>正常
+                                <label>服务状态：</label>
+                                <span id="provider_state"></span>
                             </li>
                         </ul>
                     </div>
@@ -127,7 +129,7 @@
                                     </div>
                                     <div class="col-xs-8 text-right">
                                         <span> 设备接入总数 </span>
-                                        <h2 class="font-bold">12</h2>
+                                        <h2 class="font-bold" id="equipmentCount"></h2>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +140,7 @@
                                     </div>
                                     <div class="col-xs-8 text-right">
                                         <span> 今日告警数 </span>
-                                        <h2 class="font-bold">26</h2>
+                                        <h2 class="font-bold" id="alarmCount"></h2>
                                     </div>
                                 </div>
                             </div>
@@ -149,48 +151,12 @@
                                 <thead>
                                 <tr>
                                     <th>告警设备</th>
-                                    <th>告警类别</th>
+                                    <th>告警信息</th>
                                     <th>告警时间</th>
                                     <th>详情</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
+                                <tbody id="data_table">
                                 <tr>
                                     <td> 鑫达电镀厂（亨达）</td>
                                     <td>8</td>
@@ -211,7 +177,41 @@
 <!-- 全局js -->
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
-
+<script>
+    $(document).ready(function(){
+        jQuery.ajax({
+            url:"$rc.contextPath/sys/main/info",
+            type: "GET",
+            dataType:"json",
+            success:function (result) {
+                if(result.code == 0){
+                    console.log(result.info)
+                    $("#company_name").text(result.info.company.name);
+                    $("#company_address").text(result.info.company.address);
+                    $("#company_code").text(result.info.company.code);
+                    $("#company_phone").text(result.info.company.phone);
+                    $("#provider_name").text(result.info.provider.name);
+                    $("#provider_phone").text(result.info.provider.phone);
+                    $("#provider_state").text(result.info.provider.isDelete?"正常":"关闭");
+                    $("#equipmentCount").text(result.info.equipmentCount);
+                    $("#alarmCount").text(result.info.alarmCount);
+                    for(var obj in result.info.dataList){
+                        $("#data_table").append(
+                        "<tr>"+
+                        "<td> 鑫达电镀厂（亨达）</td>"+
+                        "<td>8</td>"+
+                        "<td>04-16 16:15</td>"+
+                        "<td>测试</td>"+
+                        "</tr>"
+                        );
+                    }
+                }else{
+                    console.log(result)
+                }
+            }
+        })
+    })
+</script>
 
 
 </body>

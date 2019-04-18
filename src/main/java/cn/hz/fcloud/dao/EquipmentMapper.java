@@ -9,4 +9,14 @@ public interface EquipmentMapper {
     Equipment findOne(int code);
     void addEquipment(Equipment equipment);
     void delEquipment(int code);
+
+    /**
+     * 今日离线所有设备数量
+     * @return
+     */
+    int lineCount();
+
+    int countAll();
+
+    List<Equipment> selectByCompanyId(Long id);
 }

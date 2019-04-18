@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-xs-8 text-right">
                         <span> 告警总数 </span>
-                        <h2 class="font-bold">260</h2>
+                        <h2 class="font-bold" id="alarmCount"></h2>
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-xs-8 text-right">
                         <span> 离线总数 </span>
-                        <h2 class="font-bold">26</h2>
+                        <h2 class="font-bold" id="lineCount"></h2>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-xs-8 text-right">
                         <span> 企业接入总数 </span>
-                        <h2 class="font-bold">12</h2>
+                        <h2 class="font-bold" id="companyCount"></h2>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                     </div>
                     <div class="col-xs-8 text-right">
                         <span> 设备接入总数 </span>
-                        <h2 class="font-bold">12</h2>
+                        <h2 class="font-bold" id="equipmentCount"></h2>
                     </div>
                 </div>
             </div>
@@ -78,14 +78,14 @@
         <div class="col-sm-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>周告警&离线趋势图</h5>
+                    <h5>近7天告警趋势图</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="echarts" id="echarts-line-chart"></div>
                 </div>
-
             </div>
         </div>
+
         <div class="col-sm-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -192,6 +192,26 @@
 
 <script>
     $(function () {
+        jQuery.ajax({
+            url:"$rc.contextPath/sys/main/info",
+            type: "GET",
+            dataType:"json",
+            success:function (result) {
+                if(result.code == 0){
+                    console.log(result.info)
+                    $("#alarmCount").text(result.info.alarmCount);
+                    $("#lineCount").text(result.info.lineCount);
+                    $("#companyCount").text(result.info.companyCount);
+                    $("#equipmentCount").text(result.info.equipmentCount);
+                }else{
+                    console.log(result)
+                }
+            }
+        })
+
+
+
+
         var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
         var lineoption = {
             title: {

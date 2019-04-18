@@ -14,4 +14,18 @@
     <select id="findType" parameterType="int" resultType="cn.hz.fcloud.entity.EquipmentData">
         select * from equipment_data where type=#{type}
     </select>
+    <select id="alarmCount" resultType="int">
+         select count(*) from equipment_data where to_days(create_time)=to_days(now()) and type = 0
+    </select>
+    <select id="alarmCountByCode" resultType="int">
+         select count(*) from equipment_data where to_days(create_time)=to_days(now()) and type = 0 and code =#{value}
+    </select>
+    <select id="AlarmListByCode" resultType="cn.hz.fcloud.entity.EquipmentData">
+         select * from equipment_data where
+         to_days(create_time)=to_days(now()) and type = 0 and
+         code in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

@@ -26,29 +26,30 @@
             <div class="ibox-content">
                 <div class="row">
                     <div class="col-sm-6">
-                        <img src="http://file3.znwwhl.com/noPicture.png?imageMogr2/thumbnail/x120/interlace/1" width="120px">
+                        <img src="http://file3.znwwhl.com/noPicture.png?imageMogr2/thumbnail/x120/interlace/1"
+                             width="120px">
                     </div>
                     <div class="col-sm-6">
-                       <div class="row">
-                           <ul class="list-unstyled m-t-md">
-                               <li>
-                                   <span class="fa fa-home m-r-xs"></span>
-                                   <span id="company_name"></span>
-                               </li>
-                               <li>
-                                   <label>编号:</label>
-                                   <span id="company_code"></span>
-                               </li>
-                               <li>
-                                   <label>电话:</label>
-                                   <span id="company_phone"></span>
-                               </li>
-                               <li>
-                                   <label>地址:</label>
-                                   <span id="company_address"></span>
-                               </li>
-                           </ul>
-                       </div>
+                        <div class="row">
+                            <ul class="list-unstyled m-t-md">
+                                <li>
+                                    <label>企业名称:</label>
+                                    <span id="company_name"></span>
+                                </li>
+                                <li>
+                                    <label>编号:</label>
+                                    <span id="company_code"></span>
+                                </li>
+                                <li>
+                                    <label>电话:</label>
+                                    <span id="company_phone"></span>
+                                </li>
+                                <li>
+                                    <label>地址:</label>
+                                    <span id="company_address"></span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,6 +123,28 @@
                     <div class="row">
                         <div class="col-sm-7">
                             <h5>设备总览</h5>
+                            <div class="widget style1 red-bg">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-fire fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> 告警总数 </span>
+                                        <h2 class="font-bold" id="alarmCount"></h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget style1 yellow-bg">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <i class="fa fa-warning fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-8 text-right">
+                                        <span> 离线总数 </span>
+                                        <h2 class="font-bold" id="lineCount"></h2>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="widget style1 lazur-bg">
                                 <div class="row">
                                     <div class="col-xs-4">
@@ -133,38 +156,26 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="widget style1 yellow-bg">
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <i class="fa fa-warning fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-8 text-right">
-                                        <span> 今日告警数 </span>
-                                        <h2 class="font-bold" id="alarmCount"></h2>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                         <div class="col-sm-5">
                             <h5>实时告警列表</h5>
-                            <table class="table table-hover no-margins">
-                                <thead>
-                                <tr>
-                                    <th>告警设备</th>
-                                    <th>告警信息</th>
-                                    <th>告警时间</th>
-                                    <th>详情</th>
-                                </tr>
-                                </thead>
-                                <tbody id="data_table">
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="pre-scrollable">
+                                <table class="table table-hover no-margins">
+                                    <thead>
+                                    <tr>
+                                        <th>告警设备</th>
+                                        <th>告警信息</th>
+                                        <th>告警时间</th>
+                                        <th>详情</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="data_table">
+
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -178,13 +189,13 @@
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         jQuery.ajax({
-            url:"$rc.contextPath/sys/main/info",
+            url: "$rc.contextPath/sys/main/info",
             type: "GET",
-            dataType:"json",
-            success:function (result) {
-                if(result.code == 0){
+            dataType: "json",
+            success: function (result) {
+                if (result.code == 0) {
                     console.log(result.info)
                     $("#company_name").text(result.info.company.name);
                     $("#company_address").text(result.info.company.address);
@@ -192,24 +203,40 @@
                     $("#company_phone").text(result.info.company.phone);
                     $("#provider_name").text(result.info.provider.name);
                     $("#provider_phone").text(result.info.provider.phone);
-                    $("#provider_state").text(result.info.provider.isDelete?"正常":"关闭");
+                    $("#provider_state").text(result.info.provider.isDelete ? "正常" : "关闭");
                     $("#equipmentCount").text(result.info.equipmentCount);
+                    $("#lineCount").text(result.info.lineCount);
                     $("#alarmCount").text(result.info.alarmCount);
-                    for(var obj in result.info.dataList){
+
+                    for(var i=0;i<result.info.dataList.length;i++){
+                        var obj = result.info.dataList[i];
+                        var m = eval('(' + obj.info + ')');
                         $("#data_table").append(
-                        "<tr>"+
-                        "<td> 鑫达电镀厂（亨达）</td>"+
-                        "<td>8</td>"+
-                        "<td>04-16 16:15</td>"+
-                        "<td>测试</td>"+
-                        "</tr>"
+                                "<tr>" +
+                                "<td>"+obj.name+"</td>" +
+                                "<td>"+m.msg+"</td>" +
+                                "<td>"+timestampToTime(obj.createTime)+"</td>" +
+                                "<td>测试</td>" +
+                                "</tr>"
                         );
                     }
-                }else{
+
+                } else {
                     console.log(result)
                 }
             }
         })
+        function timestampToTime(timestamp) {
+            var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = date.getDate() < 10 ?  '0'+date.getDate()+ ' ' : date.getDate()+ ' ';
+            var h = date.getHours() < 10 ? '0'+date.getHours()+ ':' : date.getHours()+ ':';
+            var m = date.getMinutes() < 10 ? '0'+date.getMinutes()+ ':' : date.getMinutes()+ ':';
+            var s = date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds();
+            return h+m+s;
+        }
+
     })
 </script>
 

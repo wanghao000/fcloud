@@ -1,6 +1,7 @@
 package cn.hz.fcloud.service;
 
 import cn.hz.fcloud.entity.EquipmentData;
+import cn.hz.fcloud.entity.EquipmentDataAndName;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ public interface EquipmentDataService {
 
     int geetAlarmCountByCode(String code);
 
-    List<EquipmentData> getAlarmList(List<String> codes);
+    List<EquipmentDataAndName> getAlarmList(List<String> codes);
 }

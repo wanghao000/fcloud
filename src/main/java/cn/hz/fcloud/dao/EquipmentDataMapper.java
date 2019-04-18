@@ -1,6 +1,7 @@
 package cn.hz.fcloud.dao;
 
 import cn.hz.fcloud.entity.EquipmentData;
+import cn.hz.fcloud.entity.EquipmentDataAndName;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface EquipmentDataMapper {
 
 	int alarmCountByCode(String code);
 
-	List<EquipmentData> AlarmListByCode(List<String> codes);
+	List<EquipmentDataAndName> AlarmListByCode(List<String> codes);
 }

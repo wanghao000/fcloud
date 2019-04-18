@@ -24,12 +24,11 @@ public class CigaretteWebsocketHandler extends TextWebSocketHandler {
      * 连接成功时候，会触发页面上onopen方法
      */
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // TODO Auto-generated method stub
         System.out.println("connect to the websocket success......当前数量:"+users.size());
         users.add(session);
         //这块会实现自己业务，比如，当用户登录后，会把离线消息推送给用户
-        //TextMessage returnMessage = new TextMessage("你将收到的离线");
-        //session.sendMessage(returnMessage);
+//        TextMessage returnMessage = new TextMessage("你将收到的离线");
+//        session.sendMessage(returnMessage);
     }
 
     /**
@@ -66,13 +65,15 @@ public class CigaretteWebsocketHandler extends TextWebSocketHandler {
      * 给某个用户发送消息
      *
      * @param userName
-     * @param message
+     * @param msg
      */
-    public void sendMessageToUser(String userName, TextMessage message) {
+    public static void sendMessageToUser(String userName, String msg) {
         for (WebSocketSession user : users) {
+            System.out.println(user);
             if (user.getAttributes().get("WEBSOCKET_USERNAME").equals(userName)) {
                 try {
                     if (user.isOpen()) {
+                        TextMessage message = new TextMessage(msg);
                         user.sendMessage(message);
                     }
                 } catch (IOException e) {
@@ -86,12 +87,13 @@ public class CigaretteWebsocketHandler extends TextWebSocketHandler {
     /**
      * 给所有在线用户发送消息
      *
-     * @param message
+     * @param msg
      */
-    public void sendMessageToUsers(TextMessage message) {
+    public static void sendMessageToUsers(String msg) {
         for (WebSocketSession user : users) {
             try {
                 if (user.isOpen()) {
+                    TextMessage message = new TextMessage(msg);
                     user.sendMessage(message);
                 }
             } catch (IOException e) {

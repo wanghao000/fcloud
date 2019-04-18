@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>websocket test</title>
+    </head>
+    <body>
+        <div id="msgcount"></div>
+        <script type="text/javascript" src="http://localhost/fcloud/statics/js/jquery.min.js"></script>
+        <script type="text/javascript" src="http://localhost/fcloud/statics/js/sockjs.js"></script>
+
+        <script>
+            var websocket;
+            if ('WebSocket' in window) {
+                websocket = new WebSocket("ws://localhost/fcloud/websocketServer?userid=123");
+            } else if ('MozWebSocket' in window) {
+                websocket = new MozWebSocket("ws://localhost/fcloud/websocketServer");
+            } else {
+                websocket = new SockJS("http://localhost/fcloud/sockjs/websocketServer");
+            }
+            websocket.onopen = function (evnt) {
+                console.log('ws clint:open websocket')
+                //发送消息
+                var msg = 'userid=1';
+                console.log('ws clint:send msg:'+msg)
+                websocket.send(msg);
+            };
+            websocket.onmessage = function (evnt) {
+                console.log('ws client:get message ')
+                $("#msgcount").html("(<font color='red'>"+evnt.data+"</font>)")
+            };
+            websocket.onerror = function (evnt) {
+                console.log('ws client:error '+evnt)
+            };
+            websocket.onclose = function (evnt) {
+                console.log('ws clent:close ')
+            }
+
+        </script>
+    </body>
+</html>

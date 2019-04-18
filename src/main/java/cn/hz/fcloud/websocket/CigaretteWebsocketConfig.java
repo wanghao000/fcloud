@@ -15,9 +15,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class CigaretteWebsocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-//        registry.addHandler(webSocketHandler(),"/websocket/socketServer.do").addInterceptors(new CigaretteWebsocketHandlerInterceptor());
-//        registry.addHandler(webSocketHandler(), "/sockjs/socketServer.do").addInterceptors(new CigaretteWebsocketHandlerInterceptor()).withSockJS();
-        registry.addHandler(webSocketHandler(), "/");
+        registry.addHandler(webSocketHandler(),"/websocketServer").addInterceptors(new CigaretteWebsocketHandlerInterceptor());
+        registry.addHandler(webSocketHandler(), "/sockjs/websocketServer").addInterceptors(new CigaretteWebsocketHandlerInterceptor()).withSockJS();
     }
 
     @Bean

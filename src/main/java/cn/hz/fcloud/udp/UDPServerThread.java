@@ -5,6 +5,8 @@ import cn.hz.fcloud.entity.EquipmentData;
 import cn.hz.fcloud.service.EquipmentDataService;
 import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.UDPServerUtil;
+import cn.hz.fcloud.websocket.CigaretteWebsocketHandler;
+import cn.hz.fcloud.websocket.CigaretteWebsocketHandlerInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +77,10 @@ public class UDPServerThread extends Thread {
 				case "1111":
 					System.out.println("火灾报警");
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "火灾报警", date), 0, new Date()));
-				break;
+//					CigaretteWebsocketHandler.sendMessageToUsers("火灾报警");
+					System.out.println(CigaretteWebsocketHandlerInterceptor.username);
+					CigaretteWebsocketHandler.sendMessageToUser("admin", "火灾报警");
+					break;
 				case "3111":
 					System.out.println("火灾自动报警恢复");
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, "火灾自动报警恢复", date), 1, new Date()));

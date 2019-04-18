@@ -20,7 +20,7 @@ public class UDPServerUtil {
         for (Equipment equipment : all) {
             System.out.println(equipment);
             System.out.println(equipment.getLastReportTime());
-            if (System.currentTimeMillis()-equipment.getLastReportTime().getTime()>limitTime){
+            if (System.currentTimeMillis()-equipment.getLastReportTime().getTime()>limitTime && equipment.getIsOnline()==1){
                 equipmentService.updateReportTimeAndOnline(new Equipment(equipment.getCode(), 0, null));
             }
         }

@@ -1,6 +1,7 @@
 package cn.hz.fcloud.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class Equipment {
     private int id;
@@ -19,6 +20,31 @@ public class Equipment {
     private int isDeleted;
     private int companyId;
     private String remark;
+
+    private List<EquipmentData> dataList;
+
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", province=" + province +
+                ", city=" + city +
+                ", district=" + district +
+                ", address='" + address + '\'' +
+                ", lng='" + lng + '\'' +
+                ", lat='" + lat + '\'' +
+                ", createUser=" + createUser +
+                ", isOnline=" + isOnline +
+                ", createTime=" + createTime +
+                ", isDeleted=" + isDeleted +
+                ", companyId=" + companyId +
+                ", remark='" + remark + '\'' +
+                ", dataList=" + dataList +
+                '}';
+    }
 
     public int getId() {
         return id;
@@ -146,5 +172,13 @@ public class Equipment {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<EquipmentData> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<EquipmentData> dataList) {
+        this.dataList = dataList;
     }
 }

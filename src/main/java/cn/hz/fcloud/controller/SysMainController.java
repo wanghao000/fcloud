@@ -81,14 +81,19 @@ public class SysMainController {
             List<Equipment> equipmentList  = equipmentService.getEquipmentList(company.getId());
             int equipmentCount = equipmentList.size();
             int alarmCount = 0;
+            int lineCount = 0;
             List<String> codes = new ArrayList<>();
             for(Equipment equipment:equipmentList){
                 codes.add(equipment.getCode());
                 alarmCount+=equipmentDataService.geetAlarmCountByCode(equipment.getCode());
+                if(equipment.getIsOnline()==0){
+                    lineCount++;
+                }
             }
             map.put("equipmentCount",equipmentCount);
             map.put("alarmCount",alarmCount);
-            List<EquipmentData> dataList = equipmentDataService.getAlarmList(codes);
+            map.put("lineCount",lineCount);
+            List<EquipmentDataAndName> dataList = equipmentDataService.getAlarmList(codes);
             map.put("dataList",dataList);
         }
         return R.ok().put("info",map);

@@ -19,4 +19,6 @@ public interface EquipmentMapper {
     int countAll();
 
     List<Equipment> selectByCompanyId(Long id);
+
+    List<Equipment> test();
 }

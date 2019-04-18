@@ -2,6 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hz.fcloud.dao.EquipmentMapper">
+    <resultMap id="tt" type="cn.hz.fcloud.entity.Equipment">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="province" jdbcType="INTEGER" property="province" />
+        <result column="city" jdbcType="INTEGER" property="city" />
+        <result column="district" jdbcType="INTEGER" property="district" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="lng" jdbcType="VARCHAR" property="lng" />
+        <result column="lat" jdbcType="VARCHAR" property="lat" />
+        <result column="create_user" jdbcType="BIGINT" property="createUser" />
+        <result column="is_online" jdbcType="BIT" property="isOnline" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <collection property="dataList" ofType="EquipmentData" column="id">
+            <id column="id" jdbcType="BIGINT" property="id" />
+            <result column="code" jdbcType="VARCHAR" property="code" />
+            <result column="info" jdbcType="VARCHAR" property="info" />
+            <result column="type" jdbcType="BIT" property="type" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        </collection>
+    </resultMap>
     <select id="findAll" resultType="cn.hz.fcloud.entity.Equipment">
         select * from equipment
     </select>
@@ -22,5 +46,9 @@
     </select>
     <select id="selectByCompanyId" resultType="cn.hz.fcloud.entity.Equipment">
         select * from equipment where company_id = #{value}
+    </select>
+    <select id="test" resultMap="tt">
+        SELECT e.*,d.* FROM equipment e
+		LEFT JOIN equipment_data d ON e.code=d.code
     </select>
 </mapper>

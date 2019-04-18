@@ -20,10 +20,10 @@
     <select id="alarmCountByCode" resultType="int">
          select count(*) from equipment_data where to_days(create_time)=to_days(now()) and type = 0 and code =#{value}
     </select>
-    <select id="AlarmListByCode" resultType="cn.hz.fcloud.entity.EquipmentData">
-         select * from equipment_data where
-         to_days(create_time)=to_days(now()) and type = 0 and
-         code in
+    <select id="AlarmListByCode" resultType="cn.hz.fcloud.entity.EquipmentDataAndName">
+         select d.*,e.name from equipment_data d,equipment e where d.code=e.code and
+         to_days(d.create_time)=to_days(now()) and d.type = 0 and
+         d.code in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>

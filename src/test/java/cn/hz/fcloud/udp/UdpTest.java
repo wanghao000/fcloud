@@ -14,8 +14,10 @@ public class UdpTest {
 
 	public static void main(String[] args) {
 		try {
-			InetAddress address = InetAddress.getByName("server.natappfree.cc");
-			int port = 49910;
+			InetAddress address = InetAddress.getByName("localhost");
+			int port = 9999;
+//			InetAddress address = InetAddress.getByName("server.natappfree.cc");
+//			int port = 49910;
 //			byte[] b = "FA01812345600492H00490D0A".getBytes();
 //			byte[] b = "FA02812345600492H00490D0A".getBytes();
 			byte[] b = "FA03812345618111100001x1902011501300D0A".getBytes();

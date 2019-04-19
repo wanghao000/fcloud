@@ -76,34 +76,34 @@ public class UDPServerThread extends Thread {
 			String msg;
 			switch (flag) {
 				case "1111":
-					msg = "火灾报警";
+				    msg = "火灾报警";
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
-					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "3111":
-					msg = "火灾自动报警恢复";
+				    msg = "火灾自动报警恢复";
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
-					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "1384":
-					msg = "电池低电压报警";
+				    msg = "电池低电压报警";
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
-					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "3384":
-					msg = "电池低电压恢复";
+				    msg = "电池低电压恢复";
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
-					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "1601":
-					msg = "手动测试报告";
+				    msg = "手动测试报告";
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
-					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "1800":
-					msg = "手动解除报警";
+				    msg = "手动解除报警";
 					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
-					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, msg);
+					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				default:
 					break;

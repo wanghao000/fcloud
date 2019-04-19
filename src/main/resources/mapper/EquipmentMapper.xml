@@ -27,7 +27,7 @@
         </collection>
     </resultMap>
     <select id="findAll" resultType="cn.hz.fcloud.entity.Equipment">
-        select * from equipment
+        select * from equipment where is_deleted=1
     </select>
     <select id="findOne" parameterType="string" resultType="cn.hz.fcloud.entity.Equipment">
         select * from equipment where code=#{code}
@@ -35,7 +35,7 @@
     <insert id="addEquipment" parameterType="cn.hz.fcloud.entity.Equipment">
         insert into equipment values(#{id,jdbcType=BIGINT}, #{code}, #{name}, #{type}, #{province}, #{city}, #{district}, #{address}, #{lng}, #{lat}, #{createUser}, 0, #{lastReportTime}, #{createTime}, #{isDeleted}, #{companyId}, #{remark})
     </insert>
-	<update id="delEquipment" parameterType="int">
+	<update id="delEquipment" parameterType="String">
         update equipment set is_deleted=0 where code=#{code}
     </update>
     <update id="updateReportTimeAndOnline" parameterType="cn.hz.fcloud.entity.Equipment">
@@ -58,4 +58,31 @@
         SELECT e.*,d.* FROM equipment e
 		LEFT JOIN equipment_data d ON e.code=d.code
     </select>
+    <update id="updateEq" parameterType="cn.hz.fcloud.entity.Equipment">
+        update equipment
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code=#{code}
+    </update>
 </mapper>

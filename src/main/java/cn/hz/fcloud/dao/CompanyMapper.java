@@ -20,4 +20,7 @@ public interface CompanyMapper {
     int countAll();
 
     List<Company> companyListByProviderId(Long providerId);
+
+    //获取所有企业
+    List<Company> companyList();
 }

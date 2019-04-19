@@ -8,7 +8,9 @@ public interface EquipmentService {
     List<Equipment> findAll();
     Equipment findOne(String code);
     void addEquipment(Equipment equipment);
-    void delEquipment(String code);
+    int delEquipment(String code);
 	void updateReportTimeAndOnline(Equipment equipment);	int lineCount();
     int countAll();
-    List<Equipment> getEquipmentList(Long id);}
+    List<Equipment> getEquipmentList(Long id);
+    int updateEq(Equipment eq);
+}

@@ -39,16 +39,27 @@ public class UDPServerUtil {
                 CigaretteWebsocketHandler.sendMessageToUser(username, msg);
             } else if(sysUser.getType() == 2) {
                 List<Company> companyListByProviderId = companyService.getCompanyListByProviderId(sysUser.getProviderId());
-                for (Company company : companyListByProviderId) {
-                    if(company.getId() == equipmentService.findOne(imei).getCompanyId()) {
-                        CigaretteWebsocketHandler.sendMessageToUser(username, msg);
+                if (companyListByProviderId != null && companyListByProviderId.size()>0) {
+                    for (Company company : companyListByProviderId) {
+                        if(company.getId() == equipmentService.findOne(imei).getCompanyId()) {
+                            CigaretteWebsocketHandler.sendMessageToUser(username, msg);
+                        }
                     }
                 }
             } else if(sysUser.getType() == 3) {
-                if(sysUser.getCompanyId() == equipmentService.findOne(imei).getCompanyId()) {
+                if(sysUser.getCompanyId() != null && sysUser.getCompanyId() == equipmentService.findOne(imei).getCompanyId()) {
                     CigaretteWebsocketHandler.sendMessageToUser(username, msg);
                 }
             }
         }
+    }
+
+    public static String returnHtmlJson(String imei, String msg, int type, String date){
+        JSONObject returnJson = new JSONObject();
+        returnJson.put("imei", imei);
+        returnJson.put("msg", msg);
+        returnJson.put("type", type);
+        returnJson.put("date", date);
+        return returnJson.toString();
     }
 }

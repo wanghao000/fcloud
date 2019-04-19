@@ -14,6 +14,7 @@ public class UdpTest {
 
 	public static void main(String[] args) {
 		try {
+
 			InetAddress address = InetAddress.getByName("localhost");
 			int port = 9999;
 //			byte[] b = "FA01812345600492H00490D0A".getBytes();

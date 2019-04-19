@@ -27,7 +27,7 @@ $(function () {
         }
             toastr.options.showDuration = 400;
             toastr.options.hideDuration = 1000;
-            toastr.options.timeOut = 7000;
+            toastr.options.timeOut = 0;
             toastr.options.extendedTimeOut =1000;
             toastr.options.showEasing = "swing";
             toastr.options.hideEasing = "linear";
@@ -78,8 +78,13 @@ $(function () {
     };
     websocket.onmessage = function (evnt) {
         console.log('ws client:get message ')
-        /*getToastr()["error"](evnt.data,"告警")*/
-        showtoast("error","告警",evnt.data);
+        var data = eval('(' + evnt.data + ')');
+        var time = data.date;
+        if(data.type == 0){
+            showtoast("error","编号"+data.imei+"告警，时间："+time.substring(6,8)+":"+time.substring(8,10)+":"+time.substring(10,12),data.msg);
+        }else if(data.type == 1){
+            showtoast("warning","编号"+data.imei+"告警，时间："+time.substring(6,8)+":"+time.substring(8,10)+":"+time.substring(10,12),data.msg);
+        }
     };
     websocket.onerror = function (evnt) {
         console.log('ws client:error ' + evnt)

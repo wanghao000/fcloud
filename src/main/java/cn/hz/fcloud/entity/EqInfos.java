@@ -1,15 +1,19 @@
 package cn.hz.fcloud.entity;
 
 import java.util.Date;
+//设备表与省市县，公司关联实体
+public class EqInfos {
 
-public class Equipment {
     private int id;
     private String code;
     private String name;
     private int type;
     private int province;
+    private String pName;
     private int city;
+    private String cName;
     private int district;
+    private String dName;
     private String address;
     private String lng;
     private String lat;
@@ -19,18 +23,22 @@ public class Equipment {
     private Date createTime;
     private int isDeleted;
     private int companyId;
+    private String comName;
     private String remark;
 
     @Override
     public String toString() {
-        return "Equipment{" +
+        return "EqInfos{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", type=" + type +
                 ", province=" + province +
+                ", pName='" + pName + '\'' +
                 ", city=" + city +
+                ", cName='" + cName + '\'' +
                 ", district=" + district +
+                ", dName='" + dName + '\'' +
                 ", address='" + address + '\'' +
                 ", lng='" + lng + '\'' +
                 ", lat='" + lat + '\'' +
@@ -40,37 +48,9 @@ public class Equipment {
                 ", createTime=" + createTime +
                 ", isDeleted=" + isDeleted +
                 ", companyId=" + companyId +
+                ", comName='" + comName + '\'' +
                 ", remark='" + remark + '\'' +
                 '}';
-    }
-
-    public Equipment(String code, int isOnline, Date lastReportTime) {
-        this.code = code;
-        this.isOnline = isOnline;
-        this.lastReportTime = lastReportTime;
-    }
-
-    public Equipment(int id, String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int createUser, int isOnline, Date lastReportTime, Date createTime, int isDeleted, int companyId, String remark) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.type = type;
-        this.province = province;
-        this.city = city;
-        this.district = district;
-        this.address = address;
-        this.lng = lng;
-        this.lat = lat;
-        this.createUser = createUser;
-        this.isOnline = isOnline;
-        this.lastReportTime = lastReportTime;
-        this.createTime = createTime;
-        this.isDeleted = isDeleted;
-        this.companyId = companyId;
-        this.remark = remark;
-    }
-
-    public Equipment() {
     }
 
     public int getId() {
@@ -113,6 +93,14 @@ public class Equipment {
         this.province = province;
     }
 
+    public String getpName() {
+        return pName;
+    }
+
+    public void setpName(String pName) {
+        this.pName = pName;
+    }
+
     public int getCity() {
         return city;
     }
@@ -121,12 +109,28 @@ public class Equipment {
         this.city = city;
     }
 
+    public String getcName() {
+        return cName;
+    }
+
+    public void setcName(String cName) {
+        this.cName = cName;
+    }
+
     public int getDistrict() {
         return district;
     }
 
     public void setDistrict(int district) {
         this.district = district;
+    }
+
+    public String getdName() {
+        return dName;
+    }
+
+    public void setdName(String dName) {
+        this.dName = dName;
     }
 
     public String getAddress() {
@@ -199,6 +203,14 @@ public class Equipment {
 
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
+    }
+
+    public String getComName() {
+        return comName;
+    }
+
+    public void setComName(String comName) {
+        this.comName = comName;
     }
 
     public String getRemark() {

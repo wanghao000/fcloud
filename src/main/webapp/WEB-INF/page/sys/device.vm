@@ -69,20 +69,28 @@
     $(function() {
         //1. 定义表格列
         var columns = [{
+            field: 'code',
+            title: '编号'
+        },{
             field: 'name',
             title: '设备名称'
         }, {
-            field: 'is_online',
-            title: '状态'
+            field: 'isOnline',
+            title: '状态',
+            formatter:function (value,row,index) {
+                var data = new Array(
+                        '<span class="label label-danger">离线</span>',
+                        '<span class="label label-primary">在线</span>')
+                return data[value];
+            }
         }, {
             field: 'type',
             title: '设备类型',
             formatter:function (value,row,index) {
                 var data = new Array(
-                        '<span class="label label-danger">运维用户</span>',
-                        '<span class="label label-primary">服务商用户</span>',
-                        '<span class="label label-success">企业用户</span>');
-                return data[value-1];
+                        '<span class="label label-info">烟感</span>',
+                        '<span class="label label-info">其他</span>')
+                return data[value];
             }
         }, {
             field: 'company_id',
@@ -95,10 +103,9 @@
             title: '操作',
             formatter:function (value,row,index) {
                 return [
-                    '<a class="btn btn-info"><i class="fa fa-wrench"> </i> 权限配置</a> ',
-                    '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
+                    '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+'+row.code+')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #if($shiro.hasPermission("sys:user:delete"))
-                        ,'<a class="btn btn-danger" onclick="del('+row.id+')"><i class="fa fa-trash-o"> </i> 删除</a> '
+                        ,'<a class="btn btn-danger" onclick="del('+row.code+')"><i class="fa fa-trash-o"> </i> 删除</a> '
                     #end
                 ].join('');
             }
@@ -128,11 +135,11 @@
     function del(id) {
         jQuery.ajax({
             type: "POST",
-            url: "$rc.contextPath/sys/user/delete/"+id,
+            url: "$rc.contextPath/sys/eq/delete/"+id,
             dataType: "json",
             success: function(result){
                 if(result.code == 0){//返回成功
-                    swal("执行成功",'您已经删除该用户',"success" );
+                    swal("执行成功",'您已经删除该设备',"success" );
                     $("#tb_content").bootstrapTable('refresh');
                 }else{
                     swal("错误",result.msg,"error" );

@@ -1,31 +1,63 @@
 package cn.hz.fcloud.dao;
 
+import cn.hz.fcloud.entity.Company;
+import cn.hz.fcloud.entity.EqInfos;
+import cn.hz.fcloud.entity.Equipment;
 import cn.hz.fcloud.entity.SysChina;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
-
-/**
- * @Description
- * @Author wh
- * @Date
- * @Version 1.0
- **/
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath:spring/spring.xml"})
+@ContextConfiguration({"classpath:spring/spring-jdbc.xml"})
 public class TestSysChinaMapper {
 
     @Autowired
-    private SysChinaMapper mapper;
+    private SysChinaMapper chinaMapper;
+    @Autowired
+    private EquipmentMapper eqMapper;
+    @Autowired
+    private CompanyMapper comMapper;
+    @Autowired
+    private EqInfosMapper eqInfosMapper;
     @Test
-    public void test(){
-        List<SysChina> list = mapper.selectByParentid(320000);
+    public void sysChinaTest(){
+        List<SysChina> list = chinaMapper.selectByParentid(100000);
         for(SysChina china : list){
             System.out.println(china.getMerger_short_name());
         }
     }
+    @Test
+    public void equipmentTest(){
+        List<Equipment> eqs = eqMapper.findAll();
+        for(Equipment eq:eqs){
+            System.out.println(eq);
+        }
+        int i = eqMapper.delEquipment("1654949");
+        System.out.println(i);
+    }
+
+    @Test
+    public void companyTest(){
+        List<Company> coms = comMapper.companyList();
+        for(Company com:coms){
+            System.out.println(com);
+        }
+    }
+
+    @Test
+    public void eqInfosTest(){
+        EqInfos infos = eqInfosMapper.findOne("8123456");
+        System.out.println(infos);
+    }
+
+//    public void syso(List<Object> list){
+//        for(Object obj:list){
+//            System.out.println(obj);
+//        }
+//    }
 }

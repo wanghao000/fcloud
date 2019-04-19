@@ -2,16 +2,87 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hz.fcloud.dao.EquipmentMapper">
+    <resultMap id="tt" type="cn.hz.fcloud.entity.Equipment">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="province" jdbcType="INTEGER" property="province" />
+        <result column="city" jdbcType="INTEGER" property="city" />
+        <result column="district" jdbcType="INTEGER" property="district" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="lng" jdbcType="VARCHAR" property="lng" />
+        <result column="lat" jdbcType="VARCHAR" property="lat" />
+        <result column="create_user" jdbcType="BIGINT" property="createUser" />
+        <result column="is_online" jdbcType="BIT" property="isOnline" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <collection property="dataList" ofType="EquipmentData" column="id">
+            <id column="id" jdbcType="BIGINT" property="id" />
+            <result column="code" jdbcType="VARCHAR" property="code" />
+            <result column="info" jdbcType="VARCHAR" property="info" />
+            <result column="type" jdbcType="BIT" property="type" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        </collection>
+    </resultMap>
     <select id="findAll" resultType="cn.hz.fcloud.entity.Equipment">
-        select * from equipment
+        select * from equipment where is_deleted=1
     </select>
-    <select id="findOne" parameterType="int" resultType="cn.hz.fcloud.entity.Equipment">
+    <select id="findOne" parameterType="string" resultType="cn.hz.fcloud.entity.Equipment">
         select * from equipment where code=#{code}
     </select>
     <insert id="addEquipment" parameterType="cn.hz.fcloud.entity.Equipment">
-        insert into equipment values(#{id,jdbcType=BIGINT}, #{code}, #{name}, #{type}, #{province}, #{city}, #{district}, #{address}, #{lng}, #{lat}, #{create_user}, #{is_online}, #{create_time}, #{is_deleted}, #{company_id}, #{remark})
+        insert into equipment values(#{id,jdbcType=BIGINT}, #{code}, #{name}, #{type}, #{province}, #{city}, #{district}, #{address}, #{lng}, #{lat}, #{createUser}, 0, #{lastReportTime}, #{createTime}, #{isDeleted}, #{companyId}, #{remark})
     </insert>
-	<update id="delEquipment" parameterType="int">
-        update equipment set is_deleted=1 where code=#{code}
+	<update id="delEquipment" parameterType="String">
+        update equipment set is_deleted=0 where code=#{code}
+    </update>
+    <update id="updateReportTimeAndOnline" parameterType="cn.hz.fcloud.entity.Equipment">
+        update equipment set is_online=#{isOnline}
+        <if test="lastReportTime != null">
+            ,last_report_time=#{lastReportTime}
+        </if>
+        where code=#{code}
+    </update>
+    <select id="lineCount" resultType="int">
+        select count(*) from equipment where is_online = 0
+    </select>
+    <select id="countAll" resultType="int">
+        select count(*) from equipment
+    </select>
+    <select id="selectByCompanyId" resultType="cn.hz.fcloud.entity.Equipment">
+        select * from equipment where company_id = #{value}
+    </select>
+    <select id="test" resultMap="tt">
+        SELECT e.*,d.* FROM equipment e
+		LEFT JOIN equipment_data d ON e.code=d.code
+    </select>
+    <update id="updateEq" parameterType="cn.hz.fcloud.entity.Equipment">
+        update equipment
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="companyId != null">
+                company_id = #{companyId,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code=#{code}
     </update>
 </mapper>

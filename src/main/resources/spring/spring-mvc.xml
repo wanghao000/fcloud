@@ -9,7 +9,7 @@
 
     <mvc:annotation-driven/>
     <mvc:default-servlet-handler/>
-    <context:component-scan base-package="cn.hz.fcloud.controller,cn.hz.fcloud.udp"/>
+    <context:component-scan base-package="cn.hz.fcloud.controller,cn.hz.fcloud.websocket"/>
     <!-- Velocity视图解析器    默认视图  -->
     <bean class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
         <property name="contentType" value="text/html;charset=UTF-8" />

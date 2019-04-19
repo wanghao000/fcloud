@@ -24,9 +24,7 @@ public class UDPServerUtil {
     public static void findExceedTimeRecord(EquipmentService equipmentService, long limitTime){
         List<Equipment> all = equipmentService.findAll();
         for (Equipment equipment : all) {
-            System.out.println(equipment);
-            System.out.println(equipment.getLastReportTime());
-            if (System.currentTimeMillis()-equipment.getLastReportTime().getTime()>limitTime && equipment.getIsOnline()==1){
+            if (equipment.getLastReportTime() != null && System.currentTimeMillis()-equipment.getLastReportTime().getTime()>limitTime && equipment.getIsOnline()==1){
                 equipmentService.updateReportTimeAndOnline(new Equipment(equipment.getCode(), 0, null));
             }
         }

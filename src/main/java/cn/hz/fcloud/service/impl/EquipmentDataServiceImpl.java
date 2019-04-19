@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EquipmentDataServiceImpl implements EquipmentDataService {
@@ -48,5 +49,10 @@ public class EquipmentDataServiceImpl implements EquipmentDataService {
     @Override
     public List<EquipmentDataAndName> getAlarmList(List<String> codes) {
         return equipmentDataMapper.AlarmListByCode(codes);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAlertMap() {
+        return equipmentDataMapper.AlarmTrend();
     }
 }

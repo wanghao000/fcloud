@@ -27,4 +27,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Company getCompanyById(Long id) {
         return companyMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<Company> companyList(){
+        return companyMapper.companyList();
+    }
 }

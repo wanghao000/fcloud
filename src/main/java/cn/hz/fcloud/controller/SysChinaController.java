@@ -19,7 +19,6 @@ public class SysChinaController {
 
     @RequestMapping("/show/{id}")
     public List<SysChina> getAddress(@PathVariable("id") int id){
-        System.out.println("parentid:"+id);
         return service.selectByParentid(id);
     }
 }

@@ -14,4 +14,7 @@ public interface CompanyService {
     List<Company> getCompanyListByProviderId(Long id);
 
     Company getCompanyById(Long id);
+
+    //运维账户获取所有公司信息
+    List<Company> companyList();
 }

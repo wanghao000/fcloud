@@ -30,8 +30,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public void delEquipment(String code) {
-        equipmentMapper.delEquipment(code);
+    public int  delEquipment(String code) {
+        return  equipmentMapper.delEquipment(code);
     }
 	@Override
     public void updateReportTimeAndOnline(Equipment equipment) {
@@ -50,4 +50,10 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public List<Equipment> getEquipmentList(Long id) {
         return equipmentMapper.selectByCompanyId(id);
-    }}
+    }
+
+    @Override
+    public int updateEq(Equipment eq){
+        return equipmentMapper.updateEq(eq);
+    }
+}

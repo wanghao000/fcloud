@@ -9,12 +9,15 @@
     <title>H+ 后台主题UI框架 - 首页示例二</title>
     <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
-
+    <!-- bootstrap -->
     <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- 图标字体 -->
     <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 通知 -->
+    <link href="$rc.contextPath/statics/plugins/toastr/toastr.min.css" rel="stylesheet">
 
     <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+
 
 </head>
 
@@ -189,6 +192,10 @@
 <!-- ECharts -->
 <script src="$rc.contextPath/statics/plugins/echarts/echarts.min.js"></script>
 <script src="$rc.contextPath/statics/plugins/echarts/zhejiang.js"></script>
+<!-- 通知 -->
+<script src="$rc.contextPath/statics/plugins/toastr/toastr.min.js"></script>
+<script type="text/javascript" src="$rc.contextPath/statics/js/sockjs.js"></script>
+<script src="$rc.contextPath/statics/js/toastr.js"></script>
 
 <script>
     $(function () {

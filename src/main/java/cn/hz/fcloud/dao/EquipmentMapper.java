@@ -8,7 +8,7 @@ public interface EquipmentMapper {
     List<Equipment> findAll();
     Equipment findOne(String code);
     void addEquipment(Equipment equipment);
-    void delEquipment(String code);
+    int delEquipment(String code);
 	void updateReportTimeAndOnline(Equipment equipment);	/**
      * 今日离线所有设备数量
      * @return
@@ -20,4 +20,5 @@ public interface EquipmentMapper {
     List<Equipment> selectByCompanyId(Long id);
 
     List<Equipment> test();
+    int updateEq(Equipment eq);
 }

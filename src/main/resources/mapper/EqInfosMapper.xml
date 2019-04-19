@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hz.fcloud.dao.EqInfosMapper">
+    <select id="findOne" resultType="cn.hz.fcloud.entity.EqInfos">
+       SELECT e.*,
+       (SELECT name from sys_china where id = e.province)as p_name,
+       (SELECT name from sys_china where id = e.city)as c_name,
+       (SELECT name from sys_china where id = e.district)as d_name,
+       (SELECT name from company where id = e.company_id)as com_name from equipment e
+         where e.code = #{code}
+    </select>
+</mapper>

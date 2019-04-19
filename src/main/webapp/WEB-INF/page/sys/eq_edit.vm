@@ -27,7 +27,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>添加设备</h5>
+                    <h5>编辑设备</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" onsubmit="return false;">
@@ -49,24 +49,22 @@
                         <h5>所在地址</h5>
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <select name="province" class="form-control m-b" id="province">
+                                <select name="province" class="form-control m-b" id="province" readonly="readonly">
                                     <option value="">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="city" class="form-control m-b" id="city">
+                                <select name="city" class="form-control m-b" id="city" readonly="readonly">
                                     <option value="">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="district" id="district" class="form-control m-b" id="district">
+                                <select name="district" id="district" class="form-control m-b" id="district" readonly="readonly">
                                     <option value="">请选择</option>
                                 </select>
                             </div>
                         </div>
-
                         <div class="hr-line-dashed"></div>
-
                         <div class="form-group">
                             <div class="col-sm-6">
                                 <h5>设备名称</h5>
@@ -84,7 +82,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <h5>创建人</h5>
-                                <input type="email" class="form-control" id="createUser">
+                                <input type="text" class="form-control" id="createUser">
                             </div>
                         </div>
                         <div class="form-group">
@@ -146,7 +144,7 @@
         };
         jQuery.ajax({
             type: "POST",
-            url: "$rc.contextPath/sys/eq/save",
+            url: "$rc.contextPath/sys/eq/update",
             data: JSON.stringify(data),
             dataType: "json",
             contentType:"application/json;charset=UTF-8",
@@ -159,61 +157,52 @@
             }
         });
     });
-       $(function () {
-           $('.i-checks').iCheck({
-               checkboxClass: 'icheckbox_square-green',
-               radioClass: 'iradio_square-green',
-           });
-           //加载公司
-           url = "$rc.contextPath/sys/eq/companyList"
-           jQuery.post(url,function (pdata) {
-               var html = "";
-               jQuery.each(pdata,function(idx,item){
-                   html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-               });
-               $("#companyId").append(html);
-           })
-           //省市县三级联动
-            var url = "$rc.contextPath/sys/china/show/";
-           jQuery.post(url+"100000",function (pdata) {
-               var html = "";
-               jQuery.each(pdata,function(idx,item){
-                   html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-               });
-               $("#province").append(html);
-           })
-           $("#province").change(function(){
-               url = "$rc.contextPath/sys/china/show/";
-               if ($(this).val() == "") return;
-               $("#city option").remove();
-               $("#district option").remove();
-               var html = "<option value=''>请选择</option>";
-               // $("#city").append(html);
-               $("#district").append(html);
-               var code = $(this).find("option:selected").attr("exid");
-               url+=code;
-               jQuery.post(url,function (pdata) {
-                   jQuery.each(pdata,function(idx,item){
-                       html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-                   });
-                   $("#city").append(html);
-               })
-           });
-           $("#city").change(function(){
-               url = "$rc.contextPath/sys/china/show/";
-               if ($(this).val() == "") return;
-               $("#district option").remove();
-               var code = $(this).find("option:selected").attr("exid");
-               var html = "<option value=''>请选择</option>";
-               url += code;
-               jQuery.post(url,function (pdata) {
-                   jQuery.each(pdata,function(idx,item){
-                       html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-                   });
-                   $("#district").append(html);
-               });
-           });
-       });
+    $(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        var code = window.location.search.split('=')[1];
+        // alert(id);
+        //加载公司
+        url = '$rc.contextPath/sys/eq/companyList';
+        jQuery.ajax({
+            url:url,
+            async:false,
+            success:function (pdata) {
+                var html = "";
+                jQuery.each(pdata,function(idx,item){
+                    html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+                });
+                $("#companyId").append(html);
+            }
+        })
+        url = '$rc.contextPath/sys/eq/find/'+code;
+        jQuery.ajax({
+            url:url,
+            async:false,
+            success:function (pdata) {
+                // console.log(pdata);
+                var html = "";
+                jQuery.each(pdata,function(idx,item){
+                    // alert(pdata.pName);
+                    // alert(idx+"..."+item);
+                    if("province" == idx){
+                        html += "<option value='" + item+ "' selected>" + pdata.pName + "</option>";
+                        $("#province").html(html);
+                    }else if("city" == idx){
+                        html += "<option value='" + item+ "' selected>" + pdata.cName + "</option>";
+                        $("#city").html(html);
+                    }else if("district" == idx){
+                        html += "<option value='" + item+ "' selected>" + pdata.dName + "</option>";
+                        $("#district").html(html);
+                    }else{
+                        $("#"+idx).val(item);
+                    }
+                });
+            }
+        })
+    });
 </script>
 
 

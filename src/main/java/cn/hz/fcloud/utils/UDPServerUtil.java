@@ -45,7 +45,8 @@ public class UDPServerUtil {
                     }
                 }
             } else if(sysUser.getType() == 3) {
-                if(sysUser.getCompanyId() != null && sysUser.getCompanyId() == equipmentService.findOne(imei).getCompanyId()) {
+                Equipment equipment = equipmentService.findOne(imei);
+                if(equipment!= null && sysUser.getCompanyId() == equipment.getCompanyId()) {
                     CigaretteWebsocketHandler.sendMessageToUser(username, msg);
                 }
             }

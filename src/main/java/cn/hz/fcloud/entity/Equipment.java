@@ -17,6 +17,7 @@ public class Equipment {
     private int isOnline;
     private Date lastReportTime;
     private Date createTime;
+
     private int isDelete;
     private int companyId;
     private String remark;
@@ -50,6 +51,7 @@ public class Equipment {
         this.lastReportTime = lastReportTime;
     }
 
+
     public Equipment(int id, String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int createUser, int isOnline, Date lastReportTime, Date createTime, int isDelete, int companyId, String remark) {
         this.id = id;
         this.code = code;
@@ -65,6 +67,7 @@ public class Equipment {
         this.isOnline = isOnline;
         this.lastReportTime = lastReportTime;
         this.createTime = createTime;
+
         this.isDelete = isDelete;
         this.companyId = companyId;
         this.remark = remark;

@@ -27,15 +27,17 @@ public class ProviderController {
     @Autowired
     private ProviderService providerService;
 
-    private  SysUser user = ShiroUtil.getUserEntity();
+    private SysUser user;
 
     @RequestMapping("/list")
     public TableReturn providerList(){
+        user = ShiroUtil.getUserEntity();
         List<Provider> pros = providerService.selectByCreateUser(user.getId());
         return new TableReturn(pros,pros.size());
     }
     @RequestMapping("/save")
     public R insertProvider(@RequestBody Provider provider){
+        user = ShiroUtil.getUserEntity();
         provider.setCreateTime(new Date());
         provider.setIsDelete(1);
         provider.setCreateUser(user.getIsDelete());

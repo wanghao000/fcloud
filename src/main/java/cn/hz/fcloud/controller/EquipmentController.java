@@ -31,7 +31,7 @@ public class EquipmentController {
         eq.setCreateTime(new Date());
         eq.setisDelete(1);
         if(eqservice.findOne(eq.getCode()) != null){
-            return R.error("该编号已存在！请重新输入！");
+            return R.error("编号已存在，请重新输入！");
         }
         eqservice.addEquipment(eq);
         return R.ok();

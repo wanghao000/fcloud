@@ -4,8 +4,8 @@ echarts_1();
 echarts_2();
 echarts_4();
 echarts_31();
-echarts_32();
-/*echarts_33();*/
+//echarts_32();
+//echarts_33();
 echarts_5();
 echarts_6();
 function echarts_1() {
@@ -310,7 +310,7 @@ function echarts_4() {
     },
 		    legend: {
     top:'0%',
-        data:['安卓','IOS'],
+        data:['在线设备','总设备'],
                 textStyle: {
            color: 'rgba(255,255,255,.5)',
 			fontSize:'12',
@@ -376,7 +376,7 @@ axisLabel:  {
     }],
     series: [
 		{
-        name: '安卓',
+        name: '在线设备',
         type: 'line',
          smooth: true,
         symbol: 'circle',
@@ -412,7 +412,7 @@ axisLabel:  {
 
     }, 
 {
-        name: 'IOS',
+        name: '总设备',
         type: 'line',
         smooth: true,
         symbol: 'circle',
@@ -444,9 +444,9 @@ axisLabel:  {
 				borderWidth: 12
 			}
 		},
-        data: [5, 3, 5, 6, 1, 5, 3, 5, 6, 4, 6, 4, 8, 3, 5, 6, 1, 5, 3, 7, 2, 5, 1, 4]
+        data: [15, 13, 15, 16, 11, 15, 13, 15, 16, 14, 16, 14, 18, 13, 15, 16, 11, 15, 13, 17, 12, 15, 11, 14]
 
-    }, 
+    },
 	
 		 ]
 
@@ -607,7 +607,7 @@ function echarts_31() {
 option = {
    
 	    title: [{
-        text: '年龄分布',
+        //text: '年龄分布',
         left: 'center',
         textStyle: {
             color: '#fff',
@@ -622,7 +622,7 @@ position:function(p){   //其中p为当前鼠标的位置
             return [p[0] + 10, p[1] - 10];
         }
     },
-    legend: {
+    /*legend: {
         
 top:'70%',
        itemWidth: 10,
@@ -632,7 +632,7 @@ top:'70%',
             color: 'rgba(255,255,255,.5)',
 			fontSize:'12',
         }
-    },
+    },*/
     series: [
         {
         	name:'年龄分布',
@@ -659,7 +659,7 @@ top:'70%',
             myChart.resize();
         });
     }
-function echarts_32() {
+/*function echarts_32() {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('fb2'));
 option = {
@@ -717,7 +717,7 @@ position:function(p){   //其中p为当前鼠标的位置
         window.addEventListener("resize",function(){
             myChart.resize();
         });
-    }
+    }*/
 /*function echarts_33() {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('fb3'));

@@ -4,6 +4,7 @@ import cn.hz.fcloud.entity.EquipmentData;
 import cn.hz.fcloud.entity.EquipmentDataAndName;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EquipmentDataService {
     List<EquipmentData> findAll();
@@ -16,4 +17,6 @@ public interface EquipmentDataService {
     int geetAlarmCountByCode(String code);
 
     List<EquipmentDataAndName> getAlarmList(List<String> codes);
+
+    List<Map<String,Object>> getAlertMap();
 }

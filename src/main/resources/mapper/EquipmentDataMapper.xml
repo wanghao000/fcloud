@@ -28,4 +28,7 @@
             #{item}
         </foreach>
     </select>
+    <select id="AlarmTrend" resultType="java.util.HashMap">
+        select DATE_FORMAT(create_time,'%m.%d') days,count(id) count from equipment_data where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) and type =0 GROUP BY days;
+    </select>
 </mapper>

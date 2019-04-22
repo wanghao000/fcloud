@@ -20,4 +20,8 @@ public class ProviderServiceImpl implements ProviderService {
     public List<Provider> selectByCreateUser(Long create_user){
         return providerMapper.selectByCreateUser(create_user);
     }
+    @Override
+    public int insert(Provider provider){
+        return providerMapper.insert(provider);
+    }
 }

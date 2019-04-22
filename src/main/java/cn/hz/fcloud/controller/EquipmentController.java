@@ -29,7 +29,10 @@ public class EquipmentController {
     @RequestMapping("/save")
     public R insertEquipment(@RequestBody Equipment eq){
         eq.setCreateTime(new Date());
-        eq.setIsDeleted(1);
+        eq.setisDelete(1);
+        if(eqservice.findOne(eq.getCode()) != null){
+            return R.error("该编号已存在！请重新输入！");
+        }
         eqservice.addEquipment(eq);
         return R.ok();
     }

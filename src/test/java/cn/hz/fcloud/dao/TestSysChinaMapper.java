@@ -23,6 +23,8 @@ public class TestSysChinaMapper {
     private CompanyMapper comMapper;
     @Autowired
     private EqInfosMapper eqInfosMapper;
+    @Autowired
+    private ProviderMapper providerMapper;
     @Test
     public void sysChinaTest(){
         List<SysChina> list = chinaMapper.selectByParentid(100000);
@@ -36,8 +38,6 @@ public class TestSysChinaMapper {
         for(Equipment eq:eqs){
             System.out.println(eq);
         }
-        int i = eqMapper.delEquipment("1654949");
-        System.out.println(i);
     }
 
     @Test
@@ -63,7 +63,16 @@ public class TestSysChinaMapper {
         SysUser user = ShiroUtil.getUserEntity();
         System.out.println(user);
     }
-//    public void syso(List<Object> list){
+
+    @Test
+    public void testProvider(){
+//        System.out.println(ShiroUtil.getUserEntity());
+        List<Provider> list =  providerMapper.selectByCreateUser(new Long(1));
+        for(Provider pro : list){
+            System.out.println(pro);
+        }
+    }
+//    public void syso(List<Enum> list){
 //        for(Object obj:list){
 //            System.out.println(obj);
 //        }

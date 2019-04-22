@@ -72,40 +72,28 @@
             field: 'name',
             title: '服务商名称'
         },{
-            field: 'name',
-            title: '设备名称'
+            field: 'eqsCount',
+            title: '网关数量'
         }, {
-            field: 'isOnline',
-            title: '状态',
-            formatter:function (value,row,index) {
-                var data = new Array(
-                        '<span class="label label-danger">离线</span>',
-                        '<span class="label label-primary">在线</span>')
-                return data[value];
-            }
+            field: 'serviceTel',
+            title: '客服电话',
         }, {
-            field: 'type',
-            title: '设备类型',
-            formatter:function (value,row,index) {
-                var data = new Array(
-                        '<span class="label label-info">烟感</span>',
-                        '<span class="label label-info">其他</span>')
-                return data[value];
-            }
+            field: 'contacts',
+            title: '联系人',
         }, {
-            field: 'comName',
-            title: '所属企业'
+            field: 'contactsPhone',
+            title: '联系电话'
         }, {
             field: 'rootname',
             title: '操作',
-            formatter:function (value,row,index) {
-                return [
-                    '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+\''+row.code+'\')"><i class="fa fa-paste"> </i> 编辑</a> '
-                    #if($shiro.hasPermission("sys:user:delete"))
-                        ,'<a class="btn btn-danger" onclick="del(\''+row.code+'\')"><i class="fa fa-trash-o"> </i> 删除</a> '
-                    #end
-                ].join('');
-            }
+             formatter:function (value,row,index) {
+                 return [
+                     '<a class="btn btn-info" onclick="load(\'sys/provider_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
+                     #if($shiro.hasPermission("sys:user:delete"))
+                         ,'<a class="btn btn-danger" onclick="del('+row.id+')"><i class="fa fa-trash-o"> </i> 删除</a> '
+                     #end
+                 ].join('');
+             }
         }
         ];
         //2.初始化Table
@@ -132,7 +120,7 @@
     function del(id) {
         jQuery.ajax({
             type: "POST",
-            url: "$rc.contextPath/sys/eq/delete/"+id,
+            url: "$rc.contextPath/sys/provider/delete/"+id,
             dataType: "json",
             success: function(result){
                 if(result.code == 0){//返回成功

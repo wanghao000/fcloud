@@ -8,7 +8,7 @@
        (SELECT name from sys_china where id = e.city)as c_name,
        (SELECT name from sys_china where id = e.district)as d_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
-         where e.code = #{code} and is_deleted = 1
+         where e.code = #{code} and is_delete = 1
     </select>
 
     <select id="findAll" resultType="cn.hz.fcloud.entity.EqInfos">
@@ -17,7 +17,7 @@
        (SELECT name from sys_china where id = e.city)as c_name,
        (SELECT name from sys_china where id = e.district)as d_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
-       where is_deleted = 1
+       where is_delete = 1
     </select>
 
     <select id="findByComId" resultType="cn.hz.fcloud.entity.EqInfos">
@@ -26,6 +26,6 @@
        (SELECT name from sys_china where id = e.city)as c_name,
        (SELECT name from sys_china where id = e.district)as d_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
-       where e.company_id = #{id} and is_deleted = 1
+       where e.company_id = #{id} and is_delete = 1
     </select>
 </mapper>

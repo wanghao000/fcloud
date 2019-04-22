@@ -17,7 +17,7 @@ public class Equipment {
     private int isOnline;
     private Date lastReportTime;
     private Date createTime;
-    private int isDeleted;
+    private int isDelete;
     private int companyId;
     private String remark;
 
@@ -38,7 +38,7 @@ public class Equipment {
                 ", isOnline=" + isOnline +
                 ", lastReportTime=" + lastReportTime +
                 ", createTime=" + createTime +
-                ", isDeleted=" + isDeleted +
+                ", isDelete=" + isDelete +
                 ", companyId=" + companyId +
                 ", remark='" + remark + '\'' +
                 '}';
@@ -50,7 +50,7 @@ public class Equipment {
         this.lastReportTime = lastReportTime;
     }
 
-    public Equipment(int id, String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int createUser, int isOnline, Date lastReportTime, Date createTime, int isDeleted, int companyId, String remark) {
+    public Equipment(int id, String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int createUser, int isOnline, Date lastReportTime, Date createTime, int isDelete, int companyId, String remark) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -65,7 +65,7 @@ public class Equipment {
         this.isOnline = isOnline;
         this.lastReportTime = lastReportTime;
         this.createTime = createTime;
-        this.isDeleted = isDeleted;
+        this.isDelete = isDelete;
         this.companyId = companyId;
         this.remark = remark;
     }
@@ -185,12 +185,12 @@ public class Equipment {
         this.createTime = createTime;
     }
 
-    public int getIsDeleted() {
-        return isDeleted;
+    public int getisDelete() {
+        return isDelete;
     }
 
-    public void setIsDeleted(int isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setisDelete(int isDelete) {
+        this.isDelete = isDelete;
     }
 
     public int getCompanyId() {

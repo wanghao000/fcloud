@@ -29,6 +29,16 @@ public class Provider {
 
     private Integer isDelete;
 
+    private Integer eqsCount;
+
+    public Integer getEqsCount() {
+        return eqsCount;
+    }
+
+    public void setEqsCount(Integer eqsCount) {
+        this.eqsCount = eqsCount;
+    }
+
     public Long getId() {
         return id;
     }
@@ -115,6 +125,26 @@ public class Provider {
 
     public void setCreateUser(Integer createUser) {
         this.createUser = createUser;
+    }
+
+    @Override
+    public String toString() {
+        return "Provider{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", serviceTel='" + serviceTel + '\'' +
+                ", province=" + province +
+                ", city=" + city +
+                ", district=" + district +
+                ", contacts='" + contacts + '\'' +
+                ", contactsPhone='" + contactsPhone + '\'' +
+                ", address='" + address + '\'' +
+                ", remark='" + remark + '\'' +
+                ", createUser=" + createUser +
+                ", createTime=" + createTime +
+                ", isDelete=" + isDelete +
+                ", eqsCount=" + eqsCount +
+                '}';
     }
 
     public Date getCreateTime() {

@@ -6,6 +6,8 @@ import cn.hz.fcloud.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProviderServiceImpl implements ProviderService {
     @Autowired
@@ -13,5 +15,9 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public Provider getProviderById(Long id) {
         return providerMapper.selectByPrimaryKey(id);
+    }
+    @Override
+    public List<Provider> selectByCreateUser(Long create_user){
+        return providerMapper.selectByCreateUser(create_user);
     }
 }

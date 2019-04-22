@@ -43,7 +43,6 @@ public class EquipmentController {
 
     @RequestMapping("/find/{code}")
     public EqInfos editEquiment(@PathVariable("code") String code){
-//        System.out.println(EqInfosService.findOne(code));
         return EqInfosService.findOne(code);
     }
 

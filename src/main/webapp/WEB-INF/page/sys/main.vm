@@ -31,7 +31,7 @@
                         <i class="fa fa-fire fa-5x"></i>
                     </div>
                     <div class="col-xs-8 text-right">
-                        <span> 告警总数 </span>
+                        <span> 今日告警总数 </span>
                         <h2 class="font-bold" id="alarmCount"></h2>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         <i class="fa fa-warning fa-5x"></i>
                     </div>
                     <div class="col-xs-8 text-right">
-                        <span> 离线总数 </span>
+                        <span> 设备离线总数 </span>
                         <h2 class="font-bold" id="lineCount"></h2>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                 <div class="ibox-title">
                     <h5>网关在线情况</h5>
                     <div class="pull-right">
-                        <h5>网关总数：1</h5>
+                        <h5>网关总数：0</h5>
                     </div>
                 </div>
                 <div class="ibox-content">
@@ -115,68 +115,22 @@
                         </div>
                         <div class="col-sm-5">
                             <h5>实时告警列表</h5>
+                            <div class="pre-scrollable">
                             <table class="table table-hover no-margins">
                                 <thead>
                                 <tr>
                                     <th>告警企业</th>
                                     <th>城市</th>
-                                    <th>隐患点</th>
-                                    <th>最新告警时间</th>
-                                    <th>详情</th>
+                                    <th>告警设备</th>
+                                    <th>告警消息</th>
+                                    <th>告警时间</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>温州市</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>温州市</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>温州市</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>温州市</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>温州市</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>温州市</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
-                                <tr>
-                                    <td> 鑫达电镀厂（亨达）</td>
-                                    <td>温州市</td>
-                                    <td>8</td>
-                                    <td>04-16 16:15</td>
-                                    <td>测试</td>
-                                </tr>
+                                <tbody id="data_table">
+
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,13 +153,15 @@
 <script src="$rc.contextPath/statics/js/sockjs.js"></script>
 
 <script>
-    $(function () {
-        startSocket('$rc.contextPath');
-        //加载第一排基本数据
+
+    function loadData(){
+        var xAxisData = new Array();
+        var data = new Array();
         jQuery.ajax({
             url:"$rc.contextPath/sys/main/info",
             type: "GET",
             dataType:"json",
+            async:false,
             success:function (result) {
                 if(result.code == 0){
                     console.log(result.info)
@@ -213,31 +169,48 @@
                     $("#lineCount").text(result.info.lineCount);
                     $("#companyCount").text(result.info.companyCount);
                     $("#equipmentCount").text(result.info.equipmentCount);
-                }else{
-                    console.log(result)
-                }
-            }
-        })
-        //加载折线图
-        var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
-        var xAxisData = new Array();
-        var data = new Array();
-        jQuery.ajax({
-            url:"$rc.contextPath/sys/main/map",
-            type: "GET",
-            dataType:"json",
-            async:false,
-            success:function (result) {
-                if(result.code == 0){
-                    for(var i =0;i<result.mapList.length;i++){
-                        xAxisData.push(result.mapList[i].days);
-                        data.push(result.mapList[i].count);
+                    for(var i =0;i<result.info.mapList.length;i++){
+                        xAxisData.push(result.info.mapList[i].days);
+                        data.push(result.info.mapList[i].count);
+                    }
+                    loadLineChart(xAxisData,data);
+                    $("#data_table").html("");
+                    if(result.info.alertTable.length==0){
+                        $("#data_table").append("<tr style='text-align: center'><td colspan=4>没有数据</td></tr>");
+                    }else{
+                        for(var i=0;i<result.info.alertTable.length;i++){
+                            var obj = result.info.alertTable[i];
+                            var m = eval('(' + obj.info + ')');
+                            $("#data_table").append(
+                                    "<tr>" +
+                                    "<td>"+obj.company+"</td>" +
+                                    "<td>"+obj.city+"</td>" +
+                                    "<td>"+obj.name+"</td>" +
+                                    "<td>"+m.msg+"</td>" +
+                                    "<td>"+timestampToTime(obj.create_time)+"</td>" +
+                                    "</tr>"
+                            );
+                        }
                     }
                 }else{
                     console.log(result)
                 }
             }
         })
+    }
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = date.getDate() < 10 ?  '0'+date.getDate()+ ' ' : date.getDate()+ ' ';
+        var h = date.getHours() < 10 ? '0'+date.getHours()+ ':' : date.getHours()+ ':';
+        var m = date.getMinutes() < 10 ? '0'+date.getMinutes()+ ':' : date.getMinutes()+ ':';
+        var s = date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds();
+        return h+m+s;
+    }
+    function loadLineChart(xAxisData,data){
+        //加载折线图
+        var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
         var lineoption = {
             title: {
                 text: '近7天的变化'
@@ -285,8 +258,13 @@
                 }
             ]
         };
-        lineChart.setOption(lineoption);
+        lineChart.setOption(lineoption,true);
         $(window).resize(lineChart.resize);
+    }
+    $(function () {
+        startSocket('$rc.contextPath');
+        //加载首页数据
+        loadData();
         // 网关饼图
         var cChart = echarts.init(document.getElementById("container"));
         var option = {
@@ -324,8 +302,8 @@
                         }
                     },
                     data:[
-                        {value:335, name:'在线'},
-                        {value:310, name:'离线'}
+                        {value:0, name:'在线'},
+                        {value:0, name:'离线'}
                     ]
                 }
             ]
@@ -365,7 +343,7 @@
         };
 
         option = {
-            backgroundColor: '#404a59',
+           /* backgroundColor: '#404a59',*/
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
@@ -450,9 +428,8 @@
         };
         myChart.setOption(option, true);
         $(window).resize(myChart.resize);
+
     });
-
-
 </script>
 </body>
 

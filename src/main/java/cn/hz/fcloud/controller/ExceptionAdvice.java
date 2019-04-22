@@ -3,6 +3,7 @@ package cn.hz.fcloud.controller;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ServiceException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
@@ -21,6 +22,10 @@ public class ExceptionAdvice {
         if(e instanceof UnknownAccountException || e instanceof IncorrectCredentialsException){
             logger.error(e.getMessage());
            return R.error("账号或密码不正确");
+        }
+        if(e instanceof LockedAccountException){
+            logger.error(e.getMessage());
+            return R.error(e.getMessage());
         }
         if(e instanceof UnauthorizedException){
             logger.error(e.getMessage());

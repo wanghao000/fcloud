@@ -91,6 +91,16 @@
             field: 'provider_id',
             title: '所属服务商'
         }, {
+            field: 'isDelete',
+            title: '状态',
+            formatter:function (value,row,index) {
+                var data = new Array(
+                        '<span class="label label-danger">禁用</span>',
+                        '<span class="label label-success">启用</span>'
+                        );
+                return data[value];
+            }
+        }, {
             field: 'rootname',
             title: '操作',
             formatter:function (value,row,index) {
@@ -98,7 +108,7 @@
                     '<a class="btn btn-info"><i class="fa fa-wrench"> </i> 权限配置</a> ',
                     '<a class="btn btn-info" onclick="load(\'sys/user_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #if($shiro.hasPermission("sys:user:delete"))
-                        ,'<a class="btn btn-danger" onclick="del('+row.id+')"><i class="fa fa-trash-o"> </i> 删除</a> '
+                        ,row.isDelete?'<a class="btn btn-danger" onclick="delOrUse('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="delOrUse('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
                     #end
                 ].join('');
             }
@@ -125,14 +135,15 @@
         $(f).attr("src",url);
     }
 
-    function del(id) {
+    function delOrUse(id,value) {
         jQuery.ajax({
             type: "POST",
-            url: "$rc.contextPath/sys/user/delete/"+id,
+            url: value?("$rc.contextPath/sys/user/delete/"+id):("$rc.contextPath/sys/user/use/"+id),
             dataType: "json",
             success: function(result){
                 if(result.code == 0){//返回成功
-                    swal("执行成功",'您已经删除该用户',"success" );
+                    var char = value?'禁用':'启用';
+                    swal("执行成功",'您已经'+char+'该用户',"success" );
                     $("#tb_content").bootstrapTable('refresh');
                 }else{
                     swal("错误",result.msg,"error" );

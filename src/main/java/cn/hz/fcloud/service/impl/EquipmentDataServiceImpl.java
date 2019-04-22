@@ -55,4 +55,14 @@ public class EquipmentDataServiceImpl implements EquipmentDataService {
     public List<Map<String, Object>> getAlertMap() {
         return equipmentDataMapper.AlarmTrend();
     }
+
+    @Override
+    public List<Map<String, Object>> alertTable(List<Long> ids) {
+        return equipmentDataMapper.alarmTable(ids);
+    }
+
+    @Override
+    public List<Map<String, Object>> lineChartMap(List<Long> ids) {
+        return equipmentDataMapper.lineChartMap(ids);
+    }
 }

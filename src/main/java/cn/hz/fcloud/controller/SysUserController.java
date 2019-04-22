@@ -51,7 +51,8 @@ public class SysUserController {
     public R delete(@PathVariable("id")Long id){
         SysUser user = new SysUser();
         user.setId(id);
-        int row = sysUserService.delete(user);
+        user.setIsDelete(0);
+        int row = sysUserService.update(user);
         if(row != 1){
             return R.error("删除失败");
         }
@@ -63,6 +64,18 @@ public class SysUserController {
         int row = sysUserService.update(user);
         if(row != 1){
             return R.error("更新失败");
+        }
+        return R.ok();
+    }
+
+    @RequestMapping("/use/{id}")
+    public R use(@PathVariable("id")Long id){
+        SysUser user = new SysUser();
+        user.setId(id);
+        user.setIsDelete(1);
+        int row = sysUserService.update(user);
+        if(row != 1){
+            return R.error("启用失败");
         }
         return R.ok();
     }

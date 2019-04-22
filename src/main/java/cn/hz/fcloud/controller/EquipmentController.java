@@ -29,7 +29,7 @@ public class EquipmentController {
     @RequestMapping("/save")
     public R insertEquipment(@RequestBody Equipment eq){
         eq.setCreateTime(new Date());
-        eq.setIsDeleted(1);
+        eq.setIsDelete(1);
         eqservice.addEquipment(eq);
         return R.ok();
     }

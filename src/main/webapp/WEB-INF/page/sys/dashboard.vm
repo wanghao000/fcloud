@@ -1,5 +1,9 @@
-<h1>777777</h1>
+<h1 style="margin-top: 20%;text-align: center;"><a href="#" onclick="show()" style="text-decoration: none;color: black;">重新展示</a></h1>
 <!-- 全局js -->
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <script>
+    function show() {
+        window.open("../big.html", "_blank", "toolbar=no,location=no,menubar=no,scrollbars=no,resizable=no,titlebar=no,top=0,left=0,width="+window.screen.availWidth+",height="+window.screen.availHeight+"");
+    }
+    show();
 </script>

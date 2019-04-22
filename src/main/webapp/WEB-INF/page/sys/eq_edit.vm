@@ -92,11 +92,11 @@
                             </div>
                             <div class="col-sm-3">
                                 <h5>经度</h5>
-                                <input type="text" class="form-control" id="lng">
+                                <input type="text" class="form-control" id="lng" readonly>
                             </div>
                             <div class="col-sm-3">
                                 <h5>纬度</h5>
-                                <input type="text" class="form-control" id="lat">
+                                <input type="text" class="form-control" id="lat" readonly>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -123,8 +123,8 @@
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
 <!-- 百度地图 -->
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XWDDOFh4FmqtQ3pZSocbHPbd"></script>
-<script src="$rc.contextPath/statics/js/map.js"></script>
+##<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XWDDOFh4FmqtQ3pZSocbHPbd"></script>
+##<script src="$rc.contextPath/statics/js/map.js"></script>
 <script>
     $("#save").click(function () {
         // $("input[name='type']:checked").val();
@@ -163,7 +163,7 @@
             radioClass: 'iradio_square-green',
         });
         var code = window.location.search.split('=')[1];
-        // alert(id);
+        // alert($("#lng").val());
         //加载公司
         url = '$rc.contextPath/sys/eq/companyList';
         jQuery.ajax({
@@ -182,11 +182,8 @@
             url:url,
             async:false,
             success:function (pdata) {
-                // console.log(pdata);
                 var html = "";
                 jQuery.each(pdata,function(idx,item){
-                    // alert(pdata.pName);
-                    // alert(idx+"..."+item);
                     if("province" == idx){
                         html += "<option value='" + item+ "' selected>" + pdata.pName + "</option>";
                         $("#province").html(html);

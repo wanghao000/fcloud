@@ -1,17 +1,17 @@
 package cn.hz.fcloud.controller;
 
-import cn.hz.fcloud.dao.EqInfosMapper;
 import cn.hz.fcloud.entity.Company;
 import cn.hz.fcloud.entity.EqInfos;
 import cn.hz.fcloud.entity.Equipment;
+import cn.hz.fcloud.entity.SysUser;
 import cn.hz.fcloud.service.CompanyService;
+import cn.hz.fcloud.service.EqInfosService;
 import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.R;
+import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class EquipmentController {
     @Autowired
     private CompanyService comService;
     @Autowired
-    private EqInfosMapper eqInfosMapper;
+    private EqInfosService EqInfosService;
 
     @RequestMapping("/save")
     public R insertEquipment(@RequestBody Equipment eq){
@@ -36,14 +36,15 @@ public class EquipmentController {
 
     @RequestMapping("/list")
     public TableReturn findAllEquiments(){
-        List<Equipment> eqs = eqservice.findAll();
+        SysUser user = ShiroUtil.getUserEntity();
+        List<EqInfos> eqs = EqInfosService.findByComId(user.getId());
         return new TableReturn(eqs,eqs.size());
     }
 
     @RequestMapping("/find/{code}")
     public EqInfos editEquiment(@PathVariable("code") String code){
-        System.out.println(eqInfosMapper.findOne(code));
-        return eqInfosMapper.findOne(code);
+//        System.out.println(EqInfosService.findOne(code));
+        return EqInfosService.findOne(code);
     }
 
     @RequestMapping("/companyList")
@@ -54,12 +55,11 @@ public class EquipmentController {
 
     @RequestMapping("/delete/{code}")
     public R delEq(@PathVariable("code")String code){
-         return eqservice.delEquipment(code)>0?R.ok():R.error();
+        return eqservice.delEquipment(code)>0?R.ok():R.error();
     }
 
     @RequestMapping("/update")
     public R updateEq(@RequestBody Equipment eq){
-        System.out.println("前台传入："+eq);
         return eqservice.updateEq(eq)>0?R.ok():R.error();
     }
 }

@@ -142,4 +142,24 @@ public class SysUser {
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", job='" + job + '\'' +
+                ", address='" + address + '\'' +
+                ", type=" + type +
+                ", providerId=" + providerId +
+                ", companyId=" + companyId +
+                ", createUser=" + createUser +
+                ", createTime=" + createTime +
+                ", isDelete=" + isDelete +
+                '}';
+    }
 }

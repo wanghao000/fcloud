@@ -1,9 +1,8 @@
 package cn.hz.fcloud.dao;
 
-import cn.hz.fcloud.entity.Company;
-import cn.hz.fcloud.entity.EqInfos;
-import cn.hz.fcloud.entity.Equipment;
-import cn.hz.fcloud.entity.SysChina;
+import cn.hz.fcloud.entity.*;
+import cn.hz.fcloud.utils.R;
+import cn.hz.fcloud.utils.ShiroUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +50,19 @@ public class TestSysChinaMapper {
 
     @Test
     public void eqInfosTest(){
-        EqInfos infos = eqInfosMapper.findOne("8123456");
-        System.out.println(infos);
+//        EqInfos infos = eqInfosMapper.findOne("8123456");
+//        System.out.println(infos);
+        List<EqInfos> list = eqInfosMapper.findByComId(new Long(1));
+        for(EqInfos eq : list){
+            System.out.println(eq);
+        }
     }
 
+    @Test
+    public void testShiro(){
+        SysUser user = ShiroUtil.getUserEntity();
+        System.out.println(user);
+    }
 //    public void syso(List<Object> list){
 //        for(Object obj:list){
 //            System.out.println(obj);

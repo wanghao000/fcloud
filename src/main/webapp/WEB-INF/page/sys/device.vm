@@ -93,19 +93,16 @@
                 return data[value];
             }
         }, {
-            field: 'company_id',
+            field: 'comName',
             title: '所属企业'
-        }, {
-            field: 'provider_id',
-            title: '所属服务商'
         }, {
             field: 'rootname',
             title: '操作',
             formatter:function (value,row,index) {
                 return [
-                    '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+'+row.code+')"><i class="fa fa-paste"> </i> 编辑</a> '
+                    '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+\''+row.code+'\')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #if($shiro.hasPermission("sys:user:delete"))
-                        ,'<a class="btn btn-danger" onclick="del('+row.code+')"><i class="fa fa-trash-o"> </i> 删除</a> '
+                        ,'<a class="btn btn-danger" onclick="del(\''+row.code+'\')"><i class="fa fa-trash-o"> </i> 删除</a> '
                     #end
                 ].join('');
             }
@@ -133,6 +130,7 @@
     }
 
     function del(id) {
+        alert(id);
         jQuery.ajax({
             type: "POST",
             url: "$rc.contextPath/sys/eq/delete/"+id,

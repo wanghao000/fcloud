@@ -49,17 +49,17 @@
                         <h5>所在地址</h5>
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <select name="province" class="form-control m-b" id="province" readonly="readonly">
+                                <select name="province" class="form-control m-b" id="province" readonly>
                                     <option value="">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="city" class="form-control m-b" id="city" readonly="readonly">
+                                <select name="city" class="form-control m-b" id="city" readonly>
                                     <option value="">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="district" id="district" class="form-control m-b" id="district" readonly="readonly">
+                                <select name="district" id="district" class="form-control m-b" id="district" readonly>
                                     <option value="">请选择</option>
                                 </select>
                             </div>
@@ -122,9 +122,6 @@
 <script src="$rc.contextPath/statics/plugins/iCheck/icheck.min.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
-<!-- 百度地图 -->
-##<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XWDDOFh4FmqtQ3pZSocbHPbd"></script>
-##<script src="$rc.contextPath/statics/js/map.js"></script>
 <script>
     $("#save").click(function () {
         // $("input[name='type']:checked").val();
@@ -163,7 +160,6 @@
             radioClass: 'iradio_square-green',
         });
         var code = window.location.search.split('=')[1];
-        // alert($("#lng").val());
         //加载公司
         url = '$rc.contextPath/sys/eq/companyList';
         jQuery.ajax({
@@ -188,9 +184,11 @@
                         html += "<option value='" + item+ "' selected>" + pdata.pName + "</option>";
                         $("#province").html(html);
                     }else if("city" == idx){
+                        html = "";
                         html += "<option value='" + item+ "' selected>" + pdata.cName + "</option>";
                         $("#city").html(html);
                     }else if("district" == idx){
+                        html = "";
                         html += "<option value='" + item+ "' selected>" + pdata.dName + "</option>";
                         $("#district").html(html);
                     }else{

@@ -130,7 +130,6 @@
 <script>
     load();
     $("#save").click(function () {
-        // $("input[name='type']:checked").val();
         var data = {
             name : $("#name").val(),
             code : $("#code").val(),

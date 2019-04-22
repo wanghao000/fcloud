@@ -130,7 +130,6 @@
     }
 
     function del(id) {
-        alert(id);
         jQuery.ajax({
             type: "POST",
             url: "$rc.contextPath/sys/eq/delete/"+id,

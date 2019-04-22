@@ -14,11 +14,6 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyMapper companyMapper;
 
     @Override
-    public int countAll() {
-        return companyMapper.countAll();
-    }
-
-    @Override
     public List<Company> getCompanyListByProviderId(Long id) {
         return companyMapper.companyListByProviderId(id);
     }

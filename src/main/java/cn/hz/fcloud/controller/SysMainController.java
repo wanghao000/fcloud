@@ -39,14 +39,22 @@ public class SysMainController {
             //离线总数
             int lineCount = equipmentService.lineCount();
             //接入企业
-            int companyCount = companyService.countAll();
+            List<Company> companyList = companyService.companyList();
+            int companyCount = companyList.size();
             //接入设备
             int equipmentCount = equipmentService.countAll();
+            //折线图数据
+            List<Map<String, Object>> mapList = equipmentDataService.getAlertMap();
+            //告警表格数据
+            List<Map<String, Object>> alertTable = equipmentDataService.alertTable(null);
 
+            //返回数据
             map.put("alarmCount", alarmCount);
             map.put("lineCount", lineCount);
             map.put("companyCount", companyCount);
             map.put("equipmentCount", equipmentCount);
+            map.put("mapList", mapList);
+            map.put("alertTable", alertTable);
         }
         //运营商
         if (user.getType() == 2) {
@@ -54,7 +62,9 @@ public class SysMainController {
             List<Company> companyList = companyService.getCompanyListByProviderId(user.getProviderId());
             //查询每个企业下的设备
             List<Equipment> equipmentList = new ArrayList<>();
+            List<Long> ids =new ArrayList();
             for (Company company : companyList) {
+                ids.add(company.getId());
                 equipmentList.addAll(equipmentService.getEquipmentList(company.getId()));
             }
             int alarmCount = 0;
@@ -65,10 +75,16 @@ public class SysMainController {
                     lineCount++;
                 }
             }
+            //折线图数据
+            List<Map<String, Object>> mapList = equipmentDataService.lineChartMap(ids);
+            //告警表格数据
+            List<Map<String, Object>> alertTable = equipmentDataService.alertTable(ids);
             map.put("alarmCount", alarmCount);
             map.put("lineCount", lineCount);
             map.put("companyCount", companyList.size());
             map.put("equipmentCount", equipmentList.size());
+            map.put("mapList", mapList);
+            map.put("alertTable", alertTable);
         }
         //企业用户
         if (user.getType() == 3) {
@@ -100,15 +116,4 @@ public class SysMainController {
         return R.ok().put("info", map);
     }
 
-    @RequestMapping("/map")
-    public R map() {
-        SysUser user = ShiroUtil.getUserEntity();
-        List<Map<String, Object>> mapList = new ArrayList<>();
-        if(user.getType()==1) {
-            mapList = equipmentDataService.getAlertMap();
-        }else if(user.getType()==2){
-
-        }
-        return R.ok().put("mapList", mapList);
-    }
 }

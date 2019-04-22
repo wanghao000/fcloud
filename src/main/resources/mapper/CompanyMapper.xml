@@ -191,5 +191,7 @@
     select
     <include refid="Base_Column_List" />
     from company
+    where
+    is_delete = 1;
   </select>
 </mapper>

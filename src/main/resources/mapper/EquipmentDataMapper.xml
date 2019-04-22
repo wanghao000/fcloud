@@ -31,4 +31,23 @@
     <select id="AlarmTrend" resultType="java.util.HashMap">
         select DATE_FORMAT(create_time,'%m.%d') days,count(id) count from equipment_data where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(create_time) and type =0 GROUP BY days;
     </select>
+
+    <select id="alarmTable" resultType="java.util.HashMap">
+          select d.info,e.name,c.name as company,sc.name as city,d.create_time from equipment_data d,equipment e,company c,sys_china sc where to_days(d.create_time)=to_days(now()) and d.type = 0 and d.`code`= e.`code` and e.company_id = c.id and sc.id=c.city
+          <if test="ids!=null">
+              and c.id in
+              <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+          </if>
+    </select>
+
+    <select id="lineChartMap" resultType="java.util.HashMap">
+        select DATE_FORMAT(d.create_time,'%m.%d') days,count(d.id) count from equipment_data d,equipment e where DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= date(d.create_time) and d.type =0 and d.`code`=e.`code` and
+        e.company_id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY days;
+    </select>
 </mapper>

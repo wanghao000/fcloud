@@ -5,7 +5,7 @@ function showtoast(shortCutFunction,msg,title) {
     var toastIndex = toastCount++;
     toastr.options = {
         closeButton: true,
-        debug: true,
+        debug: false,
         progressBar: false,
         positionClass: "toast-top-right",
         onclick: null
@@ -64,6 +64,7 @@ function startSocket(path) {
         }else if(data.type == 1){
             showtoast("warning","编号"+data.imei+"告警，时间："+time.substring(6,8)+":"+time.substring(8,10)+":"+time.substring(10,12),data.msg);
         }
+        loadData();
     };
     websocket.onerror = function (evnt) {
         console.log('ws client:error ' + evnt)

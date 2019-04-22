@@ -64,15 +64,6 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public int delete(SysUser user) {
-        if(user.getId() == null){
-            throw new ServiceException("用户ID不能为空");
-        }
-        user.setIsDelete(0);
-        return sysUserMapper.updateByPrimaryKeySelective(user);
-    }
-
-    @Override
     public SysUser selectById(Long id) {
         if(id == null){
             throw new ServiceException("用户ID不能为空");

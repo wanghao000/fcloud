@@ -60,6 +60,9 @@ public class UserRealm extends AuthorizingRealm {
         if(user == null){
             throw new UnknownAccountException("账号或密码不正确");
         }
+        if(user.getIsDelete()==0){
+            throw new LockedAccountException("账号已被禁用,请联系管理员");
+        }
         //判断密码，交给shiro处理不匹配会抛出IncorrectCredentialsException
 
         //使用用户名加密

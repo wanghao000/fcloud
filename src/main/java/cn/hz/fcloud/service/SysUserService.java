@@ -29,8 +29,6 @@ public interface SysUserService {
 
     int save(SysUser user);
 
-    int delete(SysUser user);
-
     SysUser selectById(Long id);
 
     int update(SysUser user);

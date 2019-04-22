@@ -19,7 +19,7 @@ public class UdpTest {
 			int port = 9999;
 //			byte[] b = "FA01812345600492H00490D0A".getBytes();
 //			byte[] b = "FA02812345600492H00490D0A".getBytes();
-			byte[] b = "FA03812345618111100001x1902011501300D0A".getBytes();
+			byte[] b = "FA03007457718111100001x1902011501300D0A".getBytes();
 //			byte[] b = "FA03007546618111100001x1902011501300D0A".getBytes();
 //			byte[] b = "FA03812345618311100001x1902011501300D0A".getBytes();
 			DatagramPacket packet = new DatagramPacket(b, b.length, address, port);

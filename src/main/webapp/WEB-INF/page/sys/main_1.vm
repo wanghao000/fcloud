@@ -13,6 +13,8 @@
     <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
     <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+    <!-- 通知 -->
+    <link href="$rc.contextPath/statics/plugins/toastr/toastr.min.css" rel="stylesheet">
 
 </head>
 
@@ -188,8 +190,13 @@
 <!-- 全局js -->
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- 通知 -->
+<script src="$rc.contextPath/statics/plugins/toastr/toastr.min.js"></script>
+<script src="$rc.contextPath/statics/js/toastr.js"></script>
+<!-- websocket -->
+<script src="$rc.contextPath/statics/js/sockjs.js"></script>
 <script>
-    $(document).ready(function () {
+    function loadData(){
         jQuery.ajax({
             url: "$rc.contextPath/sys/main/info",
             type: "GET",
@@ -207,18 +214,22 @@
                     $("#equipmentCount").text(result.info.equipmentCount);
                     $("#lineCount").text(result.info.lineCount);
                     $("#alarmCount").text(result.info.alarmCount);
-
-                    for(var i=0;i<result.info.dataList.length;i++){
-                        var obj = result.info.dataList[i];
-                        var m = eval('(' + obj.info + ')');
-                        $("#data_table").append(
-                                "<tr>" +
-                                "<td>"+obj.name+"</td>" +
-                                "<td>"+m.msg+"</td>" +
-                                "<td>"+timestampToTime(obj.createTime)+"</td>" +
-                                "<td>测试</td>" +
-                                "</tr>"
-                        );
+                    $("#data_table").html("");
+                    if(result.info.dataList.length==0){
+                        $("#data_table").append("<tr style='text-align: center'><td colspan=4>没有数据</td></tr>");
+                    }else{
+                        for(var i=0;i<result.info.dataList.length;i++){
+                            var obj = result.info.dataList[i];
+                            var m = eval('(' + obj.info + ')');
+                            $("#data_table").append(
+                                    "<tr>" +
+                                    "<td>"+obj.name+"</td>" +
+                                    "<td>"+m.msg+"</td>" +
+                                    "<td>"+timestampToTime(obj.createTime)+"</td>" +
+                                    "<td>测试</td>" +
+                                    "</tr>"
+                            );
+                        }
                     }
 
                 } else {
@@ -226,17 +237,20 @@
                 }
             }
         })
-        function timestampToTime(timestamp) {
-            var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-            var Y = date.getFullYear() + '-';
-            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-            var D = date.getDate() < 10 ?  '0'+date.getDate()+ ' ' : date.getDate()+ ' ';
-            var h = date.getHours() < 10 ? '0'+date.getHours()+ ':' : date.getHours()+ ':';
-            var m = date.getMinutes() < 10 ? '0'+date.getMinutes()+ ':' : date.getMinutes()+ ':';
-            var s = date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds();
-            return h+m+s;
-        }
-
+    }
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = date.getDate() < 10 ?  '0'+date.getDate()+ ' ' : date.getDate()+ ' ';
+        var h = date.getHours() < 10 ? '0'+date.getHours()+ ':' : date.getHours()+ ':';
+        var m = date.getMinutes() < 10 ? '0'+date.getMinutes()+ ':' : date.getMinutes()+ ':';
+        var s = date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds();
+        return h+m+s;
+    }
+    $(document).ready(function () {
+        startSocket('$rc.contextPath');
+        loadData()
     })
 </script>
 

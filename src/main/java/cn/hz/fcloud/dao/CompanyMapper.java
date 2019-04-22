@@ -21,6 +21,6 @@ public interface CompanyMapper {
 
     List<Company> companyListByProviderId(Long providerId);
 
-    //获取所有企业
+    //获取所有企业,不包括禁用
     List<Company> companyList();
 }

@@ -219,7 +219,7 @@
   <select id="queryList" resultType="cn.hz.fcloud.entity.SysUser">
     select
     <include refid="Base_Column_List" />
-    from sys_user where create_user is not null and is_delete=1 order by id desc
+    from sys_user where create_user is not null order by id desc
     <if test="offset != null and limit != null">
       limit #{offset}, #{limit}
     </if>

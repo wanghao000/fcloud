@@ -34,7 +34,7 @@ public class UDPServer {
 	private static volatile DatagramSocket socket;
 	static {
 		try {
-			socket = new DatagramSocket(9999);
+			socket = new DatagramSocket(10012);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}

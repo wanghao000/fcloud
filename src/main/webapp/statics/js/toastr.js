@@ -42,11 +42,11 @@ function startSocket(path) {
     /*websocket*/
     var websocket;
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://localhost:8080"+path+"/websocketServer");
+        websocket = new WebSocket("ws://106.12.14.63:10002"+path+"/websocketServer");
     } else if ('MozWebSocket' in window) {
-        websocket = new MozWebSocket("ws://localhost:8080"+path+"/websocketServer");
+        websocket = new MozWebSocket("ws://106.12.14.63:10002"+path+"/websocketServer");
     } else {
-        websocket = new SockJS("http://localhost:8080"+path+"/sockjs/websocketServer");
+        websocket = new SockJS("http://106.12.14.63:10002"+path+"/sockjs/websocketServer");
     }
     websocket.onopen = function (evnt) {
         console.log('ws clint:open websocket')

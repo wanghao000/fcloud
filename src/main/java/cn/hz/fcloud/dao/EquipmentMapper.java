@@ -1,6 +1,7 @@
 package cn.hz.fcloud.dao;
 
 import cn.hz.fcloud.entity.Equipment;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface EquipmentMapper {
 
     List<Equipment> test();
     int updateEq(Equipment eq);
+
+    int modifyState(@Param("code") String code, @Param("isDelete") int isDelete);
 }

@@ -17,7 +17,6 @@ public class Equipment {
     private int isOnline;
     private Date lastReportTime;
     private Date createTime;
-
     private int isDelete;
     private int companyId;
     private String remark;

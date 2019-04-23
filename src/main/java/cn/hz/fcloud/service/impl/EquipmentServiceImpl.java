@@ -56,4 +56,9 @@ public class EquipmentServiceImpl implements EquipmentService {
     public int updateEq(Equipment eq){
         return equipmentMapper.updateEq(eq);
     }
+
+    @Override
+    public int modifyState(String code,int isDelete){
+        return equipmentMapper.modifyState(code,isDelete == 1?0:1);
+    }
 }

@@ -34,10 +34,11 @@ public class TestSysChinaMapper {
     }
     @Test
     public void equipmentTest(){
-        List<Equipment> eqs = eqMapper.findAll();
-        for(Equipment eq:eqs){
-            System.out.println(eq);
-        }
+//        List<Equipment> eqs = eqMapper.findAll();
+//        for(Equipment eq:eqs){
+//            System.out.println(eq);
+//        }
+        eqMapper.modifyState("0074577",1);
     }
 
     @Test

@@ -64,4 +64,9 @@ public class EquipmentController {
     public R updateEq(@RequestBody Equipment eq){
         return eqservice.updateEq(eq)>0?R.ok():R.error();
     }
+
+    @RequestMapping("/modify/{code}/{isDelete}")
+    public R modifyState(@PathVariable("code") String code,@PathVariable("isDelete") int isDelete){
+        return  eqservice.modifyState(code,isDelete)>0?R.ok():R.error();
+    }
 }

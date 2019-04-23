@@ -13,4 +13,5 @@ public interface EquipmentService {
     int countAll();
     List<Equipment> getEquipmentList(Long id);
     int updateEq(Equipment eq);
+    int modifyState(String code,int isDelete);
 }

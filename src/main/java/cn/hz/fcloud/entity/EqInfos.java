@@ -21,7 +21,7 @@ public class EqInfos {
     private int isOnline;
     private Date lastReportTime;
     private Date createTime;
-    private int isDeleted;
+    private int isDelete;
     private int companyId;
     private String comName;
     private String remark;
@@ -46,7 +46,7 @@ public class EqInfos {
                 ", isOnline=" + isOnline +
                 ", lastReportTime=" + lastReportTime +
                 ", createTime=" + createTime +
-                ", isDeleted=" + isDeleted +
+                ", isDelete=" + isDelete +
                 ", companyId=" + companyId +
                 ", comName='" + comName + '\'' +
                 ", remark='" + remark + '\'' +
@@ -189,12 +189,12 @@ public class EqInfos {
         this.createTime = createTime;
     }
 
-    public int getIsDeleted() {
-        return isDeleted;
+    public int getisDelete() {
+        return isDelete;
     }
 
-    public void setIsDeleted(int isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setisDelete(int isDelete) {
+        this.isDelete = isDelete;
     }
 
     public int getCompanyId() {

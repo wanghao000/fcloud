@@ -9,10 +9,13 @@
         select * from equipment where code=#{code}
     </select>
     <insert id="addEquipment" parameterType="cn.hz.fcloud.entity.Equipment">
-        insert into equipment values(#{id,jdbcType=BIGINT}, #{code}, #{name}, #{type}, #{province}, #{city}, #{district}, #{address}, #{lng}, #{lat}, #{createUser}, 0, #{lastReportTime}, #{createTime}, #{isDeleted}, #{companyId}, #{remark})
+        insert into equipment values(#{id,jdbcType=BIGINT}, #{code}, #{name}, #{type}, #{province}, #{city}, #{district}, #{address}, #{lng}, #{lat}, #{createUser}, 0, #{lastReportTime}, #{createTime}, #{isDelete}, #{companyId}, #{remark})
     </insert>
 	<update id="delEquipment" parameterType="String">
         update equipment set is_delete=0 where code=#{code}
+    </update>
+    <update id="modifyState">
+        update equipment set is_delete=#{isDelete} where code=#{code}
     </update>
     <update id="updateReportTimeAndOnline" parameterType="cn.hz.fcloud.entity.Equipment">
         update equipment set is_online=#{isOnline}

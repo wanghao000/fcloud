@@ -68,10 +68,14 @@ public class TestSysChinaMapper {
     @Test
     public void testProvider(){
 //        System.out.println(ShiroUtil.getUserEntity());
-        List<Provider> list =  providerMapper.findAllProvider();
-        for(Provider pro : list){
-            System.out.println(pro);
-        }
+//        List<Provider> list =  providerMapper.findAllProvider();
+//        for(Provider pro : list){
+//            System.out.println(pro);
+//        }
+        Provider provider = providerMapper.selectByPrimaryKey(new Long(1));
+        provider.setAddress("浙江");
+        providerMapper.updateByPrimaryKeySelective(provider);
+        System.out.println(provider);
     }
 //    public void syso(List<Enum> list){
 //        for(Object obj:list){

@@ -29,4 +29,9 @@ public class ProviderServiceImpl implements ProviderService {
     public int modifyState(int id,int isDelete){
         return providerMapper.modifyState(id,isDelete == 1?0:1);
     }
+
+    @Override
+    public int updateByPrimaryKeySelective(Provider provider){
+        return providerMapper.updateByPrimaryKeySelective(provider);
+    }
 }

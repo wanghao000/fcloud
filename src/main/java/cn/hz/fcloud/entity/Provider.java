@@ -11,9 +11,15 @@ public class Provider {
 
     private Integer province;
 
+    private String pName;
+
     private Integer city;
 
+    private String cName;
+
     private Integer district;
+
+    private String dName;
 
     private String contacts;
 
@@ -30,6 +36,7 @@ public class Provider {
     private Integer isDelete;
 
     private Integer eqsCount;
+
 
     public Integer getEqsCount() {
         return eqsCount;
@@ -127,24 +134,28 @@ public class Provider {
         this.createUser = createUser;
     }
 
-    @Override
-    public String toString() {
-        return "Provider{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", serviceTel='" + serviceTel + '\'' +
-                ", province=" + province +
-                ", city=" + city +
-                ", district=" + district +
-                ", contacts='" + contacts + '\'' +
-                ", contactsPhone='" + contactsPhone + '\'' +
-                ", address='" + address + '\'' +
-                ", remark='" + remark + '\'' +
-                ", createUser=" + createUser +
-                ", createTime=" + createTime +
-                ", isDelete=" + isDelete +
-                ", eqsCount=" + eqsCount +
-                '}';
+    public String getpName() {
+        return pName;
+    }
+
+    public void setpName(String pName) {
+        this.pName = pName;
+    }
+
+    public String getcName() {
+        return cName;
+    }
+
+    public void setcName(String cName) {
+        this.cName = cName;
+    }
+
+    public String getdName() {
+        return dName;
+    }
+
+    public void setdName(String dName) {
+        this.dName = dName;
     }
 
     public Date getCreateTime() {
@@ -161,5 +172,28 @@ public class Provider {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    @Override
+    public String toString() {
+        return "Provider{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", serviceTel='" + serviceTel + '\'' +
+                ", province=" + province +
+                ", pName='" + pName + '\'' +
+                ", city=" + city +
+                ", cName='" + cName + '\'' +
+                ", district=" + district +
+                ", dName='" + dName + '\'' +
+                ", contacts='" + contacts + '\'' +
+                ", contactsPhone='" + contactsPhone + '\'' +
+                ", address='" + address + '\'' +
+                ", remark='" + remark + '\'' +
+                ", createUser=" + createUser +
+                ", createTime=" + createTime +
+                ", isDelete=" + isDelete +
+                ", eqsCount=" + eqsCount +
+                '}';
     }
 }

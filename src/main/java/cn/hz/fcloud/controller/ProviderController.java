@@ -42,11 +42,19 @@ public class ProviderController {
         provider.setCreateTime(new Date());
         provider.setIsDelete(1);
         provider.setCreateUser(user.getIsDelete());
-        return providerService.insert(provider)>0? R.ok():R.error("添加失败！请重新添加！");
+        return providerService.insert(provider)>0? R.ok():R.error();
     }
 
     @RequestMapping("/modify/{id}/{isDelete}")
     public R modifyState(@PathVariable("id") int id,@PathVariable("isDelete") int isDelete){
         return providerService.modifyState(id,isDelete)>0?R.ok():R.error();
+    }
+    @RequestMapping("/find/{id}")
+    public Provider findProvider(@PathVariable("id") Long id){
+        return providerService.getProviderById(id);
+    }
+    @RequestMapping("/update")
+    public R updateProvider(@RequestBody Provider provider){
+        return providerService.updateByPrimaryKeySelective(provider)>0?R.ok():R.error();
     }
 }

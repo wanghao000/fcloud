@@ -27,7 +27,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>服务商添加</h5>
+                    <h5>服务商修改</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" onsubmit="return false;">
@@ -44,17 +44,17 @@
                         <h5>所在地址</h5>
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <select name="province" class="form-control m-b" id="province">
+                                <select name="province" class="form-control m-b" id="province" readonly>
                                     <option value="-1">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="city" class="form-control m-b" id="city">
+                                <select name="city" class="form-control m-b" id="city" readonly>
                                     <option value="-1">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="district" id="district" class="form-control m-b" id="district">
+                                <select name="district" id="district" class="form-control m-b" id="district" readonly>
                                     <option value="-1">请选择</option>
                                 </select>
                             </div>
@@ -107,7 +107,9 @@
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
 <script>
     $("#save").click(function () {
+        var id = window.location.search.split('=')[1];
         var data = {
+            id:id,
             name : $("#name").val(),
             serviceTel : $("#serviceTel").val(),
             address : $("#address").val(),
@@ -116,11 +118,11 @@
             city:$("#city option:checked").val(),
             district:$("#district option:checked").val(),
             contacts:$("#contacts").val(),
-            contactsPhone:$("#contactsPhone").val()
+            contactsPhone:$("#contactsPhone").val(),
         };
         jQuery.ajax({
             type: "POST",
-            url: "$rc.contextPath/sys/provider/save",
+            url: "$rc.contextPath/sys/provider/update",
             data: JSON.stringify(data),
             dataType: "json",
             contentType:"application/json;charset=UTF-8",
@@ -132,6 +134,50 @@
                 }
             }
         });
+    });
+    $(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        var id = window.location.search.split('=')[1];
+        //加载公司
+        url = '$rc.contextPath/sys/eq/companyList';
+        jQuery.ajax({
+            url:url,
+            async:false,
+            success:function (pdata) {
+                var html = "";
+                jQuery.each(pdata,function(idx,item){
+                    html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+                });
+                $("#companyId").append(html);
+            }
+        })
+        url = '$rc.contextPath/sys/provider/find/'+id;
+        jQuery.ajax({
+            url:url,
+            async:false,
+            success:function (pdata) {
+                var html = "";
+                jQuery.each(pdata,function(idx,item){
+                    if("province" == idx){
+                        html += "<option value='" + item+ "' selected>" + pdata.pName + "</option>";
+                        $("#province").html(html);
+                    }else if("city" == idx){
+                        html = "";
+                        html += "<option value='" + item+ "' selected>" + pdata.cName + "</option>";
+                        $("#city").html(html);
+                    }else if("district" == idx){
+                        html = "";
+                        html += "<option value='" + item+ "' selected>" + pdata.dName + "</option>";
+                        $("#district").html(html);
+                    }else{
+                        $("#"+idx).val(item);
+                    }
+                });
+            }
+        })
     });
 </script>
 

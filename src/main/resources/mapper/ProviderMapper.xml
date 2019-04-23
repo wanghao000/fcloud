@@ -20,11 +20,14 @@
     id, name, service_tel, province, city, district, contacts, contacts_phone, address, 
     remark, create_user, create_time, is_delete
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="cn.hz.fcloud.entity.Provider">
     select 
-    <include refid="Base_Column_List" />
-    from provider
-    where id = #{id,jdbcType=BIGINT}
+    <include refid="Base_Column_List" />,
+    (SELECT name from sys_china s where s.id = p.province)as p_name,
+    (SELECT name from sys_china s where s.id = p.city)as c_name,
+    (SELECT name from sys_china s where s.id = p.district)as d_name
+    from provider p
+    where p.id = #{id,jdbcType=BIGINT}
   </select>
   <select id="findAllProvider" resultType="cn.hz.fcloud.entity.Provider">
 SELECT

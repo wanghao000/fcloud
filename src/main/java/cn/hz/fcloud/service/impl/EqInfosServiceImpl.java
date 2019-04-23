@@ -31,4 +31,10 @@ public class EqInfosServiceImpl implements EqInfosService {
    public  List<EqInfos> findByComId(Long id){
         return mapper.findByComId(id);
     }
+
+    //根据服务商id获取设备信息
+    @Override
+    public List<EqInfos>findByProviderId(Long id){
+        return mapper.findByProviderId(id);
+    }
 }

@@ -40,7 +40,12 @@ public class EquipmentController {
     @RequestMapping("/list")
     public TableReturn findAllEquiments(){
         SysUser user = ShiroUtil.getUserEntity();
-        List<EqInfos> eqs = EqInfosService.findByComId(user.getId());
+        List<EqInfos> eqs = null;
+        switch (user.getType()){
+            case 1 : eqs = EqInfosService.findAll();break;
+            case 2 : eqs = EqInfosService.findByProviderId(user.getProviderId());break;
+            case 3 : eqs = EqInfosService.findByComId(user.getCompanyId());break;
+        }
         return new TableReturn(eqs,eqs.size());
     }
 

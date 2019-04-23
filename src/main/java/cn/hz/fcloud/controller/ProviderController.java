@@ -41,7 +41,7 @@ public class ProviderController {
         user = ShiroUtil.getUserEntity();
         provider.setCreateTime(new Date());
         provider.setIsDelete(1);
-        provider.setCreateUser(user.getIsDelete());
+        provider.setCreateUser(user.getId());
         return providerService.insert(provider)>0? R.ok():R.error();
     }
 

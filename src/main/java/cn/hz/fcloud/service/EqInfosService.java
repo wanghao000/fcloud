@@ -14,4 +14,7 @@ public interface EqInfosService {
 
     //根据公司id获取设备信息
     List<EqInfos> findByComId(Long id);
+
+    //根据服务商id获取设备信息
+    List<EqInfos>findByProviderId(Long id);
 }

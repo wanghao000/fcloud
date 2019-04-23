@@ -126,22 +126,6 @@
         var f = parent.document.getElementsByName(name)[0];
         $(f).attr("src",url);
     }
-
-    function del(id) {
-        jQuery.ajax({
-            type: "POST",
-            url: "$rc.contextPath/sys/provider/delete/"+id,
-            dataType: "json",
-            success: function(result){
-                if(result.code == 0){//返回成功
-                    swal("执行成功",'您已经删除该设备',"success" );
-                    $("#tb_content").bootstrapTable('refresh');
-                }else{
-                    swal("错误",result.msg,"error" );
-                }
-            }
-        });
-    }
     function modify(id,isDelete) {
         jQuery.ajax({
             type: "POST",
@@ -150,7 +134,7 @@
             success: function(result){
                 if(result.code == 0){//返回成功
                     var msg = isDelete?"启用":"禁用";
-                    swal("执行成功",'您已经'+msg+'该设备',"success" );
+                    swal("执行成功",'您已经'+msg+'该服务商',"success" );
                     $("#tb_content").bootstrapTable('refresh');
                 }else{
                     swal("错误",result.msg,"error" );

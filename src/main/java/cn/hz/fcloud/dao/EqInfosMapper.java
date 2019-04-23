@@ -12,4 +12,6 @@ public interface EqInfosMapper {
 
     //根据公司id获取设备信息
     List<EqInfos> findByComId(Long id);
+
+    List<EqInfos>findByProviderId(Long id);
 }

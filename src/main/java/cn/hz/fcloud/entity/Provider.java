@@ -29,7 +29,7 @@ public class Provider {
 
     private String remark;
 
-    private Integer createUser;
+    private Long createUser;
 
     private Date createTime;
 
@@ -126,11 +126,11 @@ public class Provider {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public Integer getCreateUser() {
+    public Long getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(Integer createUser) {
+    public void setCreateUser(Long createUser) {
         this.createUser = createUser;
     }
 

@@ -68,7 +68,7 @@ public class TestSysChinaMapper {
     @Test
     public void testProvider(){
 //        System.out.println(ShiroUtil.getUserEntity());
-        List<Provider> list =  providerMapper.selectByCreateUser(new Long(1));
+        List<Provider> list =  providerMapper.findAllProvider();
         for(Provider pro : list){
             System.out.println(pro);
         }

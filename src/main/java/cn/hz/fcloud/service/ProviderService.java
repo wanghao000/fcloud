@@ -7,7 +7,9 @@ import java.util.List;
 public interface ProviderService {
     Provider getProviderById(Long id);
 
-    List<Provider> selectByCreateUser(Long create_user);
+    List<Provider> findAllProvider();
 
     int insert(Provider provider);
+
+    int modifyState(int id,int isDelete);
 }

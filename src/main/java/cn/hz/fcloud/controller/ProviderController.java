@@ -9,7 +9,9 @@ import cn.hz.fcloud.service.ProviderService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,8 +33,7 @@ public class ProviderController {
 
     @RequestMapping("/list")
     public TableReturn providerList(){
-        user = ShiroUtil.getUserEntity();
-        List<Provider> pros = providerService.selectByCreateUser(user.getId());
+        List<Provider> pros = providerService.findAllProvider();
         return new TableReturn(pros,pros.size());
     }
     @RequestMapping("/save")
@@ -42,5 +43,10 @@ public class ProviderController {
         provider.setIsDelete(1);
         provider.setCreateUser(user.getIsDelete());
         return providerService.insert(provider)>0? R.ok():R.error("添加失败！请重新添加！");
+    }
+
+    @RequestMapping("/modify/{id}/{isDelete}")
+    public R modifyState(@PathVariable("id") int id,@PathVariable("isDelete") int isDelete){
+        return providerService.modifyState(id,isDelete)>0?R.ok():R.error();
     }
 }

@@ -26,17 +26,19 @@
     from provider
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectByCreateUser" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="findAllProvider" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />,
     (SELECT count(*) FROM equipment WHERE company_id in (SELECT id FROM company WHERE provider_id in (SELECT id FROM provider WHERE create_user=#{createUser,jdbcType=BIGINT}))) eqsCount
     from provider
-    where create_user = #{createUser,jdbcType=BIGINT} and is_delete=1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from provider
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <update id="modifyState">
+    update provider set is_delete = #{isDelete} where id = #{id}
+  </update>
   <insert id="insert" parameterType="cn.hz.fcloud.entity.Provider">
     insert into provider (id, name, service_tel, 
       province, city, district, 

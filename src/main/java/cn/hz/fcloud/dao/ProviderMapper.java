@@ -1,6 +1,7 @@
 package cn.hz.fcloud.dao;
 
 import cn.hz.fcloud.entity.Provider;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface ProviderMapper {
 
     int updateByPrimaryKey(Provider record);
 
-    List<Provider> selectByCreateUser(Long create_user);
+    List<Provider> findAllProvider();
+
+    int modifyState(@Param("id") int id, @Param("isDelete") int isDelete);
 
 }

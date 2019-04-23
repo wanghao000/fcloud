@@ -17,11 +17,16 @@ public class ProviderServiceImpl implements ProviderService {
         return providerMapper.selectByPrimaryKey(id);
     }
     @Override
-    public List<Provider> selectByCreateUser(Long create_user){
-        return providerMapper.selectByCreateUser(create_user);
+    public List<Provider> findAllProvider(){
+        return providerMapper.findAllProvider();
     }
     @Override
     public int insert(Provider provider){
         return providerMapper.insert(provider);
+    }
+
+    @Override
+    public int modifyState(int id,int isDelete){
+        return providerMapper.modifyState(id,isDelete == 1?0:1);
     }
 }

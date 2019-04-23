@@ -112,7 +112,7 @@
                 return [
                     '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+\''+row.code+'\')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #if($shiro.hasPermission("sys:user:delete"))
-                        ,row.isDelete?'<a class="btn btn-danger" onclick="modify('+row.code+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="modify('+row.code+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
+                        ,row.isDelete?'<a class="btn btn-danger" onclick="modify(\''+row.code+'\','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="modify(\''+row.code+'\','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
                     #end
                 ].join('');
             }
@@ -139,21 +139,6 @@
         $(f).attr("src",url);
     }
 
-    function del(id) {
-        jQuery.ajax({
-            type: "POST",
-            url: "$rc.contextPath/sys/eq/delete/"+id,
-            dataType: "json",
-            success: function(result){
-                if(result.code == 0){//返回成功
-                    swal("执行成功",'您已经删除该设备',"success" );
-                    $("#tb_content").bootstrapTable('refresh');
-                }else{
-                    swal("错误",result.msg,"error" );
-                }
-            }
-        });
-    }
     function modify(code,isDelete) {
         jQuery.ajax({
             type: "POST",
@@ -161,7 +146,7 @@
             dataType: "json",
             success: function(result){
                 if(result.code == 0){//返回成功
-                    var msg = isDelete?"禁用":"启用";
+                    var msg = isDelete?"启用":"禁用";
                     swal("执行成功",'您已经'+msg+'该设备',"success" );
                     $("#tb_content").bootstrapTable('refresh');
                 }else{

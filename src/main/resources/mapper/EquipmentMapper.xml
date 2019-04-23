@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hz.fcloud.dao.EquipmentMapper">
     <select id="findAll" resultType="cn.hz.fcloud.entity.Equipment">
-        select * from equipment where is_delete=1
+        select * from equipment
     </select>
     <select id="findOne" parameterType="string" resultType="cn.hz.fcloud.entity.Equipment">
         select * from equipment where code=#{code}

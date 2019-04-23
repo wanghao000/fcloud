@@ -3,6 +3,7 @@ package cn.hz.fcloud.service;
 import cn.hz.fcloud.entity.Equipment;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EquipmentService {
     List<Equipment> findAll();
@@ -13,4 +14,5 @@ public interface EquipmentService {
     int countAll();
     List<Equipment> getEquipmentList(Long id);
     int updateEq(Equipment eq);
+    List<Map<String, Object>> findTypeAndCount();
 }

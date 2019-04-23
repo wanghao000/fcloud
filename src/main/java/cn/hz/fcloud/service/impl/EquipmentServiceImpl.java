@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
@@ -56,4 +57,9 @@ public class EquipmentServiceImpl implements EquipmentService {
     public int updateEq(Equipment eq){
         return equipmentMapper.updateEq(eq);
     }
+	
+	@Override
+	public List<Map<String, Object>> findTypeAndCount(){
+		return equipmentMapper.findTypeAndCount();
+	}
 }

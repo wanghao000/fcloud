@@ -3,6 +3,7 @@ package cn.hz.fcloud.dao;
 import cn.hz.fcloud.entity.Equipment;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EquipmentMapper {
     List<Equipment> findAll();
@@ -21,4 +22,5 @@ public interface EquipmentMapper {
 
     List<Equipment> test();
     int updateEq(Equipment eq);
+    List<Map<String, Object>> findTypeAndCount();
 }

@@ -61,4 +61,7 @@
         </set>
         where code=#{code}
     </update>
+	<select id="findTypeAndCount" resultType="map">
+		select type,count(type) ct from equipment group by type
+	</select>
 </mapper>

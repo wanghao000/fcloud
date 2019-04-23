@@ -19,4 +19,5 @@ public interface ProviderMapper {
 
     List<Provider> selectByCreateUser(Long create_user);
 
+    List<Provider> selectAll();
 }

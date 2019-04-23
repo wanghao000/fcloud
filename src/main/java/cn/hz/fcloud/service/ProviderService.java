@@ -10,4 +10,6 @@ public interface ProviderService {
     List<Provider> selectByCreateUser(Long create_user);
 
     int insert(Provider provider);
+
+    List<Provider> selectAll();
 }

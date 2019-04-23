@@ -192,4 +192,11 @@
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectAll" resultType="cn.hz.fcloud.entity.Provider">
+    select
+    <include refid="Base_Column_List" />
+    from provider
+    where
+    is_delete = 1;
+  </select>
 </mapper>

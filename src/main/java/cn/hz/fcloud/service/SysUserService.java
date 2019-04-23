@@ -32,4 +32,6 @@ public interface SysUserService {
     SysUser selectById(Long id);
 
     int update(SysUser user);
+
+    Integer queryListCount(Map<String,Object> map);
 }

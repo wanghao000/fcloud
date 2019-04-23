@@ -24,4 +24,9 @@ public class ProviderServiceImpl implements ProviderService {
     public int insert(Provider provider){
         return providerMapper.insert(provider);
     }
+
+    @Override
+    public List<Provider> selectAll() {
+        return providerMapper.selectAll();
+    }
 }

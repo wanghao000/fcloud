@@ -45,17 +45,15 @@
 
                             <div class="col-sm-4">
                                 <h5>所属服务商</h5>
-                                <select class="form-control m-b" name="account">
+                                <select class="form-control m-b" id="provider" disabled>
                                     <option>请选择</option>
-                                    <option>智融家</option>
                                 </select>
                             </div>
 
                             <div class="col-sm-4">
                                 <h5>所属企业</h5>
-                                <select class="form-control m-b" name="account">
+                                <select class="form-control m-b" id="company" disabled>
                                     <option>请选择</option>
-                                    <option>智融家</option>
                                 </select>
                             </div>
                         </div>
@@ -64,8 +62,8 @@
 
                         <div class="form-group">
                             <div class="col-sm-6">
-                            <h5>用户名</h5>
-                            <input type="text" class="form-control" id="username">
+                                <h5>用户名</h5>
+                                <input type="text" class="form-control" id="username">
                             </div>
                             <div class="col-sm-6">
                                 <h5>姓名</h5>
@@ -116,34 +114,82 @@
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
 <script>
+    jQuery.ajax({
+        type: "GET",
+        url: "$rc.contextPath/sys/user/drop",
+        success: function (result) {
+            console.log(result);
+            if (result.code == 0) {
+                var company = result.company;
+                var provider = result.provider;
+                for (var i = 0; i < provider.length; i++) {
+                    $("#provider").append("<option value='" + provider[i].id + "'>" + provider[i].name + "</option>");
+                }
+                for (var i = 0; i < company.length; i++) {
+                    $("#company").append("<option value='" + company[i].id + "'>" + company[i].name + "</option>");
+                }
+            } else {
+                swal("错误", result.msg, "error");
+            }
+        }
+    })
     $(document).ready(function () {
+        $('input[name=type]').on('ifChecked', function (event) { //ifCreated 事件应该在插件初始化之前绑定
+            var value = $(this).val();
+            if (value == 1) {
+                $("#provider").attr("disabled", "disabled");
+                $("#company").attr("disabled", "disabled");
+            } else if (value == 2) {
+                $("#provider").removeAttr("disabled");
+                $("#company").attr("disabled", "disabled");
+            } else if (value == 3) {
+                $("#provider").attr("disabled", "disabled");
+                $("#company").removeAttr("disabled");
+            }
+        });
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
+
     });
     $("#save").click(function () {
         var data = {
-            username : $("#username").val(),
-            nickname : $("#nickname").val(),
-            phone : $("#phone").val(),
-            email : $("#email").val(),
-            job : $("#job").val(),
-            address : $("#address").val(),
-            type:$("input[name='type']:checked").val()
+            username: $("#username").val(),
+            nickname: $("#nickname").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val(),
+            job: $("#job").val(),
+            address: $("#address").val(),
+            type: $("input[name='type']:checked").val()
         };
+        if ($("input[name='type']:checked").val() == 2) {
+            if (isNaN($("#provider option:selected").val())) {
+                swal("错误", "请选择服务商", "error");
+                return;
+            } else {
+                data.providerId = $("#provider option:selected").val();
+            }
+        } else if ($("input[name='type']:checked").val() == 3) {
+            if (isNaN($("#company option:selected").val())) {
+                swal("错误", "请选择企业", "error");
+                return;
+            } else {
+                data.companyId = $("#company option:selected").val();
+            }
+        }
 
         jQuery.ajax({
             type: "POST",
             url: "$rc.contextPath/sys/user/save",
             data: JSON.stringify(data),
             dataType: "json",
-            contentType:"application/json;charset=UTF-8",
-            success: function(result){
-                if(result.code == 0){//返回成功
+            contentType: "application/json;charset=UTF-8",
+            success: function (result) {
+                if (result.code == 0) {//返回成功
                     history.go(-1);
-                }else{
-                    swal("错误",result.msg,"error" );
+                } else {
+                    swal("错误", result.msg, "error");
                 }
             }
         });

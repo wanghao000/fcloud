@@ -25,6 +25,10 @@ public class SysUser {
 
     private Long companyId;
 
+    private String provider;
+
+    private String company;
+
     private Long createUser;
 
     private Date createTime;
@@ -143,23 +147,19 @@ public class SysUser {
         this.isDelete = isDelete;
     }
 
-    @Override
-    public String toString() {
-        return "SysUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", job='" + job + '\'' +
-                ", address='" + address + '\'' +
-                ", type=" + type +
-                ", providerId=" + providerId +
-                ", companyId=" + companyId +
-                ", createUser=" + createUser +
-                ", createTime=" + createTime +
-                ", isDelete=" + isDelete +
-                '}';
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

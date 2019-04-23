@@ -39,4 +39,6 @@ public interface SysUserMapper {
      * @return
      */
     List<SysUser> queryList(Map<String,Object> map);
+
+    Integer queryListCount(Map<String,Object> map);
 }

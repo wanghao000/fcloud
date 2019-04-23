@@ -217,11 +217,47 @@
 		where ur.user_id = #{userId}
 	</select>
   <select id="queryList" resultType="cn.hz.fcloud.entity.SysUser">
-    select
-    <include refid="Base_Column_List" />
-    from sys_user where create_user is not null order by id desc
+    SELECT <include refid="Base_Column_List" />,(select name from provider  p WHERE u.provider_id=p.id) provider,(select name from company c WHERE u.company_id=c.id) company
+    FROM sys_user u
+    <where>
+      u.create_user is not null
+      <if test="username!=null and username!=''">
+        and u.username=#{username}
+      </if>
+      <if test="nickname!=null and nickname!=''">
+        and u.nickname=#{nickname}
+      </if>
+      <if test="type!=null and type!=''">
+        and u.type=#{type}
+      </if>
+      <if test="companyId!=null and companyId!=''">
+        and u.company_id=#{companyId}
+      </if>
+      order by u.id desc
+    </where>
     <if test="offset != null and limit != null">
       limit #{offset}, #{limit}
     </if>
+  </select>
+  <select id="queryListCount" resultType="java.lang.Integer">
+    select
+    count(*)
+    from sys_user
+    <where>
+      create_user is not null
+      <if test="username!=null and username!=''">
+        and username=#{username}
+      </if>
+      <if test="nickname!=null and nickname!=''">
+        and nickname=#{nickname}
+      </if>
+      <if test="type!=null and type!=''">
+        and type=#{type}
+      </if>
+      <if test="companyId!=null and companyId!=''">
+        and company_id=#{companyId}
+      </if>
+      order by id desc
+    </where>
   </select>
 </mapper>

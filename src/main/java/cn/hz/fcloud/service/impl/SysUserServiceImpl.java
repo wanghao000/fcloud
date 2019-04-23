@@ -75,4 +75,9 @@ public class SysUserServiceImpl implements SysUserService {
     public int update(SysUser user) {
         return sysUserMapper.updateByPrimaryKeySelective(user);
     }
+
+    @Override
+    public Integer queryListCount(Map<String, Object> map) {
+        return sysUserMapper.queryListCount(map);
+    }
 }

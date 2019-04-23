@@ -12,6 +12,6 @@ public interface ProviderService {
     int insert(Provider provider);
 
     int modifyState(int id,int isDelete);
-
+    List<Provider> selectAll();
     int updateByPrimaryKeySelective(Provider provider);
 }

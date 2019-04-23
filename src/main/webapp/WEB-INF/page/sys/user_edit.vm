@@ -45,17 +45,15 @@
 
                             <div class="col-sm-4">
                                 <h5>所属服务商</h5>
-                                <select class="form-control m-b" name="account">
+                                <select class="form-control m-b" name="account" id="provider">
                                     <option>请选择</option>
-                                    <option>智融家</option>
                                 </select>
                             </div>
 
                             <div class="col-sm-4">
                                 <h5>所属企业</h5>
-                                <select class="form-control m-b" name="account">
+                                <select class="form-control m-b" name="account" id="company">
                                     <option>请选择</option>
-                                    <option>智融家</option>
                                 </select>
                             </div>
                         </div>
@@ -117,6 +115,25 @@
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
 <script>
     var id = window.location.search.split('=')[1];
+    jQuery.ajax({
+        type: "GET",
+        url: "$rc.contextPath/sys/user/drop",
+        success: function (result) {
+            console.log(result);
+            if (result.code == 0) {
+                var company = result.company;
+                var provider = result.provider;
+                for (var i = 0; i < provider.length; i++) {
+                    $("#provider").append("<option value='" + provider[i].id + "'>" + provider[i].name + "</option>");
+                }
+                for (var i = 0; i < company.length; i++) {
+                    $("#company").append("<option value='" + company[i].id + "'>" + company[i].name + "</option>");
+                }
+            } else {
+                swal("错误", result.msg, "error");
+            }
+        }
+    })
     $(document).ready(function () {
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
@@ -127,6 +144,7 @@
             url: "$rc.contextPath/sys/user/info/"+id,
             dataType: "json",
             success: function(result){
+                console.log(result)
                 if(result.code == 0){//返回成功
                     var data = result.info;
                     $("#username").val(data.username);
@@ -136,6 +154,18 @@
                     $("#job").val(data.job);
                     $("#address").val(data.address);
                     $("input[name='type']:eq("+(data.type-1)+")").iCheck("check");
+                    if (data.type == 1) {
+                        $("#provider").attr("disabled", "disabled");
+                        $("#company").attr("disabled", "disabled");
+                    } else if (data.type == 2) {
+                        $("#provider").removeAttr("disabled");
+                        $("#company").attr("disabled", "disabled");
+                        $("#provider").val(data.providerId);
+                    } else if (data.type == 3) {
+                        $("#provider").attr("disabled", "disabled");
+                        $("#company").removeAttr("disabled");
+                        $("#company").val(data.companyId);
+                    }
                 }else{
                     swal("错误",result.msg,"error" );
                 }

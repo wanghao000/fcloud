@@ -26,11 +26,21 @@
     from provider
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="findAllProvider" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />,
-    (SELECT count(*) FROM equipment WHERE company_id in (SELECT id FROM company WHERE provider_id in (SELECT id FROM provider WHERE create_user=#{createUser,jdbcType=BIGINT}))) eqsCount
-    from provider
+  <select id="findAllProvider" resultType="cn.hz.fcloud.entity.Provider">
+SELECT
+	count(e.id) eqsCount,
+	pc.id,pc.name,pc.service_tel,pc.province,pc.city,pc.district,pc.contacts,pc.contacts_phone,pc.address,pc.remark,pc.create_user,pc.create_time,pc.is_delete
+FROM
+	equipment e
+RIGHT JOIN (
+	SELECT
+		p.*, c.id cid
+	FROM
+		provider p
+	LEFT JOIN company c ON p.id = c.provider_id
+) pc ON e.company_id = pc.cid
+GROUP BY
+	pc.id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from provider

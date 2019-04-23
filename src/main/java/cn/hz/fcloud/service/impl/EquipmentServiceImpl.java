@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
@@ -56,9 +57,19 @@ public class EquipmentServiceImpl implements EquipmentService {
     public int updateEq(Equipment eq){
         return equipmentMapper.updateEq(eq);
     }
-
-    @Override
+	
+	@Override
     public int modifyState(String code,int isDelete){
         return equipmentMapper.modifyState(code,isDelete == 1?0:1);
+    }
+
+	@Override
+	public List<Map<String, Object>> findTypeAndCount(){
+		return equipmentMapper.findTypeAndCount();
+	}
+
+    @Override
+    public List<Map<String, Object>> findTypeAndCountByUser(long userId) {
+        return equipmentMapper.findTypeAndCountByUser(userId);
     }
 }

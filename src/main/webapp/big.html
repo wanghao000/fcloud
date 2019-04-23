@@ -68,7 +68,7 @@
                     <div class="boxfoot"></div>
                 </div>
                 <div class="boxall" style="height: 3.2rem">
-                    <div class="alltitle">行业报警次数</div>
+                    <div class="alltitle">设备报警次数</div>
                     <div class="allnav" id="echart2"></div>
                     <div class="boxfoot"></div>
                 </div>
@@ -87,8 +87,8 @@
                 <div class="bar">
                     <div class="barbox">
                         <ul class="clearfix">
-                            <li class="pulll_left counter">666</li>
-                            <li class="pulll_left counter">888</li>
+                            <li class="pulll_left counter" id="online">666</li>
+                            <li class="pulll_left counter" id="lineCount">888</li>
                         </ul>
                     </div>
                     <div class="barbox2">
@@ -160,6 +160,17 @@
             }
         }
     </script>
- 
+    <script type="text/javascript">
+        $.ajax({
+            type:"post",
+            url:"sys/eq/lineNum",
+            dataType:"json",
+            success:function (data) {
+                console.log(data);
+                $("#online").html(data.online);
+                $("#lineCount").html(data.lineCount);
+            }
+        });
+    </script>
 </body>
 </html>

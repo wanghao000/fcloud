@@ -50,4 +50,7 @@
         </foreach>
         GROUP BY days;
     </select>
+    <select id="findAlermEquipmentAndCount" resultType="map">
+        select e.type,count(e.type) ct from equipment e left join equipment_data ed on e.code=ed.code group by e.type
+    </select>
 </mapper>

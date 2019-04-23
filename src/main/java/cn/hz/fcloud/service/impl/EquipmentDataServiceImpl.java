@@ -65,4 +65,9 @@ public class EquipmentDataServiceImpl implements EquipmentDataService {
     public List<Map<String, Object>> lineChartMap(List<Long> ids) {
         return equipmentDataMapper.lineChartMap(ids);
     }
+
+    @Override
+    public List<Map<String, Object>> findAlermEquipmentAndCount() {
+        return equipmentDataMapper.findAlermEquipmentAndCount();
+    }
 }

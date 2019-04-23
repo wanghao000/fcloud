@@ -6,14 +6,23 @@ import cn.hz.fcloud.entity.Equipment;
 import cn.hz.fcloud.entity.SysUser;
 import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.EqInfosService;
+import cn.hz.fcloud.service.EquipmentDataService;
 import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/sys/eq")
@@ -25,6 +34,8 @@ public class EquipmentController {
     private CompanyService comService;
     @Autowired
     private EqInfosService EqInfosService;
+    @Autowired
+    private EquipmentDataService eqdataService;
 
     @RequestMapping("/save")
     public R insertEquipment(@RequestBody Equipment eq){
@@ -40,12 +51,7 @@ public class EquipmentController {
     @RequestMapping("/list")
     public TableReturn findAllEquiments(){
         SysUser user = ShiroUtil.getUserEntity();
-        List<EqInfos> eqs = null;
-        switch (user.getType()){
-            case 1 : eqs = EqInfosService.findAll();break;
-            case 2 : eqs = EqInfosService.findByProviderId(user.getProviderId());break;
-            case 3 : eqs = EqInfosService.findByComId(user.getCompanyId());break;
-        }
+        List<EqInfos> eqs = EqInfosService.findByComId(user.getId());
         return new TableReturn(eqs,eqs.size());
     }
 
@@ -69,9 +75,77 @@ public class EquipmentController {
     public R updateEq(@RequestBody Equipment eq){
         return eqservice.updateEq(eq)>0?R.ok():R.error();
     }
-
-    @RequestMapping("/modify/{code}/{isDelete}")
+	@RequestMapping("/modify/{code}/{isDelete}")
     public R modifyState(@PathVariable("code") String code,@PathVariable("isDelete") int isDelete){
         return  eqservice.modifyState(code,isDelete)>0?R.ok():R.error();
+    }
+
+    @RequestMapping("/lineNum")
+    @ResponseBody
+    public Map<String, Object> lineNum(){
+        SysUser user = ShiroUtil.getUserEntity();
+        Map<String, Object> lineNum = new HashMap<>();
+        int lineCount = 0;
+        int online = 0;
+        if(user.getType() == 1) {
+            lineCount = eqservice.countAll();
+            online = lineCount - eqservice.lineCount();
+        } else if(user.getType() == 2) {
+            List<Company> companyList = comService.getCompanyListByProviderId(user.getProviderId());
+            for (Company company : companyList) {
+                List<Equipment> equipmentList = eqservice.getEquipmentList(company.getId());
+                lineCount += equipmentList.size();
+                for (Equipment equipment : equipmentList) {
+                    if(equipment.getIsOnline() == 1) {
+                        online++;
+                    }
+                }
+            }
+        }
+        lineNum.put("lineCount", lineCount);
+        lineNum.put("online", online);
+        return lineNum;
+    }
+	
+	@RequestMapping("/typeAndCount")
+    @ResponseBody
+    public Map<String, Object> typeAndCount(){
+        Map<String, Object> tac = new HashMap<>();
+        SysUser user = ShiroUtil.getUserEntity();
+        List<Map<String, Object>> typeAndCount;
+        List<Object> name = new ArrayList<>();
+        List<Object> count = new ArrayList<>();
+        if(user.getType() == 1) {
+            typeAndCount = eqservice.findTypeAndCount();
+        } else {
+            typeAndCount = eqservice.findTypeAndCountByUser(user.getId());
+        }
+        for (Map<String, Object> map : typeAndCount) {
+            if("0".equals(String.valueOf(map.get("type")))) {
+                name.add("无线烟感");
+                count.add(map.get("ct"));
+            }
+        }
+        tac.put("name", name);
+        tac.put("count", count);
+        return tac;
+	}
+
+    @RequestMapping("/alermEquipmentAndCount")
+    @ResponseBody
+    public Map<String, Object> alermEquipmentAndCount(){
+        Map<String, Object> aec = new HashMap<>();
+        List<Object> name = new ArrayList<>();
+        List<Object> count = new ArrayList<>();
+        List<Map<String, Object>> alermEquipmentAndCount = eqdataService.findAlermEquipmentAndCount();
+        for (Map<String, Object> map : alermEquipmentAndCount) {
+            if("0".equals(String.valueOf(map.get("type")))) {
+                name.add("无线烟感");
+                count.add(map.get("ct"));
+            }
+        }
+        aec.put("name", name);
+        aec.put("count", count);
+        return aec;
     }
 }

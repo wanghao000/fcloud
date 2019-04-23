@@ -28,4 +28,6 @@ public interface EquipmentDataMapper {
 	List<Map<String,Object>> alarmTable(@Param("ids") List<Long> ids);
 
 	List<Map<String,Object>> lineChartMap(List<Long> ids);
+
+	List<Map<String, Object>> findAlermEquipmentAndCount();
 }

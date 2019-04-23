@@ -23,4 +23,8 @@ public interface CompanyMapper {
 
     //获取所有企业,不包括禁用
     List<Company> companyList();
+    //获取所有企业信息及设备数量，包括禁用
+    List<Company> findAllCompanys();
+    //根据服务商id获取所有企业信息及设备数量，包括禁用
+    List<Company> findComsByProId(Long id);
 }

@@ -23,9 +23,13 @@ public class Company {
 
     private Integer createUser;
 
+    private String cName;
+
     private Date createTime;
 
     private Integer isDelete;
+
+    private Integer eqsCount;
 
     public Long getId() {
         return id;
@@ -40,7 +44,7 @@ public class Company {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public Integer getProvince() {
@@ -80,7 +84,7 @@ public class Company {
     }
 
     public void setPicture(String picture) {
-        this.picture = picture == null ? null : picture.trim();
+        this.picture = picture;
     }
 
     public String getAddress() {
@@ -88,7 +92,7 @@ public class Company {
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+        this.address = address;
     }
 
     public String getRemark() {
@@ -96,7 +100,7 @@ public class Company {
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public Integer getCreateUser() {
@@ -105,6 +109,14 @@ public class Company {
 
     public void setCreateUser(Integer createUser) {
         this.createUser = createUser;
+    }
+
+    public String getcName() {
+        return cName;
+    }
+
+    public void setcName(String cName) {
+        this.cName = cName;
     }
 
     public Date getCreateTime() {
@@ -121,5 +133,33 @@ public class Company {
 
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public Integer getEqsCount() {
+        return eqsCount;
+    }
+
+    public void setEqsCount(Integer eqsCount) {
+        this.eqsCount = eqsCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", province=" + province +
+                ", city=" + city +
+                ", district=" + district +
+                ", providerId=" + providerId +
+                ", picture='" + picture + '\'' +
+                ", address='" + address + '\'' +
+                ", remark='" + remark + '\'' +
+                ", createUser=" + createUser +
+                ", cName='" + cName + '\'' +
+                ", createTime=" + createTime +
+                ", isDelete=" + isDelete +
+                ", eqsCount=" + eqsCount +
+                '}';
     }
 }

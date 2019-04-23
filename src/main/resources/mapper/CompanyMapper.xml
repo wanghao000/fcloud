@@ -17,7 +17,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, name, province, city, district, provider_id, picture, address, remark, create_user, 
-    create_time, is_delete
+    create_time, is_delete,code
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -194,4 +194,16 @@
     where
     is_delete = 1;
   </select>
+  <select id="findAllCompanys" resultType="cn.hz.fcloud.entity.Company">
+    select
+    c.*,count(e.id) eqsCount,s.username cName
+    from company c left join sys_user s on s.id = c.create_user left join equipment e on c.id = e.company_id
+  </select>
+  <select id="findComsByProId" resultType="cn.hz.fcloud.entity.Company">
+    select
+    c.*,count(e.id) eqsCount,s.username cName
+    from company c left join sys_user s on s.id = c.create_user left join equipment e on c.id = e.company_id
+    where c.provider_id = #{id}
+  </select>
+
 </mapper>

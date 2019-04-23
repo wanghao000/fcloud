@@ -43,7 +43,7 @@ public class TestSysChinaMapper {
 
     @Test
     public void companyTest(){
-        List<Company> coms = comMapper.companyList();
+        List<Company> coms = comMapper.findAllCompanys();
         for(Company com:coms){
             System.out.println(com);
         }

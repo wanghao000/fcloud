@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - Bootstrap Table</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+    <!--下拉框-->
+    <link href="$rc.contextPath/statics/plugins/select/nice-select.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+
+        <div class="ibox-content">
+            <div class="row row-lg">
+
+                <div class="col-sm-12">
+                    <!-- Example Events -->
+                    <div class="example-wrap">
+                        <div id="toolbar" class="btn-group" >
+                            #if($shiro.hasPermission("sys:user:save"))
+                                <button type="button" class="btn btn-default" onclick="load('sys/company_add.vm');">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                                </button>
+                            #end
+                        </div>
+                        <table id="tb_content"></table>
+                    </div>
+                    <!-- End Example Events -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!-- Bootstrap table -->
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="$rc.contextPath/statics/js/tableIndex.js"></script>
+<script src="$rc.contextPath/statics/plugins/select/jquery.nice-select.min.js"></script>
+<!-- Sweet alert -->
+<script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    $(function() {
+        //1. 定义表格列
+        var columns = [{
+            field: 'name',
+            title: '公司名称'
+        },{
+            field: 'code',
+            title: '编号',
+        },{
+            field: 'eqsCount',
+            title: '网关数量'
+        }, {
+            field: 'cName',
+            title: '创建人',
+        }, {
+            field: 'createTime',
+            title: '创建时间',
+            formatter:function (value,row,index) {
+                return timestampToTime(value);
+            }
+        }, {
+            field: 'isDelete',
+            title: '企业图片',
+            formatter:function (value,row,index) {
+                if(jQuery.trim(value) == ''){
+                    return '未上传';
+                }else{
+                    return '<a href='+value+'>';
+                }
+            }
+        }, {
+            field: 'rootname',
+            title: '操作',
+             formatter:function (value,row,index) {
+                 return [
+                     '<a class="btn btn-info" onclick="load(\'sys/provider_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
+                     #if($shiro.hasPermission("sys:user:delete"))
+                         ,row.isDelete?'<a class="btn btn-danger" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
+                     #end
+                 ].join('');
+             }
+        }
+        ];
+        //2.初始化Table
+        var  oTable = new TableInit('$rc.contextPath/sys/company/list',columns);
+        oTable.Init();
+        Query();
+    })
+
+    function GetQueryParams() {
+        //以下参数，为各具体功能根据查询条件进行修改
+        //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+        var temp = {
+
+        };
+        return temp;
+    }
+
+    function load(url) {
+        var name = window.name;
+        var f = parent.document.getElementsByName(name)[0];
+        $(f).attr("src",url);
+    }
+
+    function del(id) {
+        jQuery.ajax({
+            type: "POST",
+            url: "$rc.contextPath/sys/provider/delete/"+id,
+            dataType: "json",
+            success: function(result){
+                if(result.code == 0){//返回成功
+                    swal("执行成功",'您已经删除该设备',"success" );
+                    $("#tb_content").bootstrapTable('refresh');
+                }else{
+                    swal("错误",result.msg,"error" );
+                }
+            }
+        });
+    }
+    function modify(id,isDelete) {
+        jQuery.ajax({
+            type: "POST",
+            url: "$rc.contextPath/sys/provider/modify/"+id+"/"+isDelete,
+            dataType: "json",
+            success: function(result){
+                if(result.code == 0){//返回成功
+                    var msg = isDelete?"启用":"禁用";
+                    swal("执行成功",'您已经'+msg+'该设备',"success" );
+                    $("#tb_content").bootstrapTable('refresh');
+                }else{
+                    swal("错误",result.msg,"error" );
+                }
+            }
+        });
+    }
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = date.getDate() < 10 ?  '0'+date.getDate()+ ' ' : date.getDate()+ ' ';
+        var h = date.getHours() < 10 ? '0'+date.getHours()+ ':' : date.getHours()+ ':';
+        var m = date.getMinutes() < 10 ? '0'+date.getMinutes()+ ':' : date.getMinutes()+ ':';
+        var s = date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds();
+        return Y+M+D+h+m+s;
+    }
+</script>
+
+</body>
+
+</html>

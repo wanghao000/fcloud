@@ -27,4 +27,15 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> companyList(){
         return companyMapper.companyList();
     }
+
+    //获取所有企业信息及设备数量，包括禁用
+    @Override
+    public List<Company> findAllCompanys(){
+        return companyMapper.findAllCompanys();
+    }
+    //根据服务商id获取所有企业信息及设备数量，包括禁用
+    @Override
+    public List<Company> findComsByProId(Long id){
+        return companyMapper.findComsByProId(id);
+    }
 }

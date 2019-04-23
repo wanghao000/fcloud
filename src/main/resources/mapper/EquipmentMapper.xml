@@ -64,4 +64,7 @@
 	<select id="findTypeAndCount" resultType="map">
 		select type,count(type) ct from equipment group by type
 	</select>
+    <select id="findTypeAndCountByUser" parameterType="long" resultType="map">
+		select type,company_id,count(type) ct from equipment e left join (select c.id from (select provider_id from sys_user where type=2 and id=#{userId})p left join company c on p.provider_id=c.provider_id)a on e.company_id=a.id group by type
+	</select>
 </mapper>

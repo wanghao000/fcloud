@@ -10,9 +10,11 @@ public interface EquipmentService {
     Equipment findOne(String code);
     void addEquipment(Equipment equipment);
     int delEquipment(String code);
-	void updateReportTimeAndOnline(Equipment equipment);	int lineCount();
+	void updateReportTimeAndOnline(Equipment equipment);
+	int lineCount();
     int countAll();
     List<Equipment> getEquipmentList(Long id);
     int updateEq(Equipment eq);
     List<Map<String, Object>> findTypeAndCount();
+    List<Map<String, Object>> findTypeAndCountByUser(long userId);
 }

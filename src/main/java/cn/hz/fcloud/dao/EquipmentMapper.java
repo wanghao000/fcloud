@@ -23,4 +23,5 @@ public interface EquipmentMapper {
     List<Equipment> test();
     int updateEq(Equipment eq);
     List<Map<String, Object>> findTypeAndCount();
+    List<Map<String, Object>> findTypeAndCountByUser(long userId);
 }

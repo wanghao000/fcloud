@@ -6,6 +6,7 @@ import cn.hz.fcloud.entity.Equipment;
 import cn.hz.fcloud.entity.SysUser;
 import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.EqInfosService;
+import cn.hz.fcloud.service.EquipmentDataService;
 import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
@@ -33,6 +34,8 @@ public class EquipmentController {
     private CompanyService comService;
     @Autowired
     private EqInfosService EqInfosService;
+    @Autowired
+    private EquipmentDataService eqdataService;
 
     @RequestMapping("/save")
     public R insertEquipment(@RequestBody Equipment eq){
@@ -94,14 +97,6 @@ public class EquipmentController {
                     }
                 }
             }
-        } else if(user.getType() == 3) {
-            List<Equipment> equipmentList = eqservice.getEquipmentList(user.getCompanyId());
-            lineCount = equipmentList.size();
-            for (Equipment equipment : equipmentList) {
-                if(equipment.getIsOnline() == 1) {
-                    online++;
-                }
-            }
         }
         lineNum.put("lineCount", lineCount);
         lineNum.put("online", online);
@@ -112,19 +107,41 @@ public class EquipmentController {
     @ResponseBody
     public Map<String, Object> typeAndCount(){
         Map<String, Object> tac = new HashMap<>();
-        List<Map<String, Object>> typeAndCount = eqservice.findTypeAndCount();
-        System.out.println(typeAndCount);
+        SysUser user = ShiroUtil.getUserEntity();
+        List<Map<String, Object>> typeAndCount;
         List<Object> name = new ArrayList<>();
         List<Object> count = new ArrayList<>();
+        if(user.getType() == 1) {
+            typeAndCount = eqservice.findTypeAndCount();
+        } else {
+            typeAndCount = eqservice.findTypeAndCountByUser(user.getId());
+        }
         for (Map<String, Object> map : typeAndCount) {
-            if(0 == Integer.parseInt(map.get("type")+"")) {
+            if("0".equals(String.valueOf(map.get("type")))) {
                 name.add("无线烟感");
-                count.add((int) map.get("ct"));
+                count.add(map.get("ct"));
             }
         }
         tac.put("name", name);
         tac.put("count", count);
-        System.out.println(tac);
         return tac;
 	}
+
+    @RequestMapping("/alermEquipmentAndCount")
+    @ResponseBody
+    public Map<String, Object> alermEquipmentAndCount(){
+        Map<String, Object> aec = new HashMap<>();
+        List<Object> name = new ArrayList<>();
+        List<Object> count = new ArrayList<>();
+        List<Map<String, Object>> alermEquipmentAndCount = eqdataService.findAlermEquipmentAndCount();
+        for (Map<String, Object> map : alermEquipmentAndCount) {
+            if("0".equals(String.valueOf(map.get("type")))) {
+                name.add("无线烟感");
+                count.add(map.get("ct"));
+            }
+        }
+        aec.put("name", name);
+        aec.put("count", count);
+        return aec;
+    }
 }

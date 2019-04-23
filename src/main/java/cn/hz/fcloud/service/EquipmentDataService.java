@@ -24,4 +24,6 @@ public interface EquipmentDataService {
     List<Map<String,Object>> alertTable(@Param("ids") List<Long> ids);
 
     List<Map<String,Object>> lineChartMap(List<Long> ids);
+
+    List<Map<String, Object>> findAlermEquipmentAndCount();
 }

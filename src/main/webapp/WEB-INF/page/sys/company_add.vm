@@ -17,6 +17,8 @@
     <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
     <!-- Sweet Alert -->
     <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- 文件上传 -->
+    <link href="$rc.contextPath/statics/css/bootstrap-fileinput.css" rel="stylesheet">
 
 </head>
 
@@ -27,25 +29,26 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>设备添加</h5>
+                    <h5>公司添加</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" onsubmit="return false;">
                         <div class="form-group">
-                            <div class="col-sm-4">
-                                <h5>设备类型</h5>
-                                <select class="form-control m-b" name="type" id="type">
+##                            <h4 class="form-section theme-color">
+##                                <i class="fa fa-newspaper-o">所属服务商</i>
+##                            </h4>
+                            <div class="col-sm-6">
+                                <h5>所属服务商</h5>
+                                <select class="form-control m-b" name="providerId" id="providerId">
                                     <option value="-1">请选择</option>
-                                    <option value="0">烟感</option>
                                 </select>
                             </div>
-                            <div class="col-sm-4">
-                                <h5>所属企业</h5>
-                                <select class="form-control m-b" name="companyId" id="companyId">
-                                    <option value="-1">请选择</option>
-                                </select>
+                            <div class="col-sm-6">
+                                <h5>公司名称</h5>
+                                <input type="text" class="form-control" id="name">
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
                         <h5>所在地址</h5>
                         <div class="form-group">
                             <div class="col-sm-4">
@@ -64,40 +67,23 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <h5>备注</h5>
+                                    <input type="text" class="form-control" id="remark">
+                                </div>
+                                <div class="col-sm-12" style="margin-top: 20px;">
+                                    <h5>地址</h5>
+                                    <input type="text" class="form-control" id="address">
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="margin-top: 20px;">
 
-                        <div class="form-group">
-                            <div class="col-sm-6">
-                                <h5>设备名称</h5>
-                                <input type="text" class="form-control" id="name">
-                            </div>
-                            <div class="col-sm-6">
-                                <h5>设备编号</h5>
-                                <input type="text" class="form-control" id="code">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-6">
-                                <h5>设备地址</h5>
-                                <input type="text" class="form-control" id="address">
-                            </div>
-                            <div class="col-sm-6">
-                                <h5>备注</h5>
-                                <input type="text" class="form-control" id="remark">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-6">
-                                <h5>经度</h5>
-                                <input type="text" class="form-control" id="lng">
-                            </div>
-                            <div class="col-sm-6">
-                                <h5>纬度</h5>
-                                <input type="text" class="form-control" id="lat">
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
+                        <div class="hr-line-dashed" ></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-5">
                                 <button class="btn btn-primary" id="save">保存</button>
@@ -120,17 +106,16 @@
 <script src="$rc.contextPath/statics/plugins/iCheck/icheck.min.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
-<!-- 百度地图 -->
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XWDDOFh4FmqtQ3pZSocbHPbd"></script>
-<script src="$rc.contextPath/statics/js/map.js"></script>
+<!--  文件上传 -->
+<script src="$rc.contextPath/statics/js/bootstrap-fileinput.js"></script>
 <script>
-    load();
     $("#save").click(function () {
         var data = {
             name : $("#name").val(),
             code : $("#code").val(),
             companyId:$("#companyId").val(),
             address : $("#address").val(),
+            createUser : $("#createUser").val(),
             remark : $("#remark").val(),
             type:$("#type option:checked").val(),
             province:$("#province option:checked").val(),
@@ -160,13 +145,13 @@
                radioClass: 'iradio_square-green',
            });
            //加载公司
-           url = "$rc.contextPath/sys/eq/companyList"
+           url = "$rc.contextPath/sys/company/providerList"
            jQuery.post(url,function (pdata) {
                var html = "";
                jQuery.each(pdata,function(idx,item){
                    html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
                });
-               $("#companyId").append(html);
+               $("#providerId").append(html);
            })
            //省市县三级联动
             var url = "$rc.contextPath/sys/china/show/";

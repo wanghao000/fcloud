@@ -1,8 +1,11 @@
 package cn.hz.fcloud.dao;
 
 import cn.hz.fcloud.entity.Company;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CompanyMapper {
     int deleteByPrimaryKey(Long id);
@@ -24,7 +27,9 @@ public interface CompanyMapper {
     //获取所有企业,不包括禁用
     List<Company> companyList();
     //获取所有企业信息及设备数量，包括禁用
-    List<Company> findAllCompanys();
+    List<Company> findAllCompanys(Map<String,Object> map);
     //根据服务商id获取所有企业信息及设备数量，包括禁用
     List<Company> findComsByProId(Long id);
+
+    int modifyState(@Param("id") int id,@Param("isDelete") int isDelete);
 }

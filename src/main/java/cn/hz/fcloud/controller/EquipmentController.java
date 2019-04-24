@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,8 +40,10 @@ public class EquipmentController {
 
     @RequestMapping("/save")
     public R insertEquipment(@RequestBody Equipment eq){
+        SysUser user = ShiroUtil.getUserEntity();
         eq.setCreateTime(new Date());
         eq.setisDelete(1);
+        eq.setCreateUser(user.getId().intValue());
         if(eqservice.findOne(eq.getCode()) != null){
             return R.error("编号已存在，请重新输入！");
         }
@@ -51,7 +54,13 @@ public class EquipmentController {
     @RequestMapping("/list")
     public TableReturn findAllEquiments(){
         SysUser user = ShiroUtil.getUserEntity();
-        List<EqInfos> eqs = EqInfosService.findByComId(user.getId());
+        List<EqInfos> eqs = null;
+        switch (user.getType()){
+            case 1 : eqs = EqInfosService.findAll();break;
+            case 2 : eqs = EqInfosService.findByProviderId(user.getProviderId());break;
+            case 3 : eqs = EqInfosService.findByComId(user.getCompanyId());break;
+        }
+
         return new TableReturn(eqs,eqs.size());
     }
 

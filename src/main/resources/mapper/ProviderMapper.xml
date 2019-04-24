@@ -214,4 +214,9 @@ GROUP BY
     where
     is_delete = 1;
   </select>
+  <select id="selectIdAndName" resultType="cn.hz.fcloud.entity.Provider">
+    select
+    id,name
+    from provider
+  </select>
 </mapper>

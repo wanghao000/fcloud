@@ -39,14 +39,14 @@ public class UDPServerUtil {
                 List<Company> companyListByProviderId = companyService.getCompanyListByProviderId(sysUser.getProviderId());
                 if (companyListByProviderId != null && companyListByProviderId.size()>0) {
                     for (Company company : companyListByProviderId) {
-                        if(company.getId() == equipmentService.findOne(imei).getCompanyId()) {
+                        if(company.getId().intValue() == equipmentService.findOne(imei).getCompanyId().intValue()) {
                             CigaretteWebsocketHandler.sendMessageToUser(username, msg);
                         }
                     }
                 }
             } else if(sysUser.getType() == 3) {
                 Equipment equipment = equipmentService.findOne(imei);
-                if(equipment!= null && sysUser.getCompanyId() == equipment.getCompanyId()) {
+                if(equipment!= null && sysUser.getCompanyId().intValue() == equipment.getCompanyId().intValue()) {
                     CigaretteWebsocketHandler.sendMessageToUser(username, msg);
                 }
             }

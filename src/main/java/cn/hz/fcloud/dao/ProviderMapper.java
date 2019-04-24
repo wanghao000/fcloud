@@ -23,4 +23,6 @@ public interface ProviderMapper {
     int modifyState(@Param("id") int id, @Param("isDelete") int isDelete);
 
     List<Provider> selectAll();
+
+    List<Provider> selectIdAndName();
 }

@@ -4,25 +4,25 @@ import java.util.Date;
 //设备表与省市县，公司关联实体
 public class EqInfos {
 
-    private int id;
+    private Integer id;
     private String code;
     private String name;
-    private int type;
-    private int province;
+    private Integer type;
+    private Integer province;
     private String pName;
-    private int city;
+    private Integer city;
     private String cName;
-    private int district;
+    private Integer district;
     private String dName;
     private String address;
     private String lng;
     private String lat;
-    private int createUser;
-    private int isOnline;
+    private Integer createUser;
+    private Integer isOnline;
     private Date lastReportTime;
     private Date createTime;
-    private int isDelete;
-    private int companyId;
+    private Integer isDelete;
+    private Integer companyId;
     private String comName;
     private String remark;
 
@@ -53,11 +53,11 @@ public class EqInfos {
                 '}';
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -81,15 +81,15 @@ public class EqInfos {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public int getProvince() {
+    public Integer getProvince() {
         return province;
     }
 
-    public void setProvince(int province) {
+    public void setProvince(Integer province) {
         this.province = province;
     }
 
@@ -101,7 +101,7 @@ public class EqInfos {
         this.pName = pName;
     }
 
-    public int getCity() {
+    public Integer getCity() {
         return city;
     }
 
@@ -117,11 +117,11 @@ public class EqInfos {
         this.cName = cName;
     }
 
-    public int getDistrict() {
+    public Integer getDistrict() {
         return district;
     }
 
-    public void setDistrict(int district) {
+    public void setDistrict(Integer district) {
         this.district = district;
     }
 
@@ -157,19 +157,19 @@ public class EqInfos {
         this.lat = lat;
     }
 
-    public int getCreateUser() {
+    public Integer getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(int createUser) {
+    public void setCreateUser(Integer createUser) {
         this.createUser = createUser;
     }
 
-    public int getIsOnline() {
+    public Integer getIsOnline() {
         return isOnline;
     }
 
-    public void setIsOnline(int isOnline) {
+    public void setIsOnline(Integer isOnline) {
         this.isOnline = isOnline;
     }
 
@@ -189,19 +189,19 @@ public class EqInfos {
         this.createTime = createTime;
     }
 
-    public int getisDelete() {
+    public Integer getisDelete() {
         return isDelete;
     }
 
-    public void setisDelete(int isDelete) {
+    public void setisDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
 
-    public int getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 

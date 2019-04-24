@@ -53,6 +53,7 @@ public class ProviderController {
     public Provider findProvider(@PathVariable("id") Long id){
         return providerService.getProviderById(id);
     }
+
     @RequestMapping("/update")
     public R updateProvider(@RequestBody Provider provider){
         return providerService.updateByPrimaryKeySelective(provider)>0?R.ok():R.error();

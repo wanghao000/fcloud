@@ -3,22 +3,22 @@ package cn.hz.fcloud.entity;
 import java.util.Date;
 
 public class Equipment {
-    private int id;
+    private Integer id;
     private String code;
     private String name;
-    private int type;
-    private int province;
-    private int city;
-    private int district;
+    private Integer type;
+    private Integer province;
+    private Integer city;
+    private Integer district;
     private String address;
     private String lng;
     private String lat;
-    private int createUser;
-    private int isOnline;
+    private Integer createUser;
+    private Integer isOnline;
     private Date lastReportTime;
     private Date createTime;
-    private int isDelete;
-    private int companyId;
+    private Integer isDelete;
+    private Integer companyId;
     private String remark;
 
     @Override
@@ -44,14 +44,14 @@ public class Equipment {
                 '}';
     }
 
-    public Equipment(String code, int isOnline, Date lastReportTime) {
+    public Equipment(String code, Integer isOnline, Date lastReportTime) {
         this.code = code;
         this.isOnline = isOnline;
         this.lastReportTime = lastReportTime;
     }
 
 
-    public Equipment(int id, String code, String name, int type, int province, int city, int district, String address, String lng, String lat, int createUser, int isOnline, Date lastReportTime, Date createTime, int isDelete, int companyId, String remark) {
+    public Equipment(Integer id, String code, String name, Integer type, Integer province, Integer city, Integer district, String address, String lng, String lat, Integer createUser, Integer isOnline, Date lastReportTime, Date createTime, Integer isDelete, Integer companyId, String remark) {
         this.id = id;
         this.code = code;
         this.name = name;
@@ -75,11 +75,11 @@ public class Equipment {
     public Equipment() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -99,35 +99,35 @@ public class Equipment {
         this.name = name;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public int getProvince() {
+    public Integer getProvince() {
         return province;
     }
 
-    public void setProvince(int province) {
+    public void setProvince(Integer province) {
         this.province = province;
     }
 
-    public int getCity() {
+    public Integer getCity() {
         return city;
     }
 
-    public void setCity(int city) {
+    public void setCity(Integer city) {
         this.city = city;
     }
 
-    public int getDistrict() {
+    public Integer getDistrict() {
         return district;
     }
 
-    public void setDistrict(int district) {
+    public void setDistrict(Integer district) {
         this.district = district;
     }
 
@@ -155,19 +155,19 @@ public class Equipment {
         this.lat = lat;
     }
 
-    public int getCreateUser() {
+    public Integer getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(int createUser) {
+    public void setCreateUser(Integer createUser) {
         this.createUser = createUser;
     }
 
-    public int getIsOnline() {
+    public Integer getIsOnline() {
         return isOnline;
     }
 
-    public void setIsOnline(int isOnline) {
+    public void setIsOnline(Integer isOnline) {
         this.isOnline = isOnline;
     }
 
@@ -187,19 +187,19 @@ public class Equipment {
         this.createTime = createTime;
     }
 
-    public int getisDelete() {
+    public Integer getisDelete() {
         return isDelete;
     }
 
-    public void setisDelete(int isDelete) {
+    public void setisDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
 
-    public int getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(int companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 

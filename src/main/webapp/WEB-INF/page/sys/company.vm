@@ -21,6 +21,10 @@
     <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
 
+    <style>
+        .hide_img{ display:none; z-index:9999; position:absolute;}
+        .show_img:hover +.hide_img{ display:block}
+    </style>
 
 </head>
 
@@ -84,22 +88,32 @@
             formatter:function (value,row,index) {
                 return timestampToTime(value);
             }
-        }, {
-            field: 'isDelete',
+        },{
+            field: 'picture',
             title: '企业图片',
             formatter:function (value,row,index) {
-                if(jQuery.trim(value) == ''){
+                // alert(value);
+                if(jQuery.trim(value) == '' || value == null){
                     return '未上传';
                 }else{
-                    return '<a href='+value+'>';
+                    return '<a class="show_img" href="#">查看</a><div class="hide_img"><img><src='+value+'/></div>';
                 }
+            }
+        }, {
+            field: 'isDelete',
+            title: '状态',
+            formatter:function (value,row,index) {
+                var data = new Array(
+                        '<span class="label label-danger">禁用</span>',
+                        '<span class="label label-success">启用</span>')
+                return data[value];
             }
         }, {
             field: 'rootname',
             title: '操作',
              formatter:function (value,row,index) {
                  return [
-                     '<a class="btn btn-info" onclick="load(\'sys/provider_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
+                     '<a class="btn btn-info" onclick="load(\'sys/company_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
                      #if($shiro.hasPermission("sys:user:delete"))
                          ,row.isDelete?'<a class="btn btn-danger" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
                      #end
@@ -127,26 +141,10 @@
         var f = parent.document.getElementsByName(name)[0];
         $(f).attr("src",url);
     }
-
-    function del(id) {
-        jQuery.ajax({
-            type: "POST",
-            url: "$rc.contextPath/sys/provider/delete/"+id,
-            dataType: "json",
-            success: function(result){
-                if(result.code == 0){//返回成功
-                    swal("执行成功",'您已经删除该设备',"success" );
-                    $("#tb_content").bootstrapTable('refresh');
-                }else{
-                    swal("错误",result.msg,"error" );
-                }
-            }
-        });
-    }
     function modify(id,isDelete) {
         jQuery.ajax({
             type: "POST",
-            url: "$rc.contextPath/sys/provider/modify/"+id+"/"+isDelete,
+            url: "$rc.contextPath/sys/company/modify/"+id+"/"+isDelete,
             dataType: "json",
             success: function(result){
                 if(result.code == 0){//返回成功

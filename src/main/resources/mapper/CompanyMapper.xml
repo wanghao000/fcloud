@@ -198,12 +198,16 @@
     select
     c.*,count(e.id) eqsCount,s.username cName
     from company c left join sys_user s on s.id = c.create_user left join equipment e on c.id = e.company_id
+    order by e.id limit #{offset},#{limit}
   </select>
   <select id="findComsByProId" resultType="cn.hz.fcloud.entity.Company">
     select
     c.*,count(e.id) eqsCount,s.username cName
     from company c left join sys_user s on s.id = c.create_user left join equipment e on c.id = e.company_id
-    where c.provider_id = #{id}
+    where c.provider_id = #{id} order by e.id limit #{offset},#{limit}
   </select>
+  <update id="modifyState">
+      update company set is_delete = #{isDelete} where id = #{id}
+  </update>
 
 </mapper>

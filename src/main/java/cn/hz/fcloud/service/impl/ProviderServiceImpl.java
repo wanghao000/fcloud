@@ -39,4 +39,8 @@ public class ProviderServiceImpl implements ProviderService {
     public int updateByPrimaryKeySelective(Provider provider){
         return providerMapper.updateByPrimaryKeySelective(provider);
     }
+
+    public List<Provider> selectIdAndName(){
+        return providerMapper.selectIdAndName();
+    }
 }

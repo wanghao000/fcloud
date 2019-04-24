@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -30,12 +31,16 @@ public class CompanyServiceImpl implements CompanyService {
 
     //获取所有企业信息及设备数量，包括禁用
     @Override
-    public List<Company> findAllCompanys(){
-        return companyMapper.findAllCompanys();
+    public List<Company> findAllCompanys(Map<String,Object> map){
+        return companyMapper.findAllCompanys(map);
     }
     //根据服务商id获取所有企业信息及设备数量，包括禁用
     @Override
     public List<Company> findComsByProId(Long id){
         return companyMapper.findComsByProId(id);
+    }
+    @Override
+    public int modifyState(int id,int isDelete){
+        return companyMapper.modifyState(id,isDelete == 1?0:1);
     }
 }

@@ -1,6 +1,7 @@
 package cn.hz.fcloud.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysUser {
     private Long id;
@@ -34,6 +35,11 @@ public class SysUser {
     private Date createTime;
 
     private Integer isDelete;
+
+    /**
+     * 角色ID列表
+     */
+    private List<Long> roleIdList;
 
     public Long getId() {
         return id;
@@ -161,5 +167,13 @@ public class SysUser {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public List<Long> getRoleIdList() {
+        return roleIdList;
+    }
+
+    public void setRoleIdList(List<Long> roleIdList) {
+        this.roleIdList = roleIdList;
     }
 }

@@ -12,7 +12,7 @@
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
     <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/plugins/bootstrap-table/css/bootstrap-table.css" rel="stylesheet">
     <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
     <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
     <!--下拉框-->
@@ -58,11 +58,9 @@
 <script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
 
 <!-- Bootstrap table -->
-<script src="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table.min.js"></script>
-<script src="$rc.contextPath/statics/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
-<script src="$rc.contextPath/statics/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/js/bootstrap-table.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
 <script src="$rc.contextPath/statics/js/tableIndex.js"></script>
-<script src="$rc.contextPath/statics/plugins/select/jquery.nice-select.min.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
 <script>

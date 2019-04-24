@@ -79,9 +79,11 @@
             title: '操作',
             formatter:function (value,row,index) {
                 return [
-                    '<a class="btn btn-info" onclick="load(\'sys/user_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
-                    #if($shiro.hasPermission("sys:user:delete"))
-                        ,'<a class="btn btn-danger" onclick="delOrUse('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 删除</a> '
+                    #if($shiro.hasPermission("sys:role:update"))
+                    '<a class="btn btn-info" onclick="load(\'sys/role_edit.vm?id=\'+'+row.roleId+')"><i class="fa fa-paste"> </i> 编辑</a> '
+                    #end
+                    #if($shiro.hasPermission("sys:role:delete"))
+                        ,'<a class="btn btn-danger" onclick="isDelete('+row.roleId+')"><i class="fa fa-trash-o"> </i> 删除</a> '
                     #end
                 ].join('');
             }
@@ -112,6 +114,40 @@
         var f = parent.document.getElementsByName(name)[0];
         $(f).attr("src",url);
     }
+    
+    function isDelete(roleId) {
+        swal({
+                    title: "您确定要删除这条角色吗？",
+                    text: "删除后将无法恢复，请谨慎操作！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的，我要删除！",
+                    cancelButtonText: "让我再考虑一下…",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        jQuery.ajax({
+                            type: "POST",
+                            url: "$rc.contextPath/sys/role/delete/"+roleId,
+                            dataType: "json",
+                            success: function(result){
+                                if(result.code == 0){//返回成功
+                                    swal("删除成功！", "您已经永久删除了这条角色。", "success");
+                                    $("#tb_content").bootstrapTable('refresh');
+                                }else{
+                                    swal("错误",result.msg,"error" );
+                                }
+                            }
+                        });
+                    } else {
+                        swal("已取消", "您取消了删除操作！", "error");
+                    }
+                });
+    }
+    
 </script>
 
 </body>

@@ -18,7 +18,7 @@ public class ExceptionAdvice {
     @ResponseBody
     @ExceptionHandler(RuntimeException.class)
     public R exceptionHandler(Exception e){
-
+        e.printStackTrace();
         if(e instanceof UnknownAccountException || e instanceof IncorrectCredentialsException){
             logger.error(e.getMessage());
            return R.error("账号或密码不正确");
@@ -36,6 +36,7 @@ public class ExceptionAdvice {
             return R.error("业务异常："+e.getMessage());
         }
         logger.error(e.getMessage());
+
         return R.error("未知的异常:"+e.getMessage());
     }
 }

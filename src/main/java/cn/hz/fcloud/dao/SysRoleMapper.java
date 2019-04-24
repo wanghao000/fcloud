@@ -9,4 +9,12 @@ public interface SysRoleMapper {
     List<SysRole> queryList(Map<String, Object> map);
 
     int queryTotal(Map<String, Object> map);
+
+    void save(SysRole sysRole);
+
+    void delete(long roleId);
+
+    SysRole queryObject(long id);
+
+    int update(SysRole sysRole);
 }

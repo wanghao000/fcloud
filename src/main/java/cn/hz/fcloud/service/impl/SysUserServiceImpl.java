@@ -2,6 +2,7 @@ package cn.hz.fcloud.service.impl;
 
 import cn.hz.fcloud.dao.SysUserMapper;
 import cn.hz.fcloud.entity.SysUser;
+import cn.hz.fcloud.service.SysUserRoleService;
 import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.ServiceException;
 import cn.hz.fcloud.utils.ShiroUtil;
@@ -11,6 +12,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,8 @@ import java.util.Map;
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
     @Override
     public SysUser queryByUserName(String username) {
@@ -48,7 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public int save(SysUser user) {
+    public void save(SysUser user) {
         String username = user.getUsername();
         if(username == null || StringUtils.isBlank(username)){
             throw new ServiceException("用户名不能为空");
@@ -60,7 +64,20 @@ public class SysUserServiceImpl implements SysUserService {
         user.setPassword(sh.toString());
         user.setCreateUser(ShiroUtil.getUserEntity().getId());
         user.setCreateTime(new Date());
-        return sysUserMapper.insertSelective(user);
+        int row = sysUserMapper.insertSelective(user);
+        if(row!=1){
+            throw new ServiceException("账号添加失败");
+        }
+        //开始绑定权限
+        List<Long> role = new ArrayList<>();
+        if(user.getType()==1){
+            role.add(2L);
+        }else if(user.getType()==2){
+            role.add(3L);
+        }else if(user.getType()==3){
+            role.add(4L);
+        }
+        sysUserRoleService.saveOrUpdate(user.getId(), role);
     }
 
     @Override

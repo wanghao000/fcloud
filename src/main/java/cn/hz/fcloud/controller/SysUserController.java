@@ -46,10 +46,7 @@ public class SysUserController {
     @RequestMapping("/save")
     @RequiresPermissions("sys:user:save")
     public R save(@RequestBody SysUser user){
-        int row = sysUserService.save(user);
-        if(row != 1){
-            return R.error("添加失败");
-        }
+        sysUserService.save(user);
         return R.ok();
     }
 

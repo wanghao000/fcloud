@@ -31,7 +31,7 @@
     delete from sys_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.hz.fcloud.entity.SysUser">
+  <insert id="insert" parameterType="cn.hz.fcloud.entity.SysUser" useGeneratedKeys="true" keyProperty="id">
     insert into sys_user (id, username, password, 
       nickname, phone, email, 
       job, address, type, 
@@ -43,7 +43,7 @@
       #{providerId,jdbcType=BIGINT}, #{companyId,jdbcType=BIGINT}, #{createUser,jdbcType=BIGINT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="cn.hz.fcloud.entity.SysUser">
+  <insert id="insertSelective" parameterType="cn.hz.fcloud.entity.SysUser" useGeneratedKeys="true" keyProperty="id">
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

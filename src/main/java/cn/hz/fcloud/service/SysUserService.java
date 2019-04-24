@@ -27,7 +27,7 @@ public interface SysUserService {
      */
     List<SysUser> queryList(Map<String,Object> map);
 
-    int save(SysUser user);
+    void save(SysUser user);
 
     SysUser selectById(Long id);
 

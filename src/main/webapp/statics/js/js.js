@@ -15,11 +15,18 @@ $(function () {
             echarts_2(data);
         }
     });
+    $.ajax({
+        type:"post",
+        url:"sys/eq/findCompanyAndCount",
+        dataType:"json",
+        success:function (data) {
+            echarts_5(data);
+        }
+    });
 echarts_4();
 echarts_31();
 //echarts_32();
 //echarts_33();
-echarts_5();
 echarts_6();
 function echarts_1(data) {
         // 基于准备好的dom，初始化echarts实例
@@ -216,7 +223,7 @@ function echarts_2(data) {
             myChart.resize();
         });
     }
-function echarts_5() {
+function echarts_5(data) {
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('echart5'));
 
@@ -238,7 +245,8 @@ function echarts_5() {
     },
     xAxis: [{
         type: 'category',
-      		data: ['浙江', '上海', '江苏', '广东', '北京', '深圳', '安徽', '四川'],
+      		// data: ['浙江', '上海', '江苏', '广东', '北京', '深圳', '安徽', '四川'],
+      		data: data.name,
         axisLine: {
             show: true,
          lineStyle: {
@@ -291,7 +299,8 @@ function echarts_5() {
     }],
     series: [{
         type: 'bar',
-        data: [2, 3, 3, 9, 15, 12, 6, 4, 6, 7, 4, 10],
+        // data: [2, 3, 3, 9, 15, 12, 6, 4, 6, 7, 4, 10],
+        data: data.count,
         barWidth:'35%', //柱子宽度
        // barGap: 1, //柱子之间间距
         itemStyle: {

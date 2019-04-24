@@ -70,4 +70,9 @@ public class EquipmentDataServiceImpl implements EquipmentDataService {
     public List<Map<String, Object>> findAlermEquipmentAndCount() {
         return equipmentDataMapper.findAlermEquipmentAndCount();
     }
+
+    @Override
+    public List<Map<String, Object>> findAlermEquipmentAndCountByUser(long userId) {
+        return equipmentDataMapper.findAlermEquipmentAndCountByUser(userId);
+    }
 }

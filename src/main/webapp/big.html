@@ -87,8 +87,8 @@
                 <div class="bar">
                     <div class="barbox">
                         <ul class="clearfix">
-                            <li class="pulll_left counter" id="online">666</li>
-                            <li class="pulll_left counter" id="lineCount">888</li>
+                            <li class="pulll_left counter" id="online">0</li>
+                            <li class="pulll_left counter" id="lineCount">0</li>
                         </ul>
                     </div>
                     <div class="barbox2">
@@ -112,7 +112,7 @@
                     <div class="boxfoot"></div>
                 </div>
                 <div class="boxall" style="height: 3.2rem">
-                    <div class="alltitle">地区设备总数</div>
+                    <div class="alltitle">公司设备总数</div>
                     <div class="allnav" id="echart5"></div>
                     <div class="boxfoot"></div>
                 </div>
@@ -166,7 +166,6 @@
             url:"sys/eq/lineNum",
             dataType:"json",
             success:function (data) {
-                console.log(data);
                 $("#online").html(data.online);
                 $("#lineCount").html(data.lineCount);
             }

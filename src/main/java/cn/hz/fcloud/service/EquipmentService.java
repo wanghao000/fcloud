@@ -18,4 +18,6 @@ public interface EquipmentService {
 	int modifyState(String code,int isDelete);
     List<Map<String, Object>> findTypeAndCount();
     List<Map<String, Object>> findTypeAndCountByUser(long userId);
+    List<Map<String, Object>> findCompanyAndCount();
+    List<Map<String, Object>> findCompanyAndCountByUser(long userId);
 }

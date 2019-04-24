@@ -72,4 +72,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     public List<Map<String, Object>> findTypeAndCountByUser(long userId) {
         return equipmentMapper.findTypeAndCountByUser(userId);
     }
+
+    @Override
+    public List<Map<String, Object>> findCompanyAndCount() {
+        return equipmentMapper.findCompanyAndCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> findCompanyAndCountByUser(long userId) {
+        return equipmentMapper.findCompanyAndCountByUser(userId);
+    }
 }

@@ -146,7 +146,13 @@ public class EquipmentController {
         Map<String, Object> aec = new HashMap<>();
         List<Object> name = new ArrayList<>();
         List<Object> count = new ArrayList<>();
-        List<Map<String, Object>> alermEquipmentAndCount = eqdataService.findAlermEquipmentAndCount();
+        List<Map<String, Object>> alermEquipmentAndCount;
+        SysUser user = ShiroUtil.getUserEntity();
+        if (user.getType() == 1) {
+            alermEquipmentAndCount = eqdataService.findAlermEquipmentAndCount();
+        } else {
+            alermEquipmentAndCount = eqdataService.findAlermEquipmentAndCountByUser(user.getId());
+        }
         for (Map<String, Object> map : alermEquipmentAndCount) {
             if("0".equals(String.valueOf(map.get("type")))) {
                 name.add("无线烟感");
@@ -156,5 +162,27 @@ public class EquipmentController {
         aec.put("name", name);
         aec.put("count", count);
         return aec;
+    }
+
+    @RequestMapping("/findCompanyAndCount")
+    @ResponseBody
+    public Map<String, Object> findCompanyAndCount(){
+        Map<String, Object> cc = new HashMap<>();
+        List<Object> name = new ArrayList<>();
+        List<Object> count = new ArrayList<>();
+        List<Map<String, Object>> companyAndCount;
+        SysUser user = ShiroUtil.getUserEntity();
+        if(user.getType() == 1) {
+            companyAndCount = eqservice.findCompanyAndCount();
+        } else {
+            companyAndCount = eqservice.findCompanyAndCountByUser(user.getId());
+        }
+        for (Map<String, Object> map : companyAndCount) {
+            name.add(map.get("name"));
+            count.add(map.get("ci"));
+        }
+        cc.put("name", name);
+        cc.put("count", count);
+        return cc;
     }
 }

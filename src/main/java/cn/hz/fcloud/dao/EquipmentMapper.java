@@ -26,4 +26,6 @@ public interface EquipmentMapper {
 	int modifyState(@Param("code") String code, @Param("isDelete") int isDelete);
     List<Map<String, Object>> findTypeAndCount();
     List<Map<String, Object>> findTypeAndCountByUser(long userId);
+    List<Map<String, Object>> findCompanyAndCount();
+    List<Map<String, Object>> findCompanyAndCountByUser(long userId);
 }

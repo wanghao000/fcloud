@@ -30,4 +30,6 @@ public interface EquipmentDataMapper {
 	List<Map<String,Object>> lineChartMap(List<Long> ids);
 
 	List<Map<String, Object>> findAlermEquipmentAndCount();
+
+	List<Map<String, Object>> findAlermEquipmentAndCountByUser(long userId);
 }

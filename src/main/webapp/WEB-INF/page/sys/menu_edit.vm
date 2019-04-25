@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑角色</title>
+    <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/plugins/bootstrap-table/css/bootstrap-table.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/ztree/css/metroStyle/metroStyle.css">
+    <link href="$rc.contextPath/statics/plugins/iCheck/custom.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>修改菜单</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">类型</div>
+                            <label class="radio-inline i-checks">
+                                <input type="radio" name="type" value="0" checked/> 目录
+                            </label>
+                            <label class="radio-inline i-checks">
+                                <input type="radio" name="type" value="1"/> 菜单
+                            </label>
+                            <label class="radio-inline i-checks">
+                                <input type="radio" name="type" value="2"/> 按钮
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">菜单名称</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="菜单名称或按钮名称" id="name"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">上级菜单</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" style="cursor:pointer;" readonly="readonly" placeholder="一级菜单" onclick="menuTree()" id="parent"/>
+                                <input type="hidden" id="parentId" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group" id="div1">
+                            <div class="col-sm-2 control-label">菜单URL</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="菜单URL" id="menuUrl"/>
+                            </div>
+                        </div>
+                        <div class="form-group" id="div2">
+                            <div class="col-sm-2 control-label">授权标识</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="多个用逗号分隔，如：user:list,user:create" id="perms"/>
+                            </div>
+                        </div>
+                        <div class="form-group" id="div3">
+                            <div class="col-sm-2 control-label">排序号</div>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" value="0" placeholder="排序号" id="orderNum"/>
+                            </div>
+                        </div>
+                        <div class="form-group" id="div4">
+                            <div class="col-sm-2 control-label">图标</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="菜单图标" id="icon"/>
+                                <code style="margin-top:4px;display: block;">获取图标：http://fontawesome.io/icons/</code>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label"></div>
+                            <input type="button" class="btn btn-primary" id="save" value="确定"/>
+                            &nbsp;&nbsp;<input type="button" class="btn btn-warning" onclick="history.go(-1)" value="返回"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+    <ul id="menuTree" class="ztree"></ul>
+</div>
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+<script src="${rc.contextPath}/statics/plugins/ztree/jquery.ztree.all.min.js"></script>
+<!-- iCheck -->
+<script src="$rc.contextPath/statics/plugins/iCheck/icheck.min.js"></script>
+
+<script src="$rc.contextPath/statics/plugins/layer/layer.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "menuId",
+                    pIdKey: "parentId",
+                    rootPId: -1
+                },
+                key: {
+                    url:"nourl"
+                }
+            }
+        };
+        //加载菜单树
+        var ztree;
+        jQuery.ajax({
+            type: "GET",
+            url: "$rc.contextPath/sys/menu/perms",
+            async:false,
+            success: function (result) {
+                if (result.code == 0) {
+                    ztree = jQuery.fn.zTree.init($("#menuTree"), setting,result.menuList);
+                } else {
+                    console.log(result)
+                }
+            }
+        })
+        var id = window.location.search.split('=')[1];
+        jQuery.ajax({
+            type: "GET",
+            url: "$rc.contextPath/sys/menu/info/"+id,
+            success: function (result) {
+                if(result.code==0){
+                    //设置名称
+                    $("#name").val(result.menu.name);
+                    //获取菜单；类型
+                    var value = result.menu.type;
+                    $("input[name='type']:eq("+value+")").iCheck("check");
+                    //获取树中节点，按menuId查询
+                    var node = ztree.getNodeByParam("menuId", result.menu.parentId);
+                    ztree.selectNode(node);
+                    if(node!=null){
+                        //设置原先的上级菜单
+                        $("#parent").val(node.name);
+                        $("#parentId").val(result.menu.menuId);
+                    }
+                    //开始隐藏对应div
+                    if (value == 0) {
+                        $("#div1").hide();
+                        $("#div2").hide();
+                        $("#div3").show();
+                        $("#div4").show();
+                        $("#orderNum").val(result.menu.orderNum);
+                        $("#icon").val(result.menu.icon);
+                    } else if (value == 1) {
+                        $("#div1").show();
+                        $("#div2").show();
+                        $("#div3").show();
+                        $("#div4").show();
+                        $("#menuUrl").val(result.menu.url)
+                        $("#perms").val(result.menu.perms);
+                        $("#orderNum").val(result.menu.orderNum);
+                        $("#icon").val(result.menu.icon);
+                    } else if (value == 2) {
+                        $("#div1").show();
+                        $("#div2").hide();
+                        $("#div3").hide();
+                        $("#div4").hide();
+                        $("#perms").val(result.menu.perms);
+                    }
+                }
+            }
+        })
+
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        $("#save").click(function () {
+            var type = $("input[name='type']:checked").val();
+            var data ={
+                "menuId":id,
+                "name":$("#name").val(),
+                "parentId":$("#parentId").val(),
+                "type":type
+            }
+            if(type==0 ){
+                data.orderNum=$("#orderNum").val();
+                data.icon=$("#icon").val();
+            }else if(type==1){
+                data.menuUrl=$("#menuUrl").val();
+                data.perms=$("#perms").val();
+                data.orderNum=$("#orderNum").val();
+                data.icon=$("#icon").val();
+            }else if(type==2){
+                data.perms=$("#perms").val();
+            }
+            jQuery.ajax({
+                type: "POST",
+                url: "$rc.contextPath/sys/menu/update",
+                data: JSON.stringify(data),
+                contentType: "application/json;charset=UTF-8",
+                success: function(result){
+                    if(result.code === 0){
+                        history.go(-1);
+                    }else{
+                        alert(result.msg);
+                    }
+                }
+            });
+        })
+    })
+    function menuTree() {
+        layer.open({
+            type: 1,
+            offset: '50px',
+            skin: 'layui-layer-molv',
+            title: "选择菜单",
+            area: ['300px', '450px'],
+            shade: 0,
+            shadeClose: false,
+            content: jQuery("#menuLayer"),
+            btn: ['确定', '取消'],
+            btn1: function (index) {
+                var node = ztree.getSelectedNodes();
+                //选择上级菜单
+               /* vm.menu.parentId = node[0].menuId;
+                vm.menu.parentName = node[0].name;*/
+                $("#parent").val(node[0].name)
+                $("#parentId").val(node[0].menuId)
+                layer.close(index);
+            }
+        });
+    }
+</script>
+</body>

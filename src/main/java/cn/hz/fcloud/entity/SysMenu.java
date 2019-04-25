@@ -7,7 +7,7 @@ public class SysMenu {
 
     private Long parentId;
 
-    private String parenName;
+    private String parentName;
 
     private String name;
 
@@ -41,12 +41,12 @@ public class SysMenu {
         this.parentId = parentId;
     }
 
-    public String getParenName() {
-        return parenName;
+    public String getParentName() {
+        return parentName;
     }
 
-    public void setParenName(String parenName) {
-        this.parenName = parenName;
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public String getName() {

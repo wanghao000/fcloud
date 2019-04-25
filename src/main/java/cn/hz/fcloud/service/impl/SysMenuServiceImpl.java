@@ -5,6 +5,8 @@ import cn.hz.fcloud.entity.SysMenu;
 import cn.hz.fcloud.service.SysMenuService;
 import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.MenuType;
+import cn.hz.fcloud.utils.ServiceException;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,5 +76,73 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
 
         return subMenuList;
+    }
+
+    @Override
+    public int queryTotal() {
+        return sysMenuMapper.queryTotal();
+    }
+
+    @Override
+    public void save(SysMenu menu) {
+        verifyForm(menu);
+        int row = sysMenuMapper.insertSelective(menu);
+        if(row==0){
+            throw new ServiceException("保存失败");
+        }
+    }
+
+    @Override
+    public SysMenu queryObject(Long menuId) {
+        return sysMenuMapper.queryObject(menuId);
+    }
+
+    @Override
+    public void update(SysMenu sysMenu) {
+
+    }
+
+    /**
+     * 验证参数是否正确
+     */
+    private void verifyForm(SysMenu menu){
+        if(StringUtils.isBlank(menu.getName())){
+            throw new ServiceException("菜单名称不能为空");
+        }
+
+        if(menu.getParentId() == null){
+            throw new ServiceException("上级菜单不能为空");
+        }
+
+        //菜单
+        if(menu.getType() == MenuType.MENU.getValue()){
+            if(StringUtils.isBlank(menu.getUrl())){
+                throw new ServiceException("菜单URL不能为空");
+            }
+        }
+
+        //上级菜单类型
+        int parentType = MenuType.CATALOG.getValue();
+        if(menu.getParentId() != 0){
+            SysMenu parentMenu = queryObject(menu.getParentId());
+            parentType = parentMenu.getType();
+        }
+
+        //目录、菜单
+        if(menu.getType() == MenuType.CATALOG.getValue() ||
+                menu.getType() == MenuType.MENU.getValue()){
+            if(parentType != MenuType.CATALOG.getValue()){
+                throw new ServiceException("上级菜单只能为目录类型");
+            }
+            return ;
+        }
+
+        //按钮
+        if(menu.getType() == MenuType.BUTTON.getValue()){
+            if(parentType != MenuType.MENU.getValue()){
+                throw new ServiceException("上级菜单只能为菜单类型");
+            }
+            return ;
+        }
     }
 }

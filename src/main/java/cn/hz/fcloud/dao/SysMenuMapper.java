@@ -27,4 +27,14 @@ public interface SysMenuMapper {
      * @param parentId 父菜单ID
      */
     List<SysMenu> queryListParentId(Long parentId);
+
+    /**
+     * 查询菜单列表（不带分页）总数
+     * @return
+     */
+    int queryTotal();
+
+    SysMenu queryObject(Long menuId);
+
+
 }

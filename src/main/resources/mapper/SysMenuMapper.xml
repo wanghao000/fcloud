@@ -127,14 +127,20 @@
   </update>
   <select id="queryList" resultType="cn.hz.fcloud.entity.SysMenu">
     select m.*,(select p.name from sys_menu p where p.menu_id = m.parent_id) as parentName
-    from sys_menu m order by m.order_num asc
+    from sys_menu m order by m.type asc
     <if test="offset != null and limit != null">
       limit #{offset}, #{limit}
     </if>
+  </select>
+  <select id="queryObject" resultType="cn.hz.fcloud.entity.SysMenu">
+		select * from sys_menu where menu_id = #{value}
   </select>
   <select id="queryListParentId" resultType="cn.hz.fcloud.entity.SysMenu">
 		select
         <include refid="Base_Column_List" />
 		from sys_menu where parent_id = #{parentId} order by order_num asc
 	</select>
+  <select id="queryTotal" resultType="int">
+		select count(*) from sys_menu
+  </select>
 </mapper>

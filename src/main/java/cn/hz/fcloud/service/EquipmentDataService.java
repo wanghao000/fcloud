@@ -25,8 +25,13 @@ public interface EquipmentDataService {
 
     List<Map<String,Object>> lineChartMap(List<Long> ids);
 
-    List<Map<String, Object>> findAlermEquipmentAndCount();
+    List<Map<String, Object>> findAlarmEquipmentAndCount();
 
-    List<Map<String, Object>> findAlermEquipmentAndCountByUser(long userId);
+    List<Map<String, Object>> findAlarmEquipmentAndCountByUser(long userId);
 
+    List<Map<String, Object>> findCompanyAlarmCount();
+
+    List<Map<String, Object>> find7dayAlarmCount();
+
+    List<Map<String, Object>> recent5Record();
 }

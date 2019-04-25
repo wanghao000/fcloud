@@ -11,6 +11,16 @@ public interface SysMenuService {
      */
     List<SysMenu> queryList(Map<String, Object> map);
     /**
+     * 查询菜单
+     */
+    SysMenu queryObject(Long menuId);
+
+    /**
+     * 查询菜单列表（不带分页）总数
+     * @return
+     */
+    int queryTotal();
+    /**
      * 获取用户菜单列表
      */
     List<SysMenu> getUserMenuList(Long userId);
@@ -21,4 +31,8 @@ public interface SysMenuService {
      * @param menuIdList  用户菜单ID
      */
     List<SysMenu> queryListParentId(Long parentId, List<Long> menuIdList);
+
+    void save(SysMenu sysMenu);
+
+    void update(SysMenu sysMenu);
 }

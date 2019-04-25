@@ -50,10 +50,21 @@
         </foreach>
         GROUP BY days;
     </select>
-    <select id="findAlermEquipmentAndCount" resultType="map">
+    <select id="findAlarmEquipmentAndCount" resultType="map">
         select e.type,count(e.type) ct from equipment e left join equipment_data ed on e.code=ed.code group by e.type
     </select>
-    <select id="findAlermEquipmentAndCountByUser" parameterType="long" resultType="map">
+    <select id="findAlarmEquipmentAndCountByUser" parameterType="long" resultType="map">
         select c.type,count(c.type) ct from equipment_data ed right join (select e.id,e.code,e.type from equipment e right join (select c.id,c.name from company c right join (select p.id from sys_user u right join provider p on u.provider_id=p.id where u.id=#{userId}) a on c.provider_id=a.id) b on e.company_id=b.id) c on ed.code=c.code group by c.type
+    </select>
+    <select id="findCompanyAlarmCount" resultType="map">
+        select a.name,count(a.name) cn from (select c.name,e.code from company c left join equipment e on c.id=e.company_id)a left join equipment_data ed on a.code=ed.code group by a.name
+    </select>
+    <select id="find7dayAlarmCount" resultType="map">
+        <![CDATA[
+            select date_format(ed.create_time,"%m-%d") dfc,count(e.code) cc from equipment e left join equipment_data ed on e.code=ed.code where date_sub(curdate(),interval 7 day)<date(ed.create_time) group by dfc order by dfc
+        ]]>
+    </select>
+    <select id="recent5Record" resultType="map">
+        select sc.merger_short_name,a.code,a.name,a.type,a.address,a.info from sys_china sc right join (select e.code,e.name,e.type,e.district,e.address,ed.info from equipment e left join equipment_data ed on e.code=ed.code order by ed.create_time desc limit 5)a on sc.id=a.district
     </select>
 </mapper>

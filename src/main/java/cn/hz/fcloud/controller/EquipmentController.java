@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.invoke.SwitchPoint;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -140,20 +139,20 @@ public class EquipmentController {
         return tac;
 	}
 
-    @RequestMapping("/alermEquipmentAndCount")
+    @RequestMapping("/alarmEquipmentAndCount")
     @ResponseBody
-    public Map<String, Object> alermEquipmentAndCount(){
+    public Map<String, Object> alarmEquipmentAndCount(){
         Map<String, Object> aec = new HashMap<>();
         List<Object> name = new ArrayList<>();
         List<Object> count = new ArrayList<>();
-        List<Map<String, Object>> alermEquipmentAndCount;
+        List<Map<String, Object>> alarmEquipmentAndCount;
         SysUser user = ShiroUtil.getUserEntity();
         if (user.getType() == 1) {
-            alermEquipmentAndCount = eqdataService.findAlermEquipmentAndCount();
+            alarmEquipmentAndCount = eqdataService.findAlarmEquipmentAndCount();
         } else {
-            alermEquipmentAndCount = eqdataService.findAlermEquipmentAndCountByUser(user.getId());
+            alarmEquipmentAndCount = eqdataService.findAlarmEquipmentAndCountByUser(user.getId());
         }
-        for (Map<String, Object> map : alermEquipmentAndCount) {
+        for (Map<String, Object> map : alarmEquipmentAndCount) {
             if("0".equals(String.valueOf(map.get("type")))) {
                 name.add("无线烟感");
                 count.add(map.get("ct"));
@@ -184,5 +183,47 @@ public class EquipmentController {
         cc.put("name", name);
         cc.put("count", count);
         return cc;
+    }
+
+    @RequestMapping("findCompanyAlarmCount")
+    @ResponseBody
+    public Map<String, Object> findCompanyAlarmCount(){
+        Map<String, Object> cac = new HashMap<>();
+        List<Object> name = new ArrayList<>();
+        List<Object> count = new ArrayList<>();
+        List<Map<String, Object>> companyAlarmCount = eqdataService.findCompanyAlarmCount();
+        for (Map<String, Object> map : companyAlarmCount) {
+            name.add(map.get("name"));
+            count.add(map.get("cn"));
+        }
+        cac.put("name", name);
+        cac.put("count", count);
+        return cac;
+    }
+
+    @RequestMapping("find7dayAlarmCount")
+    @ResponseBody
+    public Map<String, Object> find7dayAlarmCount(){
+        Map<String, Object> cac = new HashMap<>();
+        List<Object> date = new ArrayList<>();
+        List<Object> count = new ArrayList<>();
+        List<Map<String, Object>> companyAlarmCount = eqdataService.find7dayAlarmCount();
+        for (Map<String, Object> map : companyAlarmCount) {
+            date.add(map.get("dfc"));
+            count.add(map.get("cc"));
+        }
+        cac.put("date", date);
+        cac.put("count", count);
+        return cac;
+    }
+
+    @RequestMapping("recent5Record")
+    @ResponseBody
+    public List<Map<String, Object>> recent5Record(){
+        List<Map<String, Object>> companyAlarmCount = eqdataService.recent5Record();
+        for (Map<String, Object> map : companyAlarmCount) {
+            System.out.println(map);
+        }
+        return companyAlarmCount;
     }
 }

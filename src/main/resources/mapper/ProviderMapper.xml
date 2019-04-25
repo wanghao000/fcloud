@@ -42,8 +42,22 @@ RIGHT JOIN (
 		provider p
 	LEFT JOIN company c ON p.id = c.provider_id
 ) pc ON e.company_id = pc.cid
+where 1 = 1
+    <if test="name!=null and name!=''">
+      and pc.name like CONCAT('%',#{name},'%')
+    </if>
 GROUP BY
 	pc.id
+	order by pc.id limit #{offset},#{limit}
+  </select>
+  <select id="findAllProviderCount" resultType="integer">
+    SELECT
+    count(p.id) from provider p
+    where 1 = 1
+    <if test="name!=null and name!=''">
+      and p.name like CONCAT('%',#{name},'%')
+    </if>
+    order by p.id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from provider

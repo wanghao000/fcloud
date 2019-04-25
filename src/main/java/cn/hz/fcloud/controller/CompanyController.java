@@ -11,10 +11,8 @@ import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -34,12 +32,19 @@ public class CompanyController {
     public TableReturn findAllCompanys(@RequestBody Map<String,Object> map){
         user = ShiroUtil.getUserEntity();
         List<Company> coms = null;
+        int count = 0;
         if(user.getType() == 1){
             coms = companyService.findAllCompanys(map);
+            System.out.println("-------------------------------------------------------------------------------------------");
+            System.out.println(coms.size());
+            count = companyService.findAllCompanysCount(map);
+            System.out.println("-------------------------------------------------------------------------------------------");
+            System.out.println(count);
         }else if(user.getType() == 2){
-            coms = companyService.findComsByProId(user.getProviderId());
+            coms = companyService.findComsByProId(map);
+            count = companyService.findComsByProIdCount(map);
         }
-        return new TableReturn(coms,coms.size());
+        return new TableReturn(coms,count);
     }
     @RequestMapping("/modify/{id}/{isDelete}")
     public R modifyState(@PathVariable("id") int id, @PathVariable("isDelete") int isDelete){
@@ -49,6 +54,15 @@ public class CompanyController {
     @RequestMapping("/providerList")
     public List<Provider> providerList(){
         return providerService.selectIdAndName();
+    }
+
+    @RequestMapping("/save")
+    public void companySave(@ModelAttribute("company") Company company,@RequestParam("file") MultipartFile file){
+        String originalFilename = file.getOriginalFilename();
+        System.out.println(originalFilename);
+        System.out.println(company);
+//        return 11213123;
+
     }
 
 }

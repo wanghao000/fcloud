@@ -15,8 +15,6 @@
     <link href="$rc.contextPath/statics/plugins/bootstrap-table/css/bootstrap-table.css" rel="stylesheet">
     <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
     <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
-    <!--下拉框-->
-    <link href="$rc.contextPath/statics/plugins/select/nice-select.css" rel="stylesheet">
     <!-- Sweet Alert -->
     <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
@@ -43,6 +41,7 @@
                                 </button>
                             #end
                         </div>
+                        <input type="text" placeholder="搜索" class="form-control col-sm-3" id="name" style="position: absolute;margin-top: 10px;margin-left: 70%;width: 20%;">
                         <table id="tb_content"></table>
                     </div>
                     <!-- End Example Events -->
@@ -107,17 +106,7 @@
         //2.初始化Table
         var  oTable = new TableInit('$rc.contextPath/sys/provider/list',columns);
         oTable.Init();
-        Query();
     })
-
-    function GetQueryParams() {
-        //以下参数，为各具体功能根据查询条件进行修改
-        //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-        var temp = {
-
-        };
-        return temp;
-    }
 
     function load(url) {
         var name = window.name;
@@ -139,6 +128,17 @@
                 }
             }
         });
+    }
+    $('#name').bind('input propertychange', function(){
+        Query();
+    })
+    function GetQueryParams() {
+        //以下参数，为各具体功能根据查询条件进行修改
+        //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+        var temp = {
+            name:$("#name").val()
+        };
+        return temp;
     }
 </script>
 

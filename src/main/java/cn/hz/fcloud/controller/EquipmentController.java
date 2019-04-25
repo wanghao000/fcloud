@@ -52,16 +52,17 @@ public class EquipmentController {
     }
 
     @RequestMapping("/list")
-    public TableReturn findAllEquiments(){
+    public TableReturn findAllEquiments(@RequestBody Map<String,Object> map ){
         SysUser user = ShiroUtil.getUserEntity();
         List<EqInfos> eqs = null;
+        int count = 0;
         switch (user.getType()){
-            case 1 : eqs = EqInfosService.findAll();break;
-            case 2 : eqs = EqInfosService.findByProviderId(user.getProviderId());break;
-            case 3 : eqs = EqInfosService.findByComId(user.getCompanyId());break;
+            case 1 : eqs = EqInfosService.findAll(map);count = EqInfosService.findAllCount(map);break;
+            case 2 : map.put("id",user.getProviderId());eqs = EqInfosService.findByProviderId(map);count = EqInfosService.findByProviderIdCount(map);break;
+            case 3 : map.put("id",user.getCompanyId());eqs = EqInfosService.findByComId(map);count = EqInfosService.findByComIdCount(map);break;
         }
 
-        return new TableReturn(eqs,eqs.size());
+        return new TableReturn(eqs,count);
     }
 
     @RequestMapping("/find/{code}")

@@ -17,7 +17,21 @@
        (SELECT name from sys_china where id = e.city)as c_name,
        (SELECT name from sys_china where id = e.district)as d_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
+       where 1 = 1
+           <if test="name!=null and name!=''">
+                and e.name like CONCAT('%',#{name},'%')
+           </if>
+           order by e.id limit #{offset},#{limit}
     </select>
+
+    <select id="findAllCount" resultType="integer">
+        SELECT count(e.id) from equipment e
+        where 1 = 1
+        <if test="name!=null and name!=''">
+            and e.name like CONCAT('%',#{name},'%')
+        </if>
+    </select>
+
 
     <select id="findByComId" resultType="cn.hz.fcloud.entity.EqInfos">
        SELECT e.*,
@@ -26,6 +40,18 @@
        (SELECT name from sys_china where id = e.district)as d_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
        where e.company_id = #{id}
+        <if test="name!=null and name!=''">
+            and e.name like CONCAT('%',#{name},'%')
+        </if>
+        order by e.id limit #{offset},#{limit}
+    </select>
+
+    <select id="findByComIdCount" resultType="integer">
+        SELECT count(e.id) from equipment e
+        where e.company_id = #{id}
+        <if test="name!=null and name!=''">
+            and e.name like CONCAT('%',#{name},'%')
+        </if>
     </select>
     <select id="findByProviderId" resultType="cn.hz.fcloud.entity.EqInfos">
      SELECT e.*,
@@ -33,5 +59,18 @@
 (SELECT name from sys_china s where s.id = e.city)as c_name,
 (SELECT name from sys_china s where s.id = e.district)as d_name
  FROM equipment e WHERE e.company_id in (SELECT c.id FROM company c LEFT JOIN provider p on c.provider_id = p.id WHERE p.id = #{id})
+        <if test="name!=null and name!=''">
+            and e.name like CONCAT('%',#{name},'%')
+        </if>
+        order by e.id limit #{offset},#{limit}
+    </select>
+
+
+    <select id="findByProviderIdCount" resultType="integer">
+        SELECT count(e.id)
+        FROM equipment e WHERE e.company_id in (SELECT c.id FROM company c LEFT JOIN provider p on c.provider_id = p.id WHERE p.id = #{id})
+        <if test="name!=null and name!=''">
+            and e.name like CONCAT('%',#{name},'%')
+        </if>
     </select>
 </mapper>

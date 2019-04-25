@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProviderServiceImpl implements ProviderService {
@@ -17,9 +18,11 @@ public class ProviderServiceImpl implements ProviderService {
         return providerMapper.selectByPrimaryKey(id);
     }
     @Override
-    public List<Provider> findAllProvider(){
-        return providerMapper.findAllProvider();
+    public List<Provider> findAllProvider(Map<String,Object> map){
+        return providerMapper.findAllProvider(map);
     }
+    @Override
+    public int findAllProviderCount(Map<String,Object> map){return providerMapper.findAllProviderCount(map);}
     @Override
     public int insert(Provider provider){
         return providerMapper.insert(provider);

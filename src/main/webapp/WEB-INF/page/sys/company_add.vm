@@ -32,11 +32,8 @@
                     <h5>公司添加</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" onsubmit="return false;">
+                    <form class="form-horizontal" onsubmit="return false;" >
                         <div class="form-group">
-##                            <h4 class="form-section theme-color">
-##                                <i class="fa fa-newspaper-o">所属服务商</i>
-##                            </h4>
                             <div class="col-sm-6">
                                 <h5>所属服务商</h5>
                                 <select class="form-control m-b" name="providerId" id="providerId">
@@ -45,7 +42,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <h5>公司名称</h5>
-                                <input type="text" class="form-control" id="name">
+                                <input type="text" class="form-control" id="name" name="name">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -70,17 +67,32 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-6">
-                                <div class="col-sm-12">
+                                <div class="col-sm-12" style="margin-top: 10px;">
                                     <h5>备注</h5>
-                                    <input type="text" class="form-control" id="remark">
+                                    <input type="text" class="form-control" id="remark" name="remark">
                                 </div>
-                                <div class="col-sm-12" style="margin-top: 20px;">
+                                <div class="col-sm-12" style="margin-top: 30px;">
                                     <h5>地址</h5>
-                                    <input type="text" class="form-control" id="address">
+                                    <input type="text" class="form-control" id="address" name="remark">
                                 </div>
                             </div>
-                            <div class="col-sm-12" style="margin-top: 20px;">
-
+                            <div class="col-sm-6" style="margin-top: 20px;">
+                                <div class="form-group">
+                                    <div class="col-md-8">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput" id="uploadImageDiv">
+                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                                <img src="" alt="" style="height:100%;width:100%"/>
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="width: 200px; height: 150px;"></div>
+                                            <div>
+                        <span class="btn default btn-file"> <span
+                                class="fileinput-new">选择图片</span> <span class="fileinput-exists">更改</span> <input type="file" name="uploadImage" id="uploadImage" /></span>
+                                                <span>请选择1M以内图片</span>
+                                            </div>
+                                        </div>
+                                        <div id="titleImageError" style="color: #a94442"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed" ></div>
@@ -124,20 +136,27 @@
             lng:$("#lng").val(),
             lat:$("#lat").val()
         };
-        jQuery.ajax({
-            type: "POST",
-            url: "$rc.contextPath/sys/eq/save",
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType:"application/json;charset=UTF-8",
-            success: function(result){
-                if(result.code == 0){//返回成功
-                    history.go(-1);
-                }else{
-                    swal("错误",result.msg,"error" );
-                }
-            }
-        });
+        var file = $("#uploadImage")[0].files[0];
+        // console.log(file);
+        var company = $(".form-horizontal").serializeArray();
+        var formdata = new FormData($(".form-horizontal"));
+        // formdata.append('company',company);
+        // formdata.append('file',file)
+        console.log(formdata);
+         ## jQuery.ajax({
+         ##     type: "POST",
+         ##     url: "$rc.contextPath/sys/company/save",
+         ##     data: formdata,
+         ##     dataType: "json",
+         ##     contentType:"application/form-data;charset=UTF-8",
+         ##     success: function(result){
+         ##         if(result.code == 0){//返回成功
+         ##             history.go(-1);
+         ##         }else{
+         ##             swal("错误",result.msg,"error" );
+         ##         }
+         ##     }
+         ## });
     });
        $(function () {
            $('.i-checks').iCheck({

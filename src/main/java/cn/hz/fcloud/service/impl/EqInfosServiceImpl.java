@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EqInfosServiceImpl implements EqInfosService {
@@ -22,19 +23,35 @@ public class EqInfosServiceImpl implements EqInfosService {
 
     //获取所有设备详细信息
     @Override
-    public List<EqInfos> findAll(){
-        return mapper.findAll();
+    public List<EqInfos> findAll(Map<String,Object> map){
+        return mapper.findAll(map);
     }
+
+    @Override
+    public int findAllCount(Map<String,Object> map){
+        return mapper.findAllCount(map);
+    }
+
 
     //根据公司id获取设备信息
     @Override
-   public  List<EqInfos> findByComId(Long id){
-        return mapper.findByComId(id);
+   public  List<EqInfos> findByComId(Map<String,Object> map){
+        return mapper.findByComId(map);
     }
 
+    @Override
+    public  int findByComIdCount(Map<String,Object> map){
+        return mapper.findByComIdCount(map);
+    }
     //根据服务商id获取设备信息
     @Override
-    public List<EqInfos>findByProviderId(Long id){
-        return mapper.findByProviderId(id);
+    public List<EqInfos> findByProviderId(Map<String,Object> map){
+        return mapper.findByProviderId(map);
     }
+
+    @Override
+    public int findByProviderIdCount(Map<String,Object> map){
+        return mapper.findByProviderIdCount(map);
+    }
+
 }

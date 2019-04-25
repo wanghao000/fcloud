@@ -32,9 +32,9 @@ public class ProviderController {
     private SysUser user;
 
     @RequestMapping("/list")
-    public TableReturn providerList(){
-        List<Provider> pros = providerService.findAllProvider();
-        return new TableReturn(pros,pros.size());
+    public TableReturn providerList(@RequestBody Map<String,Object> map){
+        List<Provider> pros = providerService.findAllProvider(map);
+        return new TableReturn(pros,providerService.findAllProviderCount(map));
     }
     @RequestMapping("/save")
     public R insertProvider(@RequestBody Provider provider){

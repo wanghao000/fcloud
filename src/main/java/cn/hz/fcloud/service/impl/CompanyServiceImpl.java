@@ -34,11 +34,22 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> findAllCompanys(Map<String,Object> map){
         return companyMapper.findAllCompanys(map);
     }
+
+    @Override
+    public int findAllCompanysCount(Map<String,Object> map){
+        return companyMapper.findAllCompanysCount(map);
+    }
     //根据服务商id获取所有企业信息及设备数量，包括禁用
     @Override
-    public List<Company> findComsByProId(Long id){
-        return companyMapper.findComsByProId(id);
+    public List<Company> findComsByProId(Map<String,Object> map){
+        return companyMapper.findComsByProId(map);
     }
+
+    @Override
+    public int findComsByProIdCount(Map<String,Object> map){
+        return companyMapper.findComsByProIdCount(map);
+    }
+
     @Override
     public int modifyState(int id,int isDelete){
         return companyMapper.modifyState(id,isDelete == 1?0:1);

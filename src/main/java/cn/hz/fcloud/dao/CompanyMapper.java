@@ -28,8 +28,12 @@ public interface CompanyMapper {
     List<Company> companyList();
     //获取所有企业信息及设备数量，包括禁用
     List<Company> findAllCompanys(Map<String,Object> map);
+
+    int findAllCompanysCount(Map<String,Object> map);
     //根据服务商id获取所有企业信息及设备数量，包括禁用
-    List<Company> findComsByProId(Long id);
+    List<Company> findComsByProId(Map<String,Object> map);
+
+    int findComsByProIdCount(Map<String,Object> map);
 
     int modifyState(@Param("id") int id,@Param("isDelete") int isDelete);
 }

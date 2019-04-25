@@ -67,12 +67,27 @@ public class EquipmentDataServiceImpl implements EquipmentDataService {
     }
 
     @Override
-    public List<Map<String, Object>> findAlermEquipmentAndCount() {
-        return equipmentDataMapper.findAlermEquipmentAndCount();
+    public List<Map<String, Object>> findAlarmEquipmentAndCount() {
+        return equipmentDataMapper.findAlarmEquipmentAndCount();
     }
 
     @Override
-    public List<Map<String, Object>> findAlermEquipmentAndCountByUser(long userId) {
-        return equipmentDataMapper.findAlermEquipmentAndCountByUser(userId);
+    public List<Map<String, Object>> findAlarmEquipmentAndCountByUser(long userId) {
+        return equipmentDataMapper.findAlarmEquipmentAndCountByUser(userId);
+    }
+
+    @Override
+    public List<Map<String, Object>> findCompanyAlarmCount() {
+        return equipmentDataMapper.findCompanyAlarmCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> find7dayAlarmCount() {
+        return equipmentDataMapper.find7dayAlarmCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> recent5Record() {
+        return equipmentDataMapper.recent5Record();
     }
 }

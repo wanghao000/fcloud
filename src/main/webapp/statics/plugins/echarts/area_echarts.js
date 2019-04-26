@@ -196,6 +196,23 @@ var data = [
      {name: '武汉', value: 0},
      {name: '大庆', value: 0}
 ];
+$.ajax({
+    type:"post",
+    // async:"false",
+    url:"sys/eq/findAreaAlarmCount",
+    dataType:"json",
+    success:function(result){
+        for (var i = 0; i < data.length; i++) {
+            for (var j = 0; j < result.length; j++) {
+                if (data[i].name == result[j].sn) {
+                    data[i].value = result[j].csi;
+                    f();
+                }
+            }
+        }
+    }
+});
+function f() {
 var geoCoordMap = {
     '海门':[121.15,31.89],
     '鄂尔多斯':[109.781327,39.608266],
@@ -388,6 +405,7 @@ var geoCoordMap = {
     '武汉':[114.31,30.52],
     '大庆':[125.03,46.58]
 };
+
 var convertData = function (data) {
     var res = [];
     for (var i = 0; i < data.length; i++) {
@@ -509,6 +527,7 @@ option = {
         window.addEventListener("resize",function(){
             myChart.resize();
         });
+}
     }
 
 })

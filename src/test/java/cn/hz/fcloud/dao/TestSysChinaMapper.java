@@ -1,14 +1,14 @@
 package cn.hz.fcloud.dao;
 
-import cn.hz.fcloud.entity.*;
-import cn.hz.fcloud.utils.R;
+import cn.hz.fcloud.entity.Provider;
+import cn.hz.fcloud.entity.SysChina;
+import cn.hz.fcloud.entity.SysUser;
 import cn.hz.fcloud.utils.ShiroUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,10 +53,10 @@ public class TestSysChinaMapper {
     public void eqInfosTest(){
 //        EqInfos infos = eqInfosMapper.findOne("8123456");
 //        System.out.println(infos);
-        List<EqInfos> list = eqInfosMapper.findByComId(new Long(1));
+        /*List<EqInfos> list = eqInfosMapper.findByComId(new Long(1));
         for(EqInfos eq : list){
             System.out.println(eq);
-        }
+        }*/
     }
 
     @Test

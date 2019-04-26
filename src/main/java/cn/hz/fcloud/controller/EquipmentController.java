@@ -192,7 +192,13 @@ public class EquipmentController {
         Map<String, Object> cac = new HashMap<>();
         List<Object> name = new ArrayList<>();
         List<Object> count = new ArrayList<>();
-        List<Map<String, Object>> companyAlarmCount = eqdataService.findCompanyAlarmCount();
+        SysUser user = ShiroUtil.getUserEntity();
+        List<Map<String, Object>> companyAlarmCount;
+        if(user.getType() == 1) {
+            companyAlarmCount = eqdataService.findCompanyAlarmCount();
+        } else {
+            companyAlarmCount = eqdataService.findCompanyAlarmCountByUser(user.getId());
+        }
         for (Map<String, Object> map : companyAlarmCount) {
             name.add(map.get("name"));
             count.add(map.get("cn"));
@@ -208,7 +214,13 @@ public class EquipmentController {
         Map<String, Object> cac = new HashMap<>();
         List<Object> date = new ArrayList<>();
         List<Object> count = new ArrayList<>();
-        List<Map<String, Object>> companyAlarmCount = eqdataService.find7dayAlarmCount();
+        SysUser user = ShiroUtil.getUserEntity();
+        List<Map<String, Object>> companyAlarmCount;
+        if(user.getType() == 1) {
+            companyAlarmCount = eqdataService.find7dayAlarmCount();
+        } else {
+            companyAlarmCount = eqdataService.find7dayAlarmCountByUser(user.getId());
+        }
         for (Map<String, Object> map : companyAlarmCount) {
             date.add(map.get("dfc"));
             count.add(map.get("cc"));
@@ -221,10 +233,14 @@ public class EquipmentController {
     @RequestMapping("recent5Record")
     @ResponseBody
     public List<Map<String, Object>> recent5Record(){
-        List<Map<String, Object>> companyAlarmCount = eqdataService.recent5Record();
-        for (Map<String, Object> map : companyAlarmCount) {
-            System.out.println(map);
-        }
-        return companyAlarmCount;
+        SysUser user = ShiroUtil.getUserEntity();
+        return user.getType() == 1?eqdataService.recent5Record():eqdataService.recent5RecordByUser(user.getId());
+    }
+
+    @RequestMapping("findAreaAlarmCount")
+    @ResponseBody
+    public List<Map<String, Object>> findAreaAlarmCount(){
+        SysUser user = ShiroUtil.getUserEntity();
+        return user.getType() == 1?eqdataService.findAreaAlarmCount():eqdataService.findAreaAlarmCountByUser(user.getId());
     }
 }

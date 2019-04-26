@@ -59,12 +59,29 @@
     <select id="findCompanyAlarmCount" resultType="map">
         select a.name,count(a.name) cn from (select c.name,e.code from company c left join equipment e on c.id=e.company_id)a left join equipment_data ed on a.code=ed.code group by a.name
     </select>
+    <select id="findCompanyAlarmCountByUser" parameterType="long" resultType="map">
+        select d.name,count(d.id) cn from equipment_data ed right join (select e.code,c.id,c.`name` from equipment e right join (select c.id,c.name from company c right join (select p.id from provider p right join (select provider_id from sys_user where id=#{userId} and provider_id is not null group by provider_id)a on p.id=a.provider_id)b on c.provider_id=b.id where c.id is not null)c on e.company_id=c.id)d on ed.`code`=d.`code` group by d.id
+    </select>
     <select id="find7dayAlarmCount" resultType="map">
         <![CDATA[
-            select date_format(ed.create_time,"%m-%d") dfc,count(e.code) cc from equipment e left join equipment_data ed on e.code=ed.code where date_sub(curdate(),interval 7 day)<date(ed.create_time) group by dfc order by dfc
+            select date_format(ed.create_time,"%m-%d") dfc,count(e.code) cc from equipment e left join equipment_data ed on e.code=ed.code where date_sub(curdate(),interval 7 day)<=date(ed.create_time) group by dfc order by dfc
+        ]]>
+    </select>
+    <select id="find7dayAlarmCountByUser" parameterType="long" resultType="map">
+        <![CDATA[
+            select DATE_FORMAT(ed.create_time,"%m-%d") dfc,count(d.code) cc from equipment_data ed right join (select e.code from equipment e right join (select c.id from company c right join (select p.id from provider p right join (select provider_id from sys_user where id=#{userId} and provider_id is not null)a on p.id=a.provider_id)b on c.provider_id=b.id)c on e.company_id=c.id)d on ed.code=d.code where DATE_SUB(CURDATE(),INTERVAL 7 DAY)<=DATE(ed.create_time) group by dfc order by dfc
         ]]>
     </select>
     <select id="recent5Record" resultType="map">
         select sc.merger_short_name,a.code,a.name,a.type,a.address,a.info from sys_china sc right join (select e.code,e.name,e.type,e.district,e.address,ed.info from equipment e left join equipment_data ed on e.code=ed.code order by ed.create_time desc limit 5)a on sc.id=a.district
+    </select>
+    <select id="recent5RecordByUser" parameterType="long" resultType="map">
+        select sc.merger_short_name,e.code,e.name,e.type,e.address,e.info from sys_china sc right join (select d.*,ed.info from equipment_data ed right join (select e.code,e.name,e.type,c.district,e.address from equipment e right join (select c.id,c.district from company c right join (select p.id from provider p right join (select provider_id from sys_user where id=#{userId} and provider_id is not null)a on p.id=a.provider_id)b on c.provider_id=b.id)c on e.company_id=c.id)d on ed.`code`=d.`code` order by ed.create_time desc limit 5)e on sc.id=e.district
+    </select>
+    <select id="findAreaAlarmCount" resultType="map">
+        select sc.short_name sn,b.csi from sys_china sc right join (select sc.parent_id,count(sc.id) csi from sys_china sc right join (select e.district from equipment e right join equipment_data ed on e.`code`=ed.`code`)a on sc.id=a.district where sc.id is not null group by sc.id)b on sc.id=b.parent_id
+    </select>
+    <select id="findAreaAlarmCountByUser" parameterType="long" resultType="map">
+        select sc.short_name sn,f.csi from sys_china sc right join (select sc.parent_id,e.csi from sys_china sc right join (select d.district,count(d.district) csi from equipment_data ed right join (select e.code,c.district from equipment e right join (select c.id,c.district from company c right join (select p.id from provider p right join (select provider_id from sys_user where id=#{userId} and provider_id is not null)a on p.id=a.provider_id)b on c.provider_id=b.id)c on e.company_id=c.id)d on ed.code=d.code where ed.id is not null group by d.district)e on sc.id=e.district)f on sc.id=f.parent_id
     </select>
 </mapper>

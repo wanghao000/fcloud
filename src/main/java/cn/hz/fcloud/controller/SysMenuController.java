@@ -64,7 +64,21 @@ public class SysMenuController {
 
         return R.ok();
     }
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    @RequiresPermissions("sys:menu:delete")
+    public R delete(@RequestBody Long[] menuIds){
+        /*for(Long menuId : menuIds){
+            if(menuId.longValue() <= 28){
+                return R.error("系统菜单，不能删除");
+            }
+        }*/
+        sysMenuService.deleteBatch(menuIds);
 
+        return R.ok();
+    }
 
     /**
      * 修改

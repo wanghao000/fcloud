@@ -41,6 +41,7 @@ public class CompanyController {
             System.out.println("-------------------------------------------------------------------------------------------");
             System.out.println(count);
         }else if(user.getType() == 2){
+            map.put("id",user.getProviderId());
             coms = companyService.findComsByProId(map);
             count = companyService.findComsByProIdCount(map);
         }

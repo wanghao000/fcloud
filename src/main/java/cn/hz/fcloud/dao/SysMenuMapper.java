@@ -17,7 +17,7 @@ public interface SysMenuMapper {
     int updateByPrimaryKeySelective(SysMenu record);
 
     int updateByPrimaryKey(SysMenu record);
-
+    int deleteBatch(Object[] id);
     /**
      * 查询菜单列表
      */

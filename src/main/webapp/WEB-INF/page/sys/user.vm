@@ -95,6 +95,27 @@
     <!-- End Panel Other -->
 </div>
 
+<div style="display: none;padding:10px;" id="roleLayer">
+        <div class="col-xs-2" style="width:45%">
+            <select multiple class="form-control" style="height: 200px" id="roleall">
+
+            </select>
+            <h6>全部角色</h6>
+        </div>
+        <div class="col-xs-1" style="text-align: center;margin-top: 100px;width: 10%">
+            <i class="fa fa-exchange" aria-hidden="true"></i>
+        </div>
+        <div class="col-xs-2" style="width:45%;">
+            <select multiple class="form-control"  style="height:200px">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+            <h6>拥有角色</h6>
+        </div>
+</div>
 <!-- 全局js -->
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
@@ -105,6 +126,7 @@
 <script src="$rc.contextPath/statics/js/tableIndex.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/layer/layer.js"></script>
 <script>
     jQuery.ajax({
         type: "GET",
@@ -159,7 +181,7 @@
             title: '操作',
             formatter:function (value,row,index) {
                 return [
-                    '<a class="btn btn-info"><i class="fa fa-wrench"> </i> 权限配置</a> ',
+                    '<a class="btn btn-info" onclick="toRole()"><i class="fa fa-wrench"> </i> 权限配置</a> ',
                     '<a class="btn btn-info" onclick="load(\'sys/user_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #if($shiro.hasPermission("sys:user:delete"))
                         ,row.isDelete?'<a class="btn btn-danger" onclick="delOrUse('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="delOrUse('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
@@ -204,6 +226,36 @@
                 }else{
                     swal("错误",result.msg,"error" );
                 }
+            }
+        });
+    }
+    function toRole() {
+        jQuery.ajax({
+            url:"$rc.contextPath/sys/role/listall",
+            type:"GET",
+            dataType:"json",
+            success:function (result) {
+                if(result.code==0){
+                    console.log(result)
+                    result.roleList.map(function (item,idex) {
+                        $("#roleall").append('<option value="'+item.roleId+'">'+item.roleName+'</option>');
+                    })
+                }
+            }
+        })
+        layer.open({
+            type: 1,
+            offset: '50px',
+            skin: 'layui-layer-molv',
+            title: "选择菜单",
+            area: ['400px', '360px'],
+            shade: 0,
+            shadeClose: false,
+            content: jQuery("#roleLayer"),
+            btn: ['确定', '取消'],
+            btn1: function (index) {
+
+                layer.close(index);
             }
         });
     }

@@ -99,7 +99,22 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public void update(SysMenu sysMenu) {
+        verifyForm(sysMenu);
+        int row = sysMenuMapper.updateByPrimaryKeySelective(sysMenu);
+        if(row==0){
+            throw new ServiceException("更新失败");
+        }
+    }
 
+    @Override
+    public void deleteBatch(Long[] menuIds) {
+        int row = sysMenuMapper.deleteBatch(menuIds);
+        if(row==0){
+            throw new ServiceException("删除失败");
+        }
+        if(row!=menuIds.length){
+            throw new ServiceException("部分菜单无法删除");
+        }
     }
 
     /**

@@ -34,6 +34,12 @@ public class SysRoleController {
         int total = sysRoleService.queryTotal(map);
         return new TableReturn(list,total);
     }
+    @RequestMapping("/listall")
+    public R listAll(){
+        //查询列表数据
+        List<SysRole> list = sysRoleService.queryList(null);
+        return R.ok().put("roleList",list);
+    }
     /**
      * 保存角色
      */

@@ -31,6 +31,8 @@ public class Company {
 
     private Integer eqsCount;
 
+    private String code;
+
     public Long getId() {
         return id;
     }
@@ -143,6 +145,14 @@ public class Company {
         this.eqsCount = eqsCount;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     @Override
     public String toString() {
         return "Company{" +
@@ -160,6 +170,7 @@ public class Company {
                 ", createTime=" + createTime +
                 ", isDelete=" + isDelete +
                 ", eqsCount=" + eqsCount +
+                ", code=" + code +
                 '}';
     }
 }

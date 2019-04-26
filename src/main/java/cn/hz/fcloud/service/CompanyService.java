@@ -23,4 +23,6 @@ public interface CompanyService {
     int findComsByProIdCount(Map<String,Object> map);
 
     int modifyState(int id,int isDelete);
+
+    String findCompanyCode();
 }

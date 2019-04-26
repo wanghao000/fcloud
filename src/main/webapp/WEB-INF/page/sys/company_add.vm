@@ -32,7 +32,7 @@
                     <h5>公司添加</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" onsubmit="return false;" >
+                    <form class="form-horizontal" onsubmit="return false;" enctype="multipart/form-data">
                         <div class="form-group">
                             <div class="col-sm-6">
                                 <h5>所属服务商</h5>
@@ -122,41 +122,39 @@
 <script src="$rc.contextPath/statics/js/bootstrap-fileinput.js"></script>
 <script>
     $("#save").click(function () {
-        var data = {
+        var company = {
             name : $("#name").val(),
             code : $("#code").val(),
-            companyId:$("#companyId").val(),
+            providerId:$("#providerId").val(),
             address : $("#address").val(),
-            createUser : $("#createUser").val(),
             remark : $("#remark").val(),
-            type:$("#type option:checked").val(),
             province:$("#province option:checked").val(),
             city:$("#city option:checked").val(),
             district:$("#district option:checked").val(),
-            lng:$("#lng").val(),
-            lat:$("#lat").val()
         };
         var file = $("#uploadImage")[0].files[0];
-        // console.log(file);
-        var company = $(".form-horizontal").serializeArray();
-        var formdata = new FormData($(".form-horizontal"));
-        // formdata.append('company',company);
-        // formdata.append('file',file)
-        console.log(formdata);
-         ## jQuery.ajax({
-         ##     type: "POST",
-         ##     url: "$rc.contextPath/sys/company/save",
-         ##     data: formdata,
-         ##     dataType: "json",
-         ##     contentType:"application/form-data;charset=UTF-8",
-         ##     success: function(result){
-         ##         if(result.code == 0){//返回成功
-         ##             history.go(-1);
-         ##         }else{
-         ##             swal("错误",result.msg,"error" );
-         ##         }
-         ##     }
-         ## });
+        var type = file.name.split(".")[1];
+        if(type == "png" || type == "jpg" || type == "bmp" || type == "jpeg"){
+            var formdata = new FormData();
+            formdata.append('company',JSON.stringify(company));
+            formdata.append('file',file);
+            jQuery.ajax({
+                type: "POST",
+                url: "$rc.contextPath/sys/company/save",
+                data: formdata,
+                processData: false,
+                contentType:false,
+                success: function(result){
+                    if(result.code == 0){//返回成功
+                        history.go(-1);
+                    }else{
+                        swal("错误",result.msg,"error" );
+                    }
+                }
+            });
+        }else{
+            swal("错误","不支持当前格式文件","error");
+        }
     });
        $(function () {
            $('.i-checks').iCheck({

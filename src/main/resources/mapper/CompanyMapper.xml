@@ -234,5 +234,7 @@
   <update id="modifyState">
       update company set is_delete = #{isDelete} where id = #{id}
   </update>
-
+  <select id="findCompanyCode" resultType="String">
+       select code from company order by code desc limit 1
+  </select>
 </mapper>

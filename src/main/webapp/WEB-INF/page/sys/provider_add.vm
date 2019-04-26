@@ -133,6 +133,48 @@
             }
         });
     });
+    //省市县三级联动
+    var url = "$rc.contextPath/sys/china/show/";
+    jQuery.post(url+"100000",function (pdata) {
+        var html = "";
+        jQuery.each(pdata,function(idx,item){
+            html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+        });
+        $("#province").append(html);
+    })
+
+    $("#province").change(function(){
+        // alert($("#province option:selected").text());
+        url = "$rc.contextPath/sys/china/show/";
+        if ($(this).val() == "") return;
+        $("#city option").remove();
+        $("#district option").remove();
+        var html = "<option value=''>请选择</option>";
+        // $("#city").append(html);
+        $("#district").append(html);
+        var code = $(this).find("option:selected").attr("exid");
+        url+=code;
+        jQuery.post(url,function (pdata) {
+            jQuery.each(pdata,function(idx,item){
+                html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+            });
+            $("#city").append(html);
+        })
+    });
+    $("#city").change(function(){
+        url = "$rc.contextPath/sys/china/show/";
+        if ($(this).val() == "") return;
+        $("#district option").remove();
+        var code = $(this).find("option:selected").attr("exid");
+        var html = "<option value=''>请选择</option>";
+        url += code;
+        jQuery.post(url,function (pdata) {
+            jQuery.each(pdata,function(idx,item){
+                html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+            });
+            $("#district").append(html);
+        });
+    });
 </script>
 
 

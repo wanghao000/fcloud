@@ -41,8 +41,5 @@
             <!-- 上传文件大小限制为5M，5*1024*1024 -->
             <value>2542880</value>
         </property>
-        <property name="maxInMemorySize">
-            <value>4096</value>
-        </property>
     </bean>
 </beans>

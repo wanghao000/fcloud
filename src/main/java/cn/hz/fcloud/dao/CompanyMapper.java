@@ -36,4 +36,7 @@ public interface CompanyMapper {
     int findComsByProIdCount(Map<String,Object> map);
 
     int modifyState(@Param("id") int id,@Param("isDelete") int isDelete);
+
+    //获取最近生成的公司code
+    String findCompanyCode();
 }

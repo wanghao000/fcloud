@@ -54,4 +54,9 @@ public class CompanyServiceImpl implements CompanyService {
     public int modifyState(int id,int isDelete){
         return companyMapper.modifyState(id,isDelete == 1?0:1);
     }
+
+    @Override
+    public String findCompanyCode(){
+        return companyMapper.findCompanyCode();
+    }
 }

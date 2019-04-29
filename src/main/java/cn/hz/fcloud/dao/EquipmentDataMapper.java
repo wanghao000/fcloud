@@ -35,7 +35,17 @@ public interface EquipmentDataMapper {
 
 	List<Map<String, Object>> findCompanyAlarmCount();
 
+	List<Map<String, Object>> findCompanyAlarmCountByUser(long userId);
+
 	List<Map<String, Object>> find7dayAlarmCount();
 
+	List<Map<String, Object>> find7dayAlarmCountByUser(long userId);
+
 	List<Map<String, Object>> recent5Record();
+
+	List<Map<String, Object>> recent5RecordByUser(long userId);
+
+	List<Map<String, Object>> findAreaAlarmCount();
+
+	List<Map<String, Object>> findAreaAlarmCountByUser(long userId);
 }

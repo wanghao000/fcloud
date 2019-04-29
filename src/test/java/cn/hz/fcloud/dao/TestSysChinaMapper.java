@@ -10,7 +10,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.io.*;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:spring/spring-jdbc.xml"})
 public class TestSysChinaMapper {
@@ -47,16 +51,18 @@ public class TestSysChinaMapper {
         for(Company com:coms){
             System.out.println(com);
         }*/
+       System.out.println(comMapper.findCompanyCode());
+        String s = String.format("%05d", 25);
     }
 
     @Test
     public void eqInfosTest(){
 //        EqInfos infos = eqInfosMapper.findOne("8123456");
 //        System.out.println(infos);
-        List<EqInfos> list = eqInfosMapper.findByComId(new Long(1));
-        for(EqInfos eq : list){
-            System.out.println(eq);
-        }
+//        List<EqInfos> list = eqInfosMapper.findByComId(new Long(1));
+//        for(EqInfos eq : list){
+//            System.out.println(eq);
+//        }
     }
 
     @Test
@@ -82,4 +88,22 @@ public class TestSysChinaMapper {
 //            System.out.println(obj);
 //        }
 //    }
+    @Test
+    public void testString(){
+//        System.out.println("img.jpg".split("\\.").length);
+        String str = "A00001";
+        System.out.println(Integer.valueOf(str.split("A")[1])+1);
+        String s = String.format("%05d", Integer.valueOf(str.split("A")[1])+1);
+        System.out.println(s);
+//        System.out.println(new );
+    }
+    @Test
+    public void testProperties() throws Exception{
+        Properties prop = new Properties();
+//        InputStream input = new FileInputStream(new File("file.properties"));
+        BufferedReader  input = new BufferedReader(new FileReader("/file.properties"));
+        prop.load(input);
+        String realPath = prop.getProperty("dir");
+        System.out.println(realPath);
+    }
 }

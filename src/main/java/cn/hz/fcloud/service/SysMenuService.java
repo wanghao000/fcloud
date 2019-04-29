@@ -35,4 +35,8 @@ public interface SysMenuService {
     void save(SysMenu sysMenu);
 
     void update(SysMenu sysMenu);
+    /**
+     * 删除
+     */
+    void deleteBatch(Long[] menuIds);
 }

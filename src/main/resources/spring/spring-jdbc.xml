@@ -15,7 +15,19 @@
         <property name="password" value="#{dbConfig.password}" />
         <property name="initialSize" value="#{dbConfig.initialSize}" />
         <property name="maxActive" value="#{dbConfig.maxActive}" />
+        <!-- 添加此处作用是为了在SQL监控页面显示sql执行语句，不配置不显示 -->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter" />
+            </list>
+        </property>
     </bean>
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="slowSqlMillis" value="1000" />
+        <property name="logSlowSql" value="true" />
+        <property name="mergeSql" value="true" />
+    </bean>
+
     <!-- 配置SqlSessionFactory对象 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!-- 注入数据库连接池 -->

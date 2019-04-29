@@ -1,6 +1,7 @@
 package cn.hz.fcloud.service;
 
 import cn.hz.fcloud.entity.SysRole;
+import cn.hz.fcloud.entity.pojo.RolePOJO;
 
 import java.util.List;
 import java.util.Map;
@@ -17,4 +18,6 @@ public interface SysRoleService {
     SysRole queryObject(Long roleId);
 
     void update(SysRole role);
+
+    List<SysRole> getNotIn(List<RolePOJO> lists);
 }

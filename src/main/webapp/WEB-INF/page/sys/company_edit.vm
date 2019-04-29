@@ -29,7 +29,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>公司添加</h5>
+                    <h5>公司编辑</h5>
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" onsubmit="return false;" enctype="multipart/form-data">
@@ -49,17 +49,17 @@
                         <h5>所在地址</h5>
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <select name="province" class="form-control m-b" id="province">
+                                <select name="province" class="form-control m-b" id="province" readonly>
                                     <option value="-1">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="city" class="form-control m-b" id="city">
+                                <select name="city" class="form-control m-b" id="city" readonly>
                                     <option value="-1">请选择</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                                <select name="district" id="district" class="form-control m-b" id="district">
+                                <select name="district" id="district" class="form-control m-b" id="district" readonly>
                                     <option value="-1">请选择</option>
                                 </select>
                             </div>
@@ -81,7 +81,7 @@
                                     <div class="col-md-8">
                                         <div class="fileinput fileinput-new" data-provides="fileinput" id="uploadImageDiv">
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                <img src="" alt="" style="height:100%;width:100%"/>
+                                                <img src="" alt="" style="height:100%;width:100%" id="picture"/>
                                             </div>
                                             <div class="fileinput-preview fileinput-exists thumbnail" style="width: 200px; height: 150px;"></div>
                                             <div>
@@ -122,7 +122,10 @@
 <script src="$rc.contextPath/statics/js/bootstrap-fileinput.js"></script>
 <script>
     $("#save").click(function () {
+        var id = window.location.search.split('=')[1];
+        alert(id);
         var company = {
+            id:id,
             name : $("#name").val(),
             code : $("#code").val(),
             providerId:$("#providerId").val(),
@@ -130,9 +133,10 @@
             remark : $("#remark").val(),
             province:$("#province option:checked").val(),
             city:$("#city option:checked").val(),
-            district:$("#district option:checked").val(),
+            district:$("#district option:checked").val()
         };
         var file = $("#uploadImage")[0].files[0];
+        console.log($("#uploadImage")[0].files.length);
         var type = file.name.split(".")[1];
         if(type == "png" || type == "jpg" || type == "bmp" || type == "jpeg"){
             var formdata = new FormData();
@@ -140,30 +144,25 @@
             formdata.append('file',file);
             jQuery.ajax({
                 type: "POST",
-                url: "$rc.contextPath/sys/company/save",
+                url: "$rc.contextPath/sys/company/update",
                 data: formdata,
                 processData: false,
                 contentType: false,
                 success: function (result) {
-                    if (result.result == "success") {//返回成功
-                        swal({
-                            title: "成功",
-                            text: "公司编号为" + result.code + "密码为" + result.pwd,
-                            confirmButtonColor: "#1aad19",
-                            confirmButtonText: "确认"
-                        }, function (isConfirm) {
-                            history.go(-1);
-                        })
-                    }else {
-                            swal("错误", result.msg, "error");
-                        }
+                    if(result.code == 0){//返回成功
+                        history.go(-1);
+                    }else{
+                        swal("错误",result.msg,"error" );
                     }
+                }
             });
         }else{
             swal("错误","不支持当前格式文件","error");
         }
     });
        $(function () {
+           var id = window.location.search.split('=')[1];
+           // alert(id);
            $('.i-checks').iCheck({
                checkboxClass: 'icheckbox_square-green',
                radioClass: 'iradio_square-green',
@@ -177,48 +176,36 @@
                });
                $("#providerId").append(html);
            })
-           //省市县三级联动
-            var url = "$rc.contextPath/sys/china/show/";
-           jQuery.post(url+"100000",function (pdata) {
-               var html = "";
-               jQuery.each(pdata,function(idx,item){
-                   html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-               });
-               $("#province").append(html);
+           url = '$rc.contextPath/sys/company/find/'+id;
+           jQuery.ajax({
+               url:url,
+               async:false,
+               success:function (pdata) {
+                   var html = "";
+                   jQuery.each(pdata,function(idx,item){
+                       if("province" == idx){
+                           html += "<option value='" + item+ "' selected>" + pdata.pName + "</option>";
+                           $("#province").html(html);
+                       }else if("city" == idx){
+                           html = "";
+                           html += "<option value='" + item+ "' selected>" + pdata.cName + "</option>";
+                           $("#city").html(html);
+                       }else if("district" == idx){
+                           html = "";
+                           html += "<option value='" + item+ "' selected>" + pdata.dName + "</option>";
+                           $("#district").html(html);
+                       }else if("providerId" == idx){
+                           html = "";
+                           html += "<option value='" + item+ "' selected>" + pdata.proName + "</option>";
+                           $("#providerId").html(html);
+                       }else if("picture" == idx){
+                           $("#picture").attr('src','/upload'+pdata.picture);
+                       }else{
+                           $("#"+idx).val(item);
+                       }
+                   });
+               }
            })
-
-           $("#province").change(function(){
-               // alert($("#province option:selected").text());
-               url = "$rc.contextPath/sys/china/show/";
-               if ($(this).val() == "") return;
-               $("#city option").remove();
-               $("#district option").remove();
-               var html = "<option value=''>请选择</option>";
-               // $("#city").append(html);
-               $("#district").append(html);
-               var code = $(this).find("option:selected").attr("exid");
-               url+=code;
-               jQuery.post(url,function (pdata) {
-                   jQuery.each(pdata,function(idx,item){
-                       html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-                   });
-                   $("#city").append(html);
-               })
-           });
-           $("#city").change(function(){
-               url = "$rc.contextPath/sys/china/show/";
-               if ($(this).val() == "") return;
-               $("#district option").remove();
-               var code = $(this).find("option:selected").attr("exid");
-               var html = "<option value=''>请选择</option>";
-               url += code;
-               jQuery.post(url,function (pdata) {
-                   jQuery.each(pdata,function(idx,item){
-                       html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-                   });
-                   $("#district").append(html);
-               });
-           });
        });
 </script>
 

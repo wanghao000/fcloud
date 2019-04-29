@@ -152,7 +152,7 @@
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
-        var code = window.location.search.split('=')[1];
+        var id = window.location.search.split('=')[1];
         //加载公司
         url = '$rc.contextPath/sys/eq/companyList';
         jQuery.ajax({
@@ -166,7 +166,7 @@
                 $("#companyId").append(html);
             }
         })
-        url = '$rc.contextPath/sys/eq/find/'+code;
+        url = '$rc.contextPath/sys/eq/find/'+id;
         jQuery.ajax({
             url:url,
             async:false,

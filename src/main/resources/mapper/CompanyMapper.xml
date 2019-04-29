@@ -19,7 +19,7 @@
     id, name, province, city, district, provider_id, picture, address, remark, create_user, 
     create_time, is_delete,code
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="cn.hz.fcloud.entity.Company">
     select 
     <include refid="Base_Column_List" />
     from company
@@ -29,16 +29,17 @@
     delete from company
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.hz.fcloud.entity.Company">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hz.fcloud.entity.Company">
     insert into company (id, name, province, 
       city, district, provider_id, 
       picture, address, remark, 
-      create_user, create_time, is_delete
+      create_user, create_time, is_delete,code
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
       #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{providerId,jdbcType=BIGINT}, 
       #{picture,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      ,#{code,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.hz.fcloud.entity.Company">
@@ -223,10 +224,7 @@
     GROUP BY c.id order by c.id limit #{offset},#{limit}
   </select>
   <select id="findComsByProIdCount" resultType="integer">
-    select
-    count(c.id)
-    from company c left join sys_user s on s.id = c.create_user left join equipment e on c.id = e.company_id
-    where c.provider_id = #{id}
+    select count(c.id) from company c  where c.provider_id = #{id}
     <if test="name!=null and name!=''">
       and c.name like CONCAT('%',#{name},'%')
     </if>
@@ -236,5 +234,8 @@
   </update>
   <select id="findCompanyCode" resultType="String">
        select code from company order by code desc limit 1
+  </select>
+  <select id="findCompanyByName" resultType="cn.hz.fcloud.entity.Company">
+       select * from company where name = #{name}
   </select>
 </mapper>

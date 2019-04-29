@@ -17,6 +17,8 @@
     <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
     <!-- Sweet Alert -->
     <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- layer -->
+    <link href="$rc.contextPath/statics/plugins/layer/skin/moon/style.css" rel="stylesheet">
 
 
     <style>
@@ -66,6 +68,8 @@
 <script src="$rc.contextPath/statics/js/tableIndex.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- layer -->
+<script src="$rc.contextPath/statics/plugins/layer/layer.js"></script>
 <script>
     $(function() {
         //1. 定义表格列
@@ -91,11 +95,10 @@
             field: 'picture',
             title: '企业图片',
             formatter:function (value,row,index) {
-                // alert(value);
                 if(jQuery.trim(value) == '' || value == null){
                     return '未上传';
                 }else{
-                    return '<a class="show_img" href="#">查看</a><div class="hide_img"><img><src='+value+'/></div>';
+                    return '<a class="show_img" href="#" onclick="loadImg(\''+value+'\')">查看</a>';
                 }
             }
         }, {
@@ -148,8 +151,8 @@
             dataType: "json",
             success: function(result){
                 if(result.code == 0){//返回成功
-                    var msg = isDelete?"启用":"禁用";
-                    swal("执行成功",'您已经'+msg+'该设备',"success" );
+                    var msg = isDelete?"禁用":"启用";
+                    swal("执行成功",'您已经'+msg+'该公司',"success" );
                     $("#tb_content").bootstrapTable('refresh');
                 }else{
                     swal("错误",result.msg,"error" );
@@ -166,6 +169,18 @@
         var m = date.getMinutes() < 10 ? '0'+date.getMinutes()+ ':' : date.getMinutes()+ ':';
         var s = date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds();
         return Y+M+D+h+m+s;
+    }
+
+    function loadImg (value){
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: '516px',
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: '<img src="/upload'+value+'">'
+        })
     }
 </script>
 

@@ -25,4 +25,10 @@ public interface CompanyService {
     int modifyState(int id,int isDelete);
 
     String findCompanyCode();
+
+    int insert(Company company);
+
+    Company findCompanyByName(String name);
+
+    int updateByPrimaryKeySelective(Company company);
 }

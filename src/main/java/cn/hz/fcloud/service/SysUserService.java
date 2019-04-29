@@ -34,4 +34,6 @@ public interface SysUserService {
     int update(SysUser user);
 
     Integer queryListCount(Map<String,Object> map);
+
+    int insert(SysUser sysUser);
 }

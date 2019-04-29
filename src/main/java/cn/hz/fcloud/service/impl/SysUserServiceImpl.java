@@ -97,4 +97,8 @@ public class SysUserServiceImpl implements SysUserService {
     public Integer queryListCount(Map<String, Object> map) {
         return sysUserMapper.queryListCount(map);
     }
+    @Override
+    public int insert(SysUser sysUser){
+        return sysUserMapper.insert(sysUser);
+    }
 }

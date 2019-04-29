@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hz.fcloud.dao.CompanyInfosMapper">
+
+  <select id="findCompanyInfos" parameterType="Integer" resultType="cn.hz.fcloud.entity.CompanyInfos">
+    select c.*,
+       (SELECT name from sys_china where id = c.province)as p_name,
+       (SELECT name from sys_china where id = c.city)as c_name,
+       (SELECT name from sys_china where id = c.district)as d_name,
+       (SELECT name from provider where id = c.provider_id)as pro_name
+     from company c where c.id = #{id}
+  </select>
+
+</mapper>

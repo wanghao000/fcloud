@@ -1,16 +1,19 @@
 package cn.hz.fcloud.controller;
 
 import cn.hz.fcloud.entity.Company;
+import cn.hz.fcloud.entity.CompanyInfos;
 import cn.hz.fcloud.entity.Provider;
 import cn.hz.fcloud.entity.SysUser;
+import cn.hz.fcloud.service.CompanyInfosService;
 import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.ProviderService;
+import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import com.alibaba.fastjson.JSON;
-import jdk.internal.util.xml.impl.Input;
-import org.apache.commons.io.FileUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -28,6 +31,10 @@ public class CompanyController {
     private CompanyService companyService;
     @Autowired
     private ProviderService providerService;
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    private CompanyInfosService companyInfosService;
 
     private SysUser user;
 
@@ -61,48 +68,113 @@ public class CompanyController {
     }
 
     @RequestMapping("/save")
-    public String companySave(MultipartFile file,String company){
-        String name = "";
-        if(!file.isEmpty()){
-            String originalFilename = file.getOriginalFilename();
-            System.out.println(originalFilename);
-//            Properties prop = new Properties();
-            try{
-                Resource r = new ClassPathResource("/file.properties");
-                Properties prop = new Properties();
-                prop.load(new FileInputStream(r.getFile()));
-//                InputStream input = new BufferedInputStream(new FileInputStream("/file.properties"));
-//                prop.load(input);
-                String realPath = prop.getProperty("dir");
-                System.out.println(realPath);
-                name = realPath+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
-                File files = new File(realPath);
-                if(!files.exists()){
-                    files.mkdirs();
-                }
-                File saveFile = new File(files, name);
-                file.transferTo(saveFile);
-            }catch (Exception e){
-                e.printStackTrace();
-            };
-        }
+    public R companySave(MultipartFile file,String company){
         Company comEntity = JSON.parseObject(company,Company.class);
-        comEntity.setCreateUser(user.getId().intValue());
-        comEntity.setCreateTime(new Date());
-        comEntity.setIsDelete(1);
-        comEntity.setPicture(name);
-        String code = companyService.findCompanyCode();
-        String newCode = "";
-        if(code != "" && code != null){
-            int temp = Integer.valueOf(code.split("A")[1]);
-            String s = String.format("%05d", temp);
-            newCode = "A"+s;
+        //存储返回信息
+        Map<String,Object> map = new HashMap<String, Object>();
+        //判断用户名是否存在 true表示存在
+        Boolean is_exist = null != companyService.findCompanyByName(comEntity.getName());
+        if(!is_exist){
+            String picture = "";
+            String name = "";
+            if(!file.isEmpty()){
+                String originalFilename = file.getOriginalFilename();
+                System.out.println(originalFilename);
+                try{
+                    Resource r = new ClassPathResource("/file.properties");
+                    Properties prop = new Properties();
+                    prop.load(new FileInputStream(r.getFile()));
+                    String realPath = prop.getProperty("dir");
+                    System.out.println(realPath);
+                    name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
+                    picture = realPath+name;
+                    File files = new File(realPath);
+                    if(!files.exists()){
+                        files.mkdirs();
+                    }
+                    File saveFile = new File(picture);
+                    file.transferTo(saveFile);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            comEntity.setCreateUser(user.getId().intValue());
+            comEntity.setCreateTime(new Date());
+            comEntity.setIsDelete(1);
+            comEntity.setPicture(name);
+            String code = companyService.findCompanyCode();
+            String newCode = "";
+            if(code != "" && code != null){
+                int temp = Integer.valueOf(code.split("A")[1])+1;
+                String s = String.format("%05d", temp);
+                newCode = "A"+s;
+            }else{
+                newCode = "A00001";
+            }
+            System.out.println("******************************************");
+            System.out.println(newCode);
+            comEntity.setCode(newCode);
+            companyService.insert(comEntity);
+            SysUser newUser = new SysUser();
+            newUser.setUsername(newCode);
+            newUser.setIsDelete(1);
+            newUser.setCreateTime(new Date());
+            newUser.setCreateUser(user.getId());
+            newUser.setPassword("000000");
+            newUser.setCompanyId(comEntity.getId());
+            newUser.setType(3);
+            newUser.setNickname(comEntity.getName());
+            newUser.setProviderId(comEntity.getProviderId());
+            sysUserService.save(newUser);
+            map.put("code",newCode);
+            map.put("pwd","000000");
+            map.put("result","success");
+            return R.ok(map);
         }else{
-            newCode = "A00001";
+            return R.error("公司名已存在");
         }
-        comEntity.setCode(newCode);
-        System.out.println(comEntity);
-        return "12316554";
-
+    }
+    @RequestMapping("/find/{id}")
+    public CompanyInfos find(@PathVariable("id")int id){
+        return companyInfosService.findCompanyInfos(id);
+    }
+    @RequestMapping("/update")
+    public R update(MultipartFile file,String company){
+        Company comEntity = JSON.parseObject(company,Company.class);
+        //存储返回信息
+        Map<String,Object> map = new HashMap<String, Object>();
+//        //判断用户名是否存在 true表示存在
+//        Boolean is_exist = null != companyService.findCompanyByName(comEntity.getName());
+//        if(!is_exist){
+            String picture = "";
+            String name = "";
+            if(!file.isEmpty()){
+                String originalFilename = file.getOriginalFilename();
+                System.out.println(originalFilename);
+                try{
+                    Resource r = new ClassPathResource("/file.properties");
+                    Properties prop = new Properties();
+                    prop.load(new FileInputStream(r.getFile()));
+                    String realPath = prop.getProperty("dir");
+                    System.out.println(realPath);
+                    name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
+                    picture = realPath+name;
+                    File files = new File(realPath);
+                    if(!files.exists()){
+                        files.mkdirs();
+                    }
+                    File saveFile = new File(picture);
+                    file.transferTo(saveFile);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            comEntity.setPicture(name);
+            companyService.updateByPrimaryKeySelective(comEntity);
+            System.out.println("******************************************");
+            return R.ok();
+//        }else{
+//            return R.error("公司名已存在");
+//        }
     }
 }

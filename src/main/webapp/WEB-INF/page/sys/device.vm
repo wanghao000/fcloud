@@ -145,7 +145,7 @@
             dataType: "json",
             success: function(result){
                 if(result.code == 0){//返回成功
-                    var msg = isDelete?"启用":"禁用";
+                    var msg = isDelete?"禁用":"启用";
                     swal("执行成功",'您已经'+msg+'该设备',"success" );
                     $("#tb_content").bootstrapTable('refresh');
                 }else{

@@ -2,8 +2,6 @@ package cn.hz.fcloud.dao;
 
 import cn.hz.fcloud.entity.Company;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.List;
 import java.util.Map;
 
@@ -39,4 +37,6 @@ public interface CompanyMapper {
 
     //获取最近生成的公司code
     String findCompanyCode();
+
+    Company findCompanyByName(String name);
 }

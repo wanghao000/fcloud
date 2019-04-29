@@ -59,4 +59,17 @@ public class CompanyServiceImpl implements CompanyService {
     public String findCompanyCode(){
         return companyMapper.findCompanyCode();
     }
+
+    @Override
+    public int insert(Company company){
+        return companyMapper.insert(company);
+    }
+
+    @Override
+    public Company findCompanyByName(String name){ return companyMapper.findCompanyByName(name); }
+
+    @Override
+    public int updateByPrimaryKeySelective(Company company){
+        return companyMapper.updateByPrimaryKeySelective(company);
+    }
 }

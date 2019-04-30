@@ -119,6 +119,14 @@
             contacts:$("#contacts").val(),
             contactsPhone:$("#contactsPhone").val()
         };
+        if(data.name == "" || data.name == null){
+            swal("错误", "请输入服务商名称", "error");
+            return;
+        }
+        if(data.district == -1){
+            swal("错误", "请选择完整的省市县地址", "error");
+            return;
+        }
         jQuery.ajax({
             type: "POST",
             url: "$rc.contextPath/sys/provider/save",
@@ -150,7 +158,7 @@
         if ($(this).val() == "") return;
         $("#city option").remove();
         $("#district option").remove();
-        var html = "<option value=''>请选择</option>";
+        var html = "<option value='-1'>请选择</option>";
         // $("#city").append(html);
         $("#district").append(html);
         var code = $(this).find("option:selected").attr("exid");
@@ -167,7 +175,7 @@
         if ($(this).val() == "") return;
         $("#district option").remove();
         var code = $(this).find("option:selected").attr("exid");
-        var html = "<option value=''>请选择</option>";
+        var html = "<option value='-1'>请选择</option>";
         url += code;
         jQuery.post(url,function (pdata) {
             jQuery.each(pdata,function(idx,item){

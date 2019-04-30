@@ -124,7 +124,6 @@
     $("#save").click(function () {
         var company = {
             name : $("#name").val(),
-            code : $("#code").val(),
             providerId:$("#providerId").val(),
             address : $("#address").val(),
             remark : $("#remark").val(),
@@ -132,6 +131,18 @@
             city:$("#city option:checked").val(),
             district:$("#district option:checked").val(),
         };
+        if(company.providerId == -1){
+            swal("错误", "请选择服务商", "error");
+            return;
+        }
+        if(company.name == "" || company.name == null){
+            swal("错误", "请输入公司名称", "error");
+            return;
+        }
+        if(company.district == -1){
+            swal("错误", "请选择完整的省市县地址", "error");
+            return;
+        }
         var file = $("#uploadImage")[0].files[0];
         var type = "";
         if($("#uploadImage")[0].files.length != 0){
@@ -150,7 +161,7 @@
             formdata.append('file',file);
             jQuery.ajax({
                 type: "POST",
-                url: "$rc.contextPath/sys/company/save",
+                 url: "$rc.contextPath/sys/company/save",
                 data: formdata,
                 processData: false,
                 contentType: false,
@@ -200,7 +211,7 @@
                if ($(this).val() == "") return;
                $("#city option").remove();
                $("#district option").remove();
-               var html = "<option value=''>请选择</option>";
+               var html = "<option value='-1'>请选择</option>";
                // $("#city").append(html);
                $("#district").append(html);
                var code = $(this).find("option:selected").attr("exid");
@@ -217,7 +228,7 @@
                if ($(this).val() == "") return;
                $("#district option").remove();
                var code = $(this).find("option:selected").attr("exid");
-               var html = "<option value=''>请选择</option>";
+               var html = "<option value='-1'>请选择</option>";
                url += code;
                jQuery.post(url,function (pdata) {
                    jQuery.each(pdata,function(idx,item){

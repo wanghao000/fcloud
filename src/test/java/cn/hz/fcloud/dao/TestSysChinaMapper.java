@@ -57,7 +57,12 @@ public class TestSysChinaMapper {
 
     @Test
     public void eqInfosTest(){
-
+//        EqInfos infos = eqInfosMapper.findOne("8123456");
+//        System.out.println(infos);
+//        List<EqInfos> list = eqInfosMapper.findByComId(new Long(1));
+//        for(EqInfos eq : list){
+//            System.out.println(eq);
+//        }
     }
 
     @Test

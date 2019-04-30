@@ -188,7 +188,7 @@
                 data.orderNum=$("#orderNum").val();
                 data.icon=$("#icon").val();
             }else if(type==1){
-                data.menuUrl=$("#menuUrl").val();
+                data.url=$("#menuUrl").val();
                 data.perms=$("#perms").val();
                 data.orderNum=$("#orderNum").val();
                 data.icon=$("#icon").val();

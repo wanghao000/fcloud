@@ -19,4 +19,8 @@
 	<delete id="delete">
 		delete from sys_user_role where user_id = #{value}
 	</delete>
+
+	<select id="queryHasRole" resultType="cn.hz.fcloud.entity.pojo.RolePOJO">
+		SELECT u.*,r.role_name FROM `sys_user_role` u,sys_role r where u.role_id=r.role_id and u.user_id=#{value}
+	</select>
 </mapper>

@@ -2,6 +2,7 @@ package cn.hz.fcloud.service.impl;
 
 import cn.hz.fcloud.dao.SysRoleMapper;
 import cn.hz.fcloud.entity.SysRole;
+import cn.hz.fcloud.entity.pojo.RolePOJO;
 import cn.hz.fcloud.service.SysRoleMenuService;
 import cn.hz.fcloud.service.SysRoleService;
 import cn.hz.fcloud.utils.ServiceException;
@@ -56,5 +57,17 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         //更新角色与菜单关系
         sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
+    }
+
+    @Override
+    public List<SysRole> getNotIn(List<RolePOJO> lists) {
+        if(lists.size()==0){
+            return sysRoleMapper.notIn(null);
+        }
+        Long[] ids = new Long[lists.size()];
+        for(int i=0;i<lists.size();i++){
+            ids[i]=lists.get(i).getRoleId();
+        }
+        return sysRoleMapper.notIn(ids);
     }
 }

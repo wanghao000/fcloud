@@ -95,6 +95,22 @@
     <!-- End Panel Other -->
 </div>
 
+<div style="display: none;padding:10px;" id="roleLayer">
+        <div class="col-xs-2" style="width:45%">
+            <select multiple class="form-control" style="height: 200px" id="roleall">
+
+            </select>
+            <h6>全部角色</h6>
+        </div>
+        <div class="col-xs-1" style="text-align: center;margin-top: 100px;width: 10%">
+            <i class="fa fa-exchange" aria-hidden="true"></i>
+        </div>
+        <div class="col-xs-2" style="width:45%;">
+            <select multiple class="form-control"  style="height:200px" id="role">
+            </select>
+            <h6>拥有角色</h6>
+        </div>
+</div>
 <!-- 全局js -->
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
@@ -105,7 +121,15 @@
 <script src="$rc.contextPath/statics/js/tableIndex.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/layer/layer.js"></script>
 <script>
+    $("#roleall").on('click',function(){
+        $("#role").append($('#roleall option:selected').removeAttr("selected")[0]);
+    })
+    $("#role").on('click',function(){
+        $("#roleall").append($('#role option:selected').removeAttr("selected")[0]);
+    })
+
     jQuery.ajax({
         type: "GET",
         url: "$rc.contextPath/sys/user/drop",
@@ -159,7 +183,7 @@
             title: '操作',
             formatter:function (value,row,index) {
                 return [
-                    '<a class="btn btn-info"><i class="fa fa-wrench"> </i> 权限配置</a> ',
+                    '<a class="btn btn-info" onclick="toRole('+row.id+')"><i class="fa fa-wrench"> </i> 权限配置</a> ',
                     '<a class="btn btn-info" onclick="load(\'sys/user_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #if($shiro.hasPermission("sys:user:delete"))
                         ,row.isDelete?'<a class="btn btn-danger" onclick="delOrUse('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="delOrUse('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
@@ -204,6 +228,65 @@
                 }else{
                     swal("错误",result.msg,"error" );
                 }
+            }
+        });
+    }
+    function toRole(id) {
+        jQuery.ajax({
+            url:"$rc.contextPath/sys/role/authorization/"+id,
+            type:"GET",
+            dataType:"json",
+            success:function (result) {
+                if(result.code==0){
+                    console.log(result)
+                    $("#roleall").html('');
+                    $("#role").html('');
+                    result.all.map(function (item,idex) {
+                        $("#roleall").append('<option style="cursor:pointer;" value="'+item.roleId+'">'+item.roleName+'</option>');
+                    })
+                    result.roleList.map(function (item,idex) {
+                        $("#role").append('<option style="cursor:pointer;" value="'+item.roleId+'">'+item.roleName+'</option>');
+                    })
+                }
+            }
+        })
+        layer.open({
+            type: 1,
+            offset: '50px',
+            skin: 'layui-layer-molv',
+            title: "选择角色",
+            area: ['400px', '360px'],
+            shade: 0,
+            shadeClose: false,
+            content: jQuery("#roleLayer"),
+            btn: ['确定', '取消'],
+            btn1: function (index) {
+                var array = new Array();  //定义数组     
+                 $("#role option").each(function(){ 
+                     //遍历所有option         
+                      var txt = $(this).val();  
+                     // 获取option值          
+                     if(txt!=''){             
+                       array.push(txt); 
+                     // 添加到数组中         
+                     }    
+                 })
+                console.log(array)
+                jQuery.ajax({
+                    type: "POST",
+                    url: "$rc.contextPath/sys/role/auth/"+id,
+                    dataType: "json",
+                    data: JSON.stringify(array),
+                    contentType: "application/json;charset=UTF-8",
+                    success: function(result){
+                        if(result.code == 0){//返回成功
+                            swal("操作成功","", "success");
+                        }else{
+                            swal("错误",result.msg,"error" );
+                        }
+                    }
+                });
+                layer.close(index);
             }
         });
     }

@@ -46,4 +46,17 @@
 		</set>
 		where role_id = #{roleId}
 	</update>
+
+	<select id="notIn" resultType="cn.hz.fcloud.entity.SysRole">
+		SELECT * FROM `sys_role`
+		<where>
+			<if test="ids!=null">
+				role_id not IN
+				<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
+
+	</select>
 </mapper>

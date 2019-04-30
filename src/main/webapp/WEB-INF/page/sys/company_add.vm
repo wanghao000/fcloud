@@ -133,8 +133,18 @@
             district:$("#district option:checked").val(),
         };
         var file = $("#uploadImage")[0].files[0];
-        var type = file.name.split(".")[1];
-        if(type == "png" || type == "jpg" || type == "bmp" || type == "jpeg"){
+        var type = "";
+        if($("#uploadImage")[0].files.length != 0){
+            type = file.name.split(".")[1];
+        }else{
+            file = null;
+            type = null;
+        }
+        if(type != null){
+            if(!(type == "png" || type == "jpg" || type == "bmp" || type == "jpeg")){
+                swal("错误","不支持当前格式文件","error");
+            }
+        }
             var formdata = new FormData();
             formdata.append('company',JSON.stringify(company));
             formdata.append('file',file);
@@ -159,9 +169,6 @@
                         }
                     }
             });
-        }else{
-            swal("错误","不支持当前格式文件","error");
-        }
     });
        $(function () {
            $('.i-checks').iCheck({

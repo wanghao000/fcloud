@@ -14,6 +14,7 @@ import cn.hz.fcloud.utils.TableReturn;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -69,6 +70,8 @@ public class CompanyController {
 
     @RequestMapping("/save")
     public R companySave(MultipartFile file,String company){
+        //true表示已上传图片
+        Boolean exist_file = file != null;
         Company comEntity = JSON.parseObject(company,Company.class);
         //存储返回信息
         Map<String,Object> map = new HashMap<String, Object>();
@@ -77,7 +80,7 @@ public class CompanyController {
         if(!is_exist){
             String picture = "";
             String name = "";
-            if(!file.isEmpty()){
+            if(exist_file){
                 String originalFilename = file.getOriginalFilename();
                 System.out.println(originalFilename);
                 try{
@@ -140,15 +143,16 @@ public class CompanyController {
     }
     @RequestMapping("/update")
     public R update(MultipartFile file,String company){
+        //true表示已上传图片
+        Boolean exist_file = file != null;
         Company comEntity = JSON.parseObject(company,Company.class);
-        //存储返回信息
-        Map<String,Object> map = new HashMap<String, Object>();
-//        //判断用户名是否存在 true表示存在
-//        Boolean is_exist = null != companyService.findCompanyByName(comEntity.getName());
-//        if(!is_exist){
+        Company exist_company = companyService.findCompanyByName(comEntity.getName());
+        //判断要修改的用户名是否存在 true表示存在
+        Boolean is_exist = exist_company != null && exist_company.getId() != comEntity.getId();
+        if(!is_exist){
             String picture = "";
-            String name = "";
-            if(!file.isEmpty()){
+            String name = null;
+            if(exist_file){
                 String originalFilename = file.getOriginalFilename();
                 System.out.println(originalFilename);
                 try{
@@ -173,8 +177,8 @@ public class CompanyController {
             companyService.updateByPrimaryKeySelective(comEntity);
             System.out.println("******************************************");
             return R.ok();
-//        }else{
-//            return R.error("公司名已存在");
-//        }
+        }else{
+            return R.error("公司名已存在");
+        }
     }
 }

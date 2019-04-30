@@ -139,6 +139,22 @@
             lng:$("#lng").val(),
             lat:$("#lat").val()
         };
+        if(data.type == -1){
+            swal("错误", "请选择设备类型", "error");
+            return;
+        }
+        if(data.companyId == -1){
+            swal("错误", "请选择所属企业", "error");
+            return;
+        }
+        if(data.district == -1){
+            swal("错误", "请选择完整的省市县地址", "error");
+            return;
+        }
+        if(data.code){
+            swal("错误", "请输入设备编号", "error");
+            return;
+        }
         jQuery.ajax({
             type: "POST",
             url: "$rc.contextPath/sys/eq/save",
@@ -184,7 +200,7 @@
                if ($(this).val() == "") return;
                $("#city option").remove();
                $("#district option").remove();
-               var html = "<option value=''>请选择</option>";
+               var html = "<option value='-1'>请选择</option>";
                // $("#city").append(html);
                $("#district").append(html);
                var code = $(this).find("option:selected").attr("exid");
@@ -201,7 +217,7 @@
                if ($(this).val() == "") return;
                $("#district option").remove();
                var code = $(this).find("option:selected").attr("exid");
-               var html = "<option value=''>请选择</option>";
+               var html = "<option value='-1'>请选择</option>";
                url += code;
                jQuery.post(url,function (pdata) {
                    jQuery.each(pdata,function(idx,item){

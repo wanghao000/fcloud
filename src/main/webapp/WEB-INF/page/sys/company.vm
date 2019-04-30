@@ -17,9 +17,10 @@
     <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
     <!-- Sweet Alert -->
     <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- layui -->
+    <link href="$rc.contextPath/statics/plugins/layui/css/layui.css" rel="stylesheet">
     <!-- layer -->
     <link href="$rc.contextPath/statics/plugins/layer/skin/moon/style.css" rel="stylesheet">
-
 
     <style>
         .hide_img{ display:none; z-index:9999; position:absolute;}
@@ -68,8 +69,11 @@
 <script src="$rc.contextPath/statics/js/tableIndex.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<!-- layui -->
+<script src="$rc.contextPath/statics/plugins/layui/layui.all.js"></script>
 <!-- layer -->
 <script src="$rc.contextPath/statics/plugins/layer/layer.js"></script>
+
 <script>
     $(function() {
         //1. 定义表格列
@@ -172,18 +176,51 @@
     }
 
     function loadImg (value){
-        layer.open({
-            type: 1,
-            title: false,
-            closeBtn: 0,
-            area: '516px',
-            skin: 'layui-layer-nobg', //没有背景色
-            shadeClose: true,
-            content: '<img src="/upload'+value+'">'
-        })
-    }
+        // layui.use('layer', function() {
+        //     var layer = layui.layer;
+        //     layer.ready(function(){
+        //         var index = layer.load(2);
+        //         layer.open({
+        //             type: 1,
+        //             title: false,
+        //             closeBtn: 0,
+        //             area: '516px',
+        //             skin: 'layui-layer-nobg', //没有背景色
+        //             shadeClose: true,
+        //             content: '<img src="/upload'+value+'">'
+        //         })
+        //         layer.close(index);
+        //     })
+        // });
+        // $('.hiddenImg').prop('src', '/upload' + value).on('load', function (e) {
+        //     layer.open({
+        //         type: 1,
+        //         title: false,
+        //         closeBtn: 0,
+        //         area: ['auto'],
+        //         shadow:0,
+        //         skin: 'layui-layer-nobg', //没有背景色
+        //         shadeClose: true,
+        //         content: $(this)
+        //         // content: '<img src="/upload'+value+'">'
+        //     })
+        //     $(this).hide();
+        // })
+
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                shadow:0,
+                area:'700px',
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="/upload'+value+'">'
+            })
+        }
 </script>
 
 </body>
+<img class="hiddenImg" src=""></img>
 
 </html>

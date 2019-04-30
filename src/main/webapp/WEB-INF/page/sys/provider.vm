@@ -70,7 +70,7 @@
             title: '服务商名称'
         },{
             field: 'eqsCount',
-            title: '网关数量'
+            title: '设备数量'
         }, {
             field: 'serviceTel',
             title: '客服电话',

@@ -81,7 +81,7 @@
             title: '编号',
         },{
             field: 'eqsCount',
-            title: '网关数量'
+            title: '设备数量'
         }, {
             field: 'cName',
             title: '创建人',

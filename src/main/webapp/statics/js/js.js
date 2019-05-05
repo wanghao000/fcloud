@@ -246,9 +246,9 @@ function echarts_2(data) {
         });
     }
 function echarts_31(data){
-    $("#fb1").append("<table id='alarm' width="+$('#fb1').width()+" style='margin-left: 15px;'><tr><td style='color: red;text-align: center;'>设备编号</td><td style='color: red;text-align: center;'>地点</td><td style='color: red;text-align: center;'>类型</td><td style='color: red;text-align: center;'>时间</td></tr>");
+    $("#fb1").append("<table id='alarm' width="+$('#fb1').width()+" style='table-layout: fixed;'><tr><td style='color: red;text-align: center;'>设备编号</td><td style='color: red;text-align: center;'>地点</td><td style='color: red;text-align: center;'>类型</td><td style='color: red;text-align: center;'>时间</td></tr>");
     for (var i = 0; i < data.length; i++) {
-        $("#alarm").append("<tr><td style='color: red;text-align: center;'>"+data[i].code+"</td><td style='color: red;text-align: center;'>"+/*data[i].merger_short_name+","+*/data[i].address+"</td><td style='color: red;text-align: center;'>"+JSON.parse(data[i].info).msg+"</td><td style='color: red;text-align: center;'>"+JSON.parse(data[i].info).datetime+"</td></tr>");
+        $("#alarm").append("<tr><td style='color: red;text-align: center;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;width: 81px;' title='"+data[i].code+"'>"+data[i].code+"</td><td style='color: red;text-align: center;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;width: 81px;' title='"+data[i].address+"'>"+/*data[i].merger_short_name+","+*/data[i].address+"</td><td style='color: red;text-align: center;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;width: 81px;' title='"+JSON.parse(data[i].info).msg+"'>"+JSON.parse(data[i].info).msg+"</td><td style='color: red;text-align: center;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;width: 81px;' title='"+JSON.parse(data[i].info).datetime+"'>"+JSON.parse(data[i].info).datetime+"</td></tr>");
     }
     $("#fb1").append("</table>");
 }

@@ -10,6 +10,7 @@ import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,7 @@ public class ProviderController {
         return new TableReturn(pros,providerService.findAllProviderCount(map));
     }
     @RequestMapping("/save")
+    @RequiresPermissions("sys:provider:save")
     public R insertProvider(@RequestBody Provider provider){
         user = ShiroUtil.getUserEntity();
         provider.setCreateTime(new Date());
@@ -46,6 +48,7 @@ public class ProviderController {
     }
 
     @RequestMapping("/modify/{id}/{isDelete}")
+    @RequiresPermissions("sys:provider:modify")
     public R modifyState(@PathVariable("id") int id,@PathVariable("isDelete") int isDelete){
         return providerService.modifyState(id,isDelete)>0?R.ok():R.error();
     }
@@ -55,6 +58,7 @@ public class ProviderController {
     }
 
     @RequestMapping("/update")
+    @RequiresPermissions("sys:provider:update")
     public R updateProvider(@RequestBody Provider provider){
         return providerService.updateByPrimaryKeySelective(provider)>0?R.ok():R.error();
     }

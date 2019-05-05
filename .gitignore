@@ -2,3 +2,4 @@
 /target
 /fcloud.iml
 /catalina.base_IS_UNDEFINED
+/src/main/resources/db.properties

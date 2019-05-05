@@ -12,6 +12,7 @@ import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import com.alibaba.fastjson.JSON;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.util.StringUtils;
@@ -59,6 +60,7 @@ public class CompanyController {
         return new TableReturn(coms,count);
     }
     @RequestMapping("/modify/{id}/{isDelete}")
+    @RequiresPermissions("sys:company:modify")
     public R modifyState(@PathVariable("id") int id, @PathVariable("isDelete") int isDelete){
         return companyService.modifyState(id,isDelete)>0? R.ok():R.error();
     }
@@ -69,6 +71,7 @@ public class CompanyController {
     }
 
     @RequestMapping("/save")
+    @RequiresPermissions("sys:company:save")
     public R companySave(MultipartFile file,String company){
         //true表示已上传图片
         Boolean exist_file = file != null;
@@ -142,6 +145,7 @@ public class CompanyController {
         return companyInfosService.findCompanyInfos(id);
     }
     @RequestMapping("/update")
+    @RequiresPermissions("sys:company:update")
     public R update(MultipartFile file,String company){
         //true表示已上传图片
         Boolean exist_file = file != null;

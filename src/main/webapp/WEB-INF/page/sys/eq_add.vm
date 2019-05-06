@@ -151,7 +151,7 @@
             swal("错误", "请选择完整的省市县地址", "error");
             return;
         }
-        if(data.code){
+        if(data.code == null){
             swal("错误", "请输入设备编号", "error");
             return;
         }

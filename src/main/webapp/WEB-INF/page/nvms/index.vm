@@ -1,0 +1,497 @@
+#set($layout = "/layout/nvms.vm")
+#set($page_title = "首页")
+
+<div class="container-fluid">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="widget style1 red-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-fire fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 今日告警总数 </span>
+                            <h2 class="font-bold" id="alarmCount"></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-warning fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 设备离线总数 </span>
+                            <h2 class="font-bold" id="lineCount"></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-shield fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 企业接入总数 </span>
+                            <h2 class="font-bold" id="companyCount"></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-cloud fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> 设备接入总数 </span>
+                            <h2 class="font-bold" id="equipmentCount"></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>近7天告警趋势图</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="echarts-line-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="tabs-container">
+                       <div class="well">
+                           <ul class="nav nav-tabs">
+                               <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">火警复核</a>
+                               </li>
+                               <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">复核率</a>
+                               </li>
+                           </ul>
+                           <div class="tab-content">
+                               <div id="tab-1" class="tab-pane active">
+                                   <div class="echarts" id="a-chart"></div>
+                               </div>
+                               <div id="tab-2" class="tab-pane">
+                                       图表
+                               </div>
+                           </div>
+                       </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>网关在线情况</h5>
+                        <div class="pull-right">
+                            <h5>网关总数：0</h5>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="container"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>预警地图</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div style="height:400px" id="main"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>实时告警列表</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="pre-scrollable">
+                            <table class="table table-hover no-margins">
+                                <thead>
+                                <tr>
+                                    <th>告警企业</th>
+                                    <th>城市</th>
+                                    <th>告警设备</th>
+                                    <th>告警消息</th>
+                                    <th>告警时间</th>
+                                </tr>
+                                </thead>
+                                <tbody id="data_table">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>今日统计</h5>
+                    </div>
+                    <div class="ibox-content">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>故障统计</h5>
+                    </div>
+                    <div class="ibox-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+
+
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- ECharts -->
+<script src="$rc.contextPath/statics/plugins/echarts/echarts.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/echarts/zhejiang.js"></script>
+<!-- 通知 -->
+<script src="$rc.contextPath/statics/plugins/toastr/toastr.min.js"></script>
+<script src="$rc.contextPath/statics/js/toastr.js"></script>
+<!-- websocket -->
+<script src="$rc.contextPath/statics/js/sockjs.js"></script>
+
+<script>
+
+    function loadData() {
+        var xAxisData = new Array();
+        var data = new Array();
+        jQuery.ajax({
+            url: "$rc.contextPath/sys/main/info",
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                if (result.code == 0) {
+                    console.log(result.info)
+                    $("#alarmCount").text(result.info.alarmCount);
+                    $("#lineCount").text(result.info.lineCount);
+                    $("#companyCount").text(result.info.companyCount);
+                    $("#equipmentCount").text(result.info.equipmentCount);
+                    for (var i = 0; i < result.info.mapList.length; i++) {
+                        xAxisData.push(result.info.mapList[i].days);
+                        data.push(result.info.mapList[i].count);
+                    }
+                    loadLineChart(xAxisData, data);
+                    $("#data_table").html("");
+                    if (result.info.alertTable.length == 0) {
+                        $("#data_table").append("<tr style='text-align: center'><td colspan=5>没有数据</td></tr>");
+                    } else {
+                        for (var i = 0; i < result.info.alertTable.length; i++) {
+                            var obj = result.info.alertTable[i];
+                            var m = eval('(' + obj.info + ')');
+                            $("#data_table").append(
+                                    "<tr>" +
+                                    "<td>" + obj.company + "</td>" +
+                                    "<td>" + obj.city + "</td>" +
+                                    "<td>" + obj.name + "</td>" +
+                                    "<td>" + m.msg + "</td>" +
+                                    "<td>" + timestampToTime(obj.create_time) + "</td>" +
+                                    "</tr>"
+                            );
+                        }
+                    }
+                } else {
+                    console.log(result)
+                }
+            }
+        })
+    }
+
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+        var h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+        var m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+        var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return h + m + s;
+    }
+
+    function loadLineChart(xAxisData, data) {
+        //加载折线图
+        var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+        var lineoption = {
+            title: {
+                text: '近7天的变化'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['告警']
+            },
+            grid: {
+                x: 40,
+                x2: 40,
+                y2: 24
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: xAxisData
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '告警',
+                    type: 'line',
+                    data: data,
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        lineChart.setOption(lineoption, true);
+        $(window).resize(lineChart.resize);
+    }
+
+    $(function () {
+        startSocket('$rc.contextPath');
+        //加载首页数据
+        loadData();
+        // 网关饼图
+        var cChart = echarts.init(document.getElementById("container"));
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['在线', '离线']
+            },
+            series: [
+                {
+                    name: '设备状态',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [
+                        {value: 0, name: '在线'},
+                        {value: 0, name: '离线'}
+                    ]
+                }
+            ]
+        };
+        cChart.setOption(option);
+        $(window).resize(cChart.resize);
+        //
+        var aChart = echarts.init(document.getElementById("a-chart"));
+        var a = {
+            title : {
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+
+            series : [
+                {
+                    name: '复核',
+                    type: 'pie',
+                    radius : '50%',
+                    center: ['50%', '50%'],
+                    data:[
+                        {value:9, name:'已复核'},
+                        {value:36, name:'未复核'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        aChart.setOption(a);
+        $(window).resize(aChart.resize);
+        //省份地图
+        var dom = document.getElementById("main");
+        var myChart = echarts.init(dom);
+        option = null;
+        var geoCoordMap = {
+            "舟山市": [122.207216, 29.885295],
+            "湖州市": [120.1, 30.76],
+            "宁波市": [121.56, 29.76],
+            "嘉兴市": [120.76, 30.67],
+            "绍兴市": [120.58, 29.91],
+            "台州市": [121.420757, 28.556386],
+            "杭州市": [120.19, 30.16],
+            "温州市": [120.65, 27.91],
+            "丽水市": [119.92, 28.35],
+            "金华市": [119.64, 29.00],
+            "衢州市": [118.88, 28.85]
+        };
+
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value)
+                    });
+                }
+            }
+            return res;
+        };
+
+        option = {
+            /* backgroundColor: '#404a59',*/
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    return params.name + ' : ' + params.value[2];
+                }
+            },
+            geo: {
+                map: '浙江',
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#ddb926',
+                            fontSize: 10,
+                        },
+                        show: true
+                    },
+                    emphasis: {
+                        textStyle: {
+                            color: '#f4e925',
+                            fontSize: 10,
+                        },
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        areaColor: '#323c48',
+                        borderColor: '#111'
+                    },
+                    emphasis: {
+                        areaColor: '#2a333d',
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }
+                }
+                ,
+                itemStyle: {
+                    normal: {
+                        areaColor: '#323c48',
+                        borderColor: '#111'
+                    },
+                    emphasis: {
+                        areaColor: '#2a333d'
+                    }
+                }
+            },
+            series: [
+                {
+                    name: 'pm2.5',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    data: convertData([
+                        {name: "舟山市", value: 9},
+                        {name: "湖州市", value: 12},
+                        {name: "宁波市", value: 12},
+                        {name: "嘉兴市", value: 12},
+                        {name: "绍兴市", value: 14},
+                        {name: "台州市", value: 14},
+                        {name: "杭州市", value: 14},
+                        {name: "温州市", value: 14},
+                        {name: "丽水市", value: 14},
+                        {name: "金华市", value: 14},
+                        {name: "衢州市", value: 14}
+                    ]),
+                    symbolSize: 12,
+                    label: {
+                        normal: {
+                            show: false
+                        },
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    itemStyle: {
+                        emphasis: {
+                            borderColor: '#fff',
+                            borderWidth: 1
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option, true);
+        $(window).resize(myChart.resize);
+
+    });
+</script>

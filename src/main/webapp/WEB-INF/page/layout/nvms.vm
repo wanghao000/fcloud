@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>${page_title}</title>
+
+    <!-- bootstrap -->
+    <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!-- 图标字体 -->
+    <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <link href="$rc.contextPath/statics/css/style0.css" rel="stylesheet">
+    <!-- 通知 -->
+    <link href="$rc.contextPath/statics/plugins/toastr/toastr.min.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    #parse("/nvms/header.vm")
+    $screen_content
+
+</body>
+
+</html>

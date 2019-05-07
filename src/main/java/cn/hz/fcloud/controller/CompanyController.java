@@ -47,11 +47,7 @@ public class CompanyController {
         int count = 0;
         if(user.getType() == 1){
             coms = companyService.findAllCompanys(map);
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println(coms.size());
             count = companyService.findAllCompanysCount(map);
-            System.out.println("-------------------------------------------------------------------------------------------");
-            System.out.println(count);
         }else if(user.getType() == 2){
             map.put("id",user.getProviderId());
             coms = companyService.findComsByProId(map);
@@ -60,7 +56,7 @@ public class CompanyController {
         return new TableReturn(coms,count);
     }
     @RequestMapping("/modify/{id}/{isDelete}")
-    @RequiresPermissions("sys:company:modify")
+    @RequiresPermissions("sys:company:delete")
     public R modifyState(@PathVariable("id") int id, @PathVariable("isDelete") int isDelete){
         return companyService.modifyState(id,isDelete)>0? R.ok():R.error();
     }
@@ -85,13 +81,11 @@ public class CompanyController {
             String name = "";
             if(exist_file){
                 String originalFilename = file.getOriginalFilename();
-                System.out.println(originalFilename);
                 try{
                     Resource r = new ClassPathResource("/file.properties");
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(r.getFile()));
                     String realPath = prop.getProperty("dir");
-                    System.out.println(realPath);
                     name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
                     picture = realPath+name;
                     File files = new File(realPath);
@@ -117,8 +111,6 @@ public class CompanyController {
             }else{
                 newCode = "A00001";
             }
-            System.out.println("******************************************");
-            System.out.println(newCode);
             comEntity.setCode(newCode);
             companyService.insert(comEntity);
             SysUser newUser = new SysUser();
@@ -158,13 +150,11 @@ public class CompanyController {
             String name = null;
             if(exist_file){
                 String originalFilename = file.getOriginalFilename();
-                System.out.println(originalFilename);
                 try{
                     Resource r = new ClassPathResource("/file.properties");
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(r.getFile()));
                     String realPath = prop.getProperty("dir");
-                    System.out.println(realPath);
                     name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
                     picture = realPath+name;
                     File files = new File(realPath);
@@ -179,7 +169,6 @@ public class CompanyController {
             }
             comEntity.setPicture(name);
             companyService.updateByPrimaryKeySelective(comEntity);
-            System.out.println("******************************************");
             return R.ok();
         }else{
             return R.error("公司名已存在");

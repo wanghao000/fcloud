@@ -112,7 +112,7 @@
                     #if($shiro.hasPermission("sys:device:update"))
                         '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+\''+row.code+'\')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #end
-                    #if($shiro.hasPermission("sys:device:modify"))
+                    #if($shiro.hasPermission("sys:device:delete"))
                         ,row.isDelete?'<a class="btn btn-danger" onclick="modify(\''+row.code+'\','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="modify(\''+row.code+'\','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
                     #end
                 ].join('');

@@ -124,7 +124,7 @@
                      #if($shiro.hasPermission("sys:company:update"))
                          ' <a class="btn btn-info" onclick="load(\'sys/company_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 编辑</a> '
                      #end
-                     #if($shiro.hasPermission("sys:company:modify"))
+                     #if($shiro.hasPermission("sys:company:delete"))
                          ,row.isDelete?'<a class="btn btn-danger" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
                      #end
                  ].join('');
@@ -181,36 +181,6 @@
     }
 
     function loadImg (value){
-        // layui.use('layer', function() {
-        //     var layer = layui.layer;
-        //     layer.ready(function(){
-        //         var index = layer.load(2);
-        //         layer.open({
-        //             type: 1,
-        //             title: false,
-        //             closeBtn: 0,
-        //             area: '516px',
-        //             skin: 'layui-layer-nobg', //没有背景色
-        //             shadeClose: true,
-        //             content: '<img src="/upload'+value+'">'
-        //         })
-        //         layer.close(index);
-        //     })
-        // });
-        // $('.hiddenImg').prop('src', '/upload' + value).on('load', function (e) {
-        //     layer.open({
-        //         type: 1,
-        //         title: false,
-        //         closeBtn: 0,
-        //         area: ['auto'],
-        //         shadow:0,
-        //         skin: 'layui-layer-nobg', //没有背景色
-        //         shadeClose: true,
-        //         content: $(this)
-        //         // content: '<img src="/upload'+value+'">'
-        //     })
-        //     $(this).hide();
-        // })
         window.open("/upload"+value);
             // layer.open({
             //     type: 1,
@@ -226,6 +196,5 @@
 </script>
 
 </body>
-<img class="hiddenImg" src=""></img>
 
 </html>

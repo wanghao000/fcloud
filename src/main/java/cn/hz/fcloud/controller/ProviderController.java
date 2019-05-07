@@ -48,7 +48,7 @@ public class ProviderController {
     }
 
     @RequestMapping("/modify/{id}/{isDelete}")
-    @RequiresPermissions("sys:provider:modify")
+    @RequiresPermissions("sys:provider:delete")
     public R modifyState(@PathVariable("id") int id,@PathVariable("isDelete") int isDelete){
         return providerService.modifyState(id,isDelete)>0?R.ok():R.error();
     }

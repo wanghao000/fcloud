@@ -10,22 +10,19 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="#">首页</a>
+                    <a href="index">首页</a>
                 </li>
                 <li>
                     <a href="#">警情监控</a>
                 </li>
                 <li>
-                    <a href="#">离岗报警</a>
-                </li>
-                <li>
-                    <a href="#">设备信息</a>
+                    <a href="device">设备信息</a>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">信息管理<strong class="caret"></strong></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#">网关信息</a>
+                            <a href="gateway">网关信息</a>
                         </li>
                         <li>
                             <a href="#">上报信息</a>
@@ -39,13 +36,13 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">统计分析<strong class="caret"></strong></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#">火灾核复</a>
+                            <a href="device">火灾核复</a>
                         </li>
                         <li>
-                            <a href="#">设备故障</a>
+                            <a href="fault">设备故障</a>
                         </li>
                         <li>
-                            <a href="#">运行记录</a>
+                            <a href="log">运行记录</a>
                         </li>
                     </ul>
                 </li>
@@ -53,7 +50,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#"><i class="fa fa-database"></i> </a>
+                    <a href="../big.html" target="_blank"><i class="fa fa-database"></i> </a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-arrows-alt"></i> </a>

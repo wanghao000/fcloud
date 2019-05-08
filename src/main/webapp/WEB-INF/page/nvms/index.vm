@@ -1,5 +1,8 @@
 #set($layout = "/layout/nvms.vm")
 #set($page_title = "首页")
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=IqwUK4n7IRh8u2cnu5aUIbGIpW1qc9Cn"></script>
+<!-- 通知 -->
+<link href="$rc.contextPath/statics/plugins/toastr/toastr.min.css" rel="stylesheet">
 
 <div class="container-fluid">
     <div class="wrapper wrapper-content">
@@ -113,8 +116,7 @@
                     <div class="ibox-title">
                         <h5>预警地图</h5>
                     </div>
-                    <div class="ibox-content">
-                        <div style="height:400px" id="main"></div>
+                    <div class="ibox-content" id="allmap" style="height: 367px">
                     </div>
                 </div>
             </div>
@@ -151,6 +153,7 @@
                         <h5>今日统计</h5>
                     </div>
                     <div class="ibox-content">
+                        <div class="echarts" id="statistics"></div>
                     </div>
                 </div>
             </div>
@@ -160,6 +163,7 @@
                         <h5>故障统计</h5>
                     </div>
                     <div class="ibox-content">
+                        <div class="echarts" id="gztj"></div>
                     </div>
                 </div>
             </div>
@@ -167,13 +171,8 @@
     </div>
 </div> <!-- /container -->
 
-
-<!-- 全局js -->
-<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
-<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
 <!-- ECharts -->
 <script src="$rc.contextPath/statics/plugins/echarts/echarts.min.js"></script>
-<script src="$rc.contextPath/statics/plugins/echarts/zhejiang.js"></script>
 <!-- 通知 -->
 <script src="$rc.contextPath/statics/plugins/toastr/toastr.min.js"></script>
 <script src="$rc.contextPath/statics/js/toastr.js"></script>
@@ -181,7 +180,7 @@
 <script src="$rc.contextPath/statics/js/sockjs.js"></script>
 
 <script>
-
+    //获取今日告警总数，设备离线总数，企业接入总数，设备接入总数，趋势图数据，实际告警列表
     function loadData() {
         var xAxisData = new Array();
         var data = new Array();
@@ -197,12 +196,18 @@
                     $("#lineCount").text(result.info.lineCount);
                     $("#companyCount").text(result.info.companyCount);
                     $("#equipmentCount").text(result.info.equipmentCount);
+                    //趋势图数据
                     for (var i = 0; i < result.info.mapList.length; i++) {
                         xAxisData.push(result.info.mapList[i].days);
                         data.push(result.info.mapList[i].count);
                     }
+                    //加载趋势图
                     loadLineChart(xAxisData, data);
+                    //加载今日统计
+                    statistics([result.info.alarmCount,0,0]);
+                    //清空实时列表数据
                     $("#data_table").html("");
+                    //获取实时列表数据
                     if (result.info.alertTable.length == 0) {
                         $("#data_table").append("<tr style='text-align: center'><td colspan=5>没有数据</td></tr>");
                     } else {
@@ -226,7 +231,24 @@
             }
         })
     }
-
+    function statistics(data) {
+        var statisticsChart = echarts.init(document.getElementById("statistics"));
+        var statistics = {
+            xAxis: {
+                type: 'category',
+                data: ['今日火警', '今日故障', '今日误报']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: data,
+                type: 'bar'
+            }]
+        };
+        statisticsChart.setOption(statistics, true);
+        $(window).resize(statisticsChart.resize);
+    }
     function timestampToTime(timestamp) {
         var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
         var Y = date.getFullYear() + '-';
@@ -237,7 +259,7 @@
         var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
         return h + m + s;
     }
-
+    //加载趋势图
     function loadLineChart(xAxisData, data) {
         //加载折线图
         var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
@@ -375,7 +397,7 @@
         aChart.setOption(a);
         $(window).resize(aChart.resize);
         //省份地图
-        var dom = document.getElementById("main");
+        /*var dom = document.getElementById("main");
         var myChart = echarts.init(dom);
         option = null;
         var geoCoordMap = {
@@ -407,7 +429,7 @@
         };
 
         option = {
-            /* backgroundColor: '#404a59',*/
+            /!* backgroundColor: '#404a59',*!/
             tooltip: {
                 trigger: 'item',
                 formatter: function (params) {
@@ -491,7 +513,32 @@
             ]
         };
         myChart.setOption(option, true);
-        $(window).resize(myChart.resize);
+        $(window).resize(myChart.resize);*/
 
+
+
+        var gztjChart = echarts.init(document.getElementById("gztj"));
+        var gztj = {
+            xAxis: {
+                type: 'category',
+                data: ['通讯故障', '供电故障','其他故障']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [120, 200,100],
+                type: 'bar'
+            }]
+        };
+        gztjChart.setOption(gztj, true);
+        $(window).resize(gztjChart.resize);
+
+        var map = new BMap.Map("allmap");
+// 创建地图实例
+        var point = new BMap.Point(116.404, 39.915);
+// 创建点坐标
+        map.centerAndZoom(point, 15);
+// 初始化地图，设置中心点坐标和地图级别
     });
 </script>

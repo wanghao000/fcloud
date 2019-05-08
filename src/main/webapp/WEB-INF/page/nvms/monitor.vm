@@ -1,0 +1,110 @@
+#set($layout = "/layout/nvms.vm")
+#set($page_title = "警情监控")
+<link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="$rc.contextPath/statics/plugins/bootstrap-table/css/bootstrap-table.css" rel="stylesheet">
+<link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+<link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+<div class="container-fluid">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+
+        </div>
+        <div class="row">
+            <table id="tb_content"></table>
+        </div>
+    </div>
+</div> <!-- /container -->
+
+
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+<!-- ECharts -->
+<script src="$rc.contextPath/statics/plugins/echarts/echarts.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/echarts/zhejiang.js"></script>
+<!-- 通知 -->
+<script src="$rc.contextPath/statics/plugins/toastr/toastr.min.js"></script>
+<script src="$rc.contextPath/statics/js/toastr.js"></script>
+<!-- websocket -->
+<script src="$rc.contextPath/statics/js/sockjs.js"></script>
+<!-- Bootstrap table -->
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/js/bootstrap-table.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+<script src="$rc.contextPath/statics/js/tableIndex.js"></script>
+<script>
+
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+        var h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+        var m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+        var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return h + m + s;
+    }
+        $(function() {
+            //1. 定义表格列
+            var columns = [{
+                checkbox: true
+            },{
+                field: 'address',
+                title: '报警位置'
+            },{
+                field: 'typee',
+                title: '设别类型',
+            },{
+                field: 'time',
+                title: '接收时间'
+            }, {
+                field: 'state',
+                title: '状态',
+            }, {
+                field: 'result',
+                title: '复核结果',
+                formatter:function (value,row,index) {
+                    return timestampToTime(value);
+                }
+            },{
+                field: 'operator',
+                title: '复核人',
+            }, {
+                field: 'explanation',
+                title: '复核说明',
+            },
+                #if($shiro.hasPermission("sys:company:update"))
+                    {
+                        field: 'rootname',
+                        title: '操作',
+                        formatter:function (value,row,index) {
+                            return [
+                                #if($shiro.hasPermission("sys:company:update"))
+                                    ' <a class="btn btn-info" onclick="load(\'sys/company_edit.vm?id=\'+'+row.id+')"><i class="fa fa-paste"> </i> 上报信息</a> '
+                                #end
+                                #if($shiro.hasPermission("sys:company:delete"))
+                                    ,row.isDelete?'<a class="btn btn-danger" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 火灾复核</a> ':'<a class="btn btn-success" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
+                                #end
+                                #if($shiro.hasPermission("sys:company:delete"))
+                                    ,row.isDelete?'<a class="btn btn-danger" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 查看现场视频</a> ':'<a class="btn btn-success" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
+                                #end
+                                #if($shiro.hasPermission("sys:company:delete"))
+                                    ,row.isDelete?'<a class="btn btn-danger" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 消音</a> ':'<a class="btn btn-success" onclick="modify('+row.id+','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
+                                #end
+                            ].join('');
+                        }
+                    }
+                #end
+            ];
+            //2.初始化Table
+            var  oTable = new TableInit('$rc.contextPath/test.json',columns);
+            oTable.Init();
+        })
+    function GetQueryParams() {
+        //以下参数，为各具体功能根据查询条件进行修改
+        //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+        var temp = {
+            // name:$("#name").val()
+        };
+        return temp;
+    }
+</script>

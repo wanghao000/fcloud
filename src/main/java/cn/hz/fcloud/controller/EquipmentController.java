@@ -11,6 +11,7 @@ import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,7 @@ public class EquipmentController {
     private EquipmentDataService eqdataService;
 
     @RequestMapping("/save")
+    @RequiresPermissions("sys:device:save")
     public R insertEquipment(@RequestBody Equipment eq){
         SysUser user = ShiroUtil.getUserEntity();
         eq.setCreateTime(new Date());
@@ -76,11 +78,13 @@ public class EquipmentController {
     }
 
     @RequestMapping("/delete/{code}")
+    @RequiresPermissions("sys:company:delete")
     public R delEq(@PathVariable("code")String code){
         return eqservice.delEquipment(code)>0?R.ok():R.error();
     }
 
     @RequestMapping("/update")
+    @RequiresPermissions("sys:device:update")
     public R updateEq(@RequestBody Equipment eq){
         return eqservice.updateEq(eq)>0?R.ok():R.error();
     }

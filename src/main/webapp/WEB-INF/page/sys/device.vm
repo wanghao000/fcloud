@@ -35,7 +35,7 @@
                     <!-- Example Events -->
                     <div class="example-wrap">
                         <div id="toolbar" class="btn-group" >
-                            #if($shiro.hasPermission("sys:user:save"))
+                            #if($shiro.hasPermission("sys:device:save"))
                                 <button type="button" class="btn btn-default" onclick="load('sys/eq_add.vm');">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
                                 </button>
@@ -102,18 +102,23 @@
                         '<span class="label label-success">启用</span>')
                 return data[value];
             }
-        },  {
+        },
+        #if($shiro.hasPermission("sys:device:update"))
+            {
             field: 'rootname',
             title: '操作',
             formatter:function (value,row,index) {
                 return [
-                    '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+\''+row.code+'\')"><i class="fa fa-paste"> </i> 编辑</a> '
-                    #if($shiro.hasPermission("sys:user:delete"))
+                    #if($shiro.hasPermission("sys:device:update"))
+                        '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+\''+row.code+'\')"><i class="fa fa-paste"> </i> 编辑</a> '
+                    #end
+                    #if($shiro.hasPermission("sys:device:delete"))
                         ,row.isDelete?'<a class="btn btn-danger" onclick="modify(\''+row.code+'\','+row.isDelete+')"><i class="fa fa-trash-o"> </i> 禁用</a> ':'<a class="btn btn-success" onclick="modify(\''+row.code+'\','+row.isDelete+')"><i class="fa fa-check-circle-o"> </i> 启用</a> '
                     #end
                 ].join('');
             }
         }
+        #end
         ];
         //2.初始化Table
         var  oTable = new TableInit('$rc.contextPath/sys/eq/list',columns);

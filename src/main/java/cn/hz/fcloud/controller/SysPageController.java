@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SysPageController {
 	
 	@RequestMapping("/sys/{url}.vm")
-	public String page(@PathVariable("url") String url){
+	public String page1(@PathVariable("url") String url){
 		return "sys/" + url ;
+	}
+
+	@RequestMapping("/nvms/{url}")
+	public String page2(@PathVariable("url") String url){
+		return "nvms/" + url ;
 	}
 }

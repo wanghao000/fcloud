@@ -7,6 +7,7 @@ import cn.hz.fcloud.service.EquipmentDataService;
 import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.UDPServerUtil;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,18 @@ public class UDPServerThread extends Thread {
 		this.companyService = companyService;
 	}
 
+	enum warning{
+		//无报警     报警          手动测试   开机
+		NORMAL(1),WARNING(0),TEST(2),OPEN(3);
+		private int value;
+		warning(int i){
+			this.value = i;
+		}
+		public int getValue() {
+			return value;
+		}
+	}
+
 	@Override
 	public void run() {
 		String receive = new String(b, 0, p.getLength());
@@ -53,9 +66,19 @@ public class UDPServerThread extends Thread {
 		String imei = receive.substring(4, 11);
 		System.out.println("imei:  "+imei);
 		
+		if(equipmentService.findOne(imei) == null) {
+		    return;
+		}
+
+        String msg;
 		byte[] rb = null;
+
 		if (receive.startsWith("FA01")) {
 			rb = ("F581"+imei+"0D0A").getBytes();
+            msg = "开机";
+            JSONObject info = new JSONObject();
+            info.put("msg", msg);
+            equipmentDataService.addRecord(new EquipmentData(imei, info.toString(), warning.OPEN.getValue(), new Date()));
 		}
 		if (receive.startsWith("FA02")) {
 			equipmentService.updateReportTimeAndOnline(new Equipment(imei, 1, new Date()));
@@ -73,36 +96,35 @@ public class UDPServerThread extends Thread {
 			String minute = receive.substring(31, 33);
 			String seconds = receive.substring(33, 35);
 			System.out.println("date:  "+year+"/"+month+"/"+day+" "+hour+":"+minute+":"+seconds);
-			String msg;
 			switch (flag) {
 				case "1111":
 				    msg = "火灾报警";
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.WARNING.getValue(), new Date()));
 					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "3111":
 				    msg = "火灾自动报警恢复";
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.NORMAL.getValue(), new Date()));
 					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "1384":
 				    msg = "电池低电压报警";
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.WARNING.getValue(), new Date()));
 					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "3384":
 				    msg = "电池低电压恢复";
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.NORMAL.getValue(), new Date()));
 					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "1601":
-				    msg = "手动测试报告";
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 0, new Date()));
+				    msg = "自检";
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.TEST.getValue(), new Date()));
 					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "1800":
 				    msg = "手动解除报警";
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), 1, new Date()));
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.NORMAL.getValue(), new Date()));
 					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				default:
@@ -110,7 +132,11 @@ public class UDPServerThread extends Thread {
 			}
 			rb = ("F583"+imei+"0D0A").getBytes();
 		}
-		
+
+		if(rb == null) {
+		    return;
+		}
+
 		DatagramPacket rpacket = new DatagramPacket(rb, rb.length, address, port);
 		try {
 			String string = new String(rpacket.getData(), "utf-8");

@@ -71,8 +71,10 @@ public class UDPServer {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
+				//心跳超时离线的时间（毫秒）
 				UDPServerUtil.findExceedTimeRecord(equipmentService, 1000*60*60*24);
 			}
+		//项目启动延时10秒启动，判断时间（毫秒）
 		}, 10000, 1000*60*10);
 	}
 

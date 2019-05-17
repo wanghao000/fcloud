@@ -100,8 +100,8 @@ public class TestSysChinaMapper {
     @Test
     public void testProperties() throws Exception{
         Properties prop = new Properties();
-//        InputStream input = new FileInputStream(new File("file.properties"));
-        BufferedReader  input = new BufferedReader(new FileReader("/file.properties"));
+//        InputStream input = new FileInputStream(new File("base.properties"));
+        BufferedReader  input = new BufferedReader(new FileReader("/base.properties"));
         prop.load(input);
         String realPath = prop.getProperty("dir");
         System.out.println(realPath);

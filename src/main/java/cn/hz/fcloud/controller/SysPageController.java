@@ -16,8 +16,4 @@ public class SysPageController {
 		return "sys/" + url ;
 	}
 
-	@RequestMapping("/nvms/{url}")
-	public String page2(@PathVariable("url") String url){
-		return "nvms/" + url ;
-	}
 }

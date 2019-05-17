@@ -1,6 +1,7 @@
 var i = -1;
 var toastCount = 0;
 var $toastlast;
+var url='localhost:8080';
 function showtoast(shortCutFunction,msg,title) {
     var toastIndex = toastCount++;
     toastr.options = {
@@ -42,11 +43,11 @@ function startSocket(path) {
     /*websocket*/
     var websocket;
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://localhost:8080"+path+"/websocketServer");
+        websocket = new WebSocket("ws://"+url+path+"/websocketServer");
     } else if ('MozWebSocket' in window) {
-        websocket = new MozWebSocket("ws://localhost:8080"+path+"/websocketServer");
+        websocket = new MozWebSocket("ws://"+url+path+"/websocketServer");
     } else {
-        websocket = new SockJS("http://localhost:8080"+path+"/sockjs/websocketServer");
+        websocket = new SockJS("http://"+url+path+"/sockjs/websocketServer");
     }
     websocket.onopen = function (evnt) {
         console.log('ws clint:open websocket')

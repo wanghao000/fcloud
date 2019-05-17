@@ -82,7 +82,7 @@ public class CompanyController {
             if(exist_file){
                 String originalFilename = file.getOriginalFilename();
                 try{
-                    Resource r = new ClassPathResource("/file.properties");
+                    Resource r = new ClassPathResource("/base.properties");
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(r.getFile()));
                     String realPath = prop.getProperty("dir");
@@ -151,7 +151,7 @@ public class CompanyController {
             if(exist_file){
                 String originalFilename = file.getOriginalFilename();
                 try{
-                    Resource r = new ClassPathResource("/file.properties");
+                    Resource r = new ClassPathResource("/base.properties");
                     Properties prop = new Properties();
                     prop.load(new FileInputStream(r.getFile()));
                     String realPath = prop.getProperty("dir");

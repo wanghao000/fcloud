@@ -44,4 +44,18 @@ public interface EquipmentDataService {
     List<Map<String, Object>> findAreaAlarmCount();
 
     List<Map<String, Object>> findAreaAlarmCountByUser(long userId);
+
+    /**
+     * 获取设备运行记录
+     * @param map
+     * @return
+     */
+    List<EquipmentData> getInfoByCode(Map<String,Object> map);
+
+    /**
+     * 统计设备运行记录总数
+     * @param map
+     * @return
+     */
+    int getInfoCount(Map<String,Object> map);
 }

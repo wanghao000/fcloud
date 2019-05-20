@@ -48,4 +48,18 @@ public interface EquipmentDataMapper {
 	List<Map<String, Object>> findAreaAlarmCount();
 
 	List<Map<String, Object>> findAreaAlarmCountByUser(long userId);
+
+	/**
+	 * 根据code查询设备数据
+	 * @param map
+	 * @author 陈信晨
+	 */
+	List<EquipmentData> selectByCode(Map<String,Object> map);
+
+	/**
+	 * 统计设备数据
+	 * @param map
+	 * @author 陈信晨
+	 */
+	int selectByCodeCount(Map<String,Object> map);
 }

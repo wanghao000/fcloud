@@ -115,4 +115,14 @@ public class EquipmentDataServiceImpl implements EquipmentDataService {
     public List<Map<String, Object>> findAreaAlarmCountByUser(long userId) {
         return equipmentDataMapper.findAreaAlarmCountByUser(userId);
     }
+
+    @Override
+    public List<EquipmentData> getInfoByCode(Map<String,Object> map) {
+        return equipmentDataMapper.selectByCode(map);
+    }
+
+    @Override
+    public int getInfoCount(Map<String, Object> map) {
+        return equipmentDataMapper.selectByCodeCount(map);
+    }
 }

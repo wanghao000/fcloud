@@ -1,9 +1,6 @@
 package cn.hz.fcloud.controller;
 
-import cn.hz.fcloud.entity.Company;
-import cn.hz.fcloud.entity.EqInfos;
-import cn.hz.fcloud.entity.Equipment;
-import cn.hz.fcloud.entity.SysUser;
+import cn.hz.fcloud.entity.*;
 import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.EqInfosService;
 import cn.hz.fcloud.service.EquipmentDataService;
@@ -246,5 +243,12 @@ public class EquipmentController {
     public List<Map<String, Object>> findAreaAlarmCount(){
         SysUser user = ShiroUtil.getUserEntity();
         return user.getType() == 1?eqdataService.findAreaAlarmCount():eqdataService.findAreaAlarmCountByUser(user.getId());
+    }
+
+    @ResponseBody
+    @RequestMapping("/info")
+    public TableReturn info(@RequestBody Map<String,Object> map){
+        List<EquipmentData> data = eqdataService.getInfoByCode(map);
+        return new TableReturn(data,eqdataService.getInfoCount(map));
     }
 }

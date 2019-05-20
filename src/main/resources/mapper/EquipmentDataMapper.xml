@@ -84,4 +84,17 @@
     <select id="findAreaAlarmCountByUser" parameterType="long" resultType="map">
         select sc.short_name sn,f.csi from sys_china sc right join (select sc.parent_id,e.csi from sys_china sc right join (select d.district,count(d.district) csi from equipment_data ed right join (select e.code,c.district from equipment e right join (select c.id,c.district from company c right join (select p.id from provider p right join (select provider_id from sys_user where id=#{userId} and provider_id is not null)a on p.id=a.provider_id)b on c.provider_id=b.id)c on e.company_id=c.id)d on ed.code=d.code where ed.id is not null group by d.district)e on sc.id=e.district)f on sc.id=f.parent_id
     </select>
+
+    <select id="selectByCode" resultType="cn.hz.fcloud.entity.EquipmentData">
+        SELECT * FROM `equipment_data` where code=#{code }
+        ORDER BY create_time desc
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="selectByCodeCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM `equipment_data` where code=#{code }
+        ORDER BY create_time desc
+    </select>
 </mapper>

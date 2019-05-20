@@ -8,6 +8,7 @@ import cn.hz.fcloud.service.CompanyInfosService;
 import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.ProviderService;
 import cn.hz.fcloud.service.SysUserService;
+import cn.hz.fcloud.utils.FileUpUtil;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
@@ -70,34 +71,35 @@ public class CompanyController {
     @RequiresPermissions("sys:company:save")
     public R companySave(MultipartFile file,String company){
         //true表示已上传图片
-        Boolean exist_file = file != null;
+//        Boolean exist_file = file != null;
         Company comEntity = JSON.parseObject(company,Company.class);
         //存储返回信息
         Map<String,Object> map = new HashMap<String, Object>();
         //判断用户名是否存在 true表示存在
         Boolean is_exist = null != companyService.findCompanyByName(comEntity.getName());
         if(!is_exist){
-            String picture = "";
-            String name = "";
-            if(exist_file){
-                String originalFilename = file.getOriginalFilename();
-                try{
-                    Resource r = new ClassPathResource("/base.properties");
-                    Properties prop = new Properties();
-                    prop.load(new FileInputStream(r.getFile()));
-                    String realPath = prop.getProperty("dir");
-                    name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
-                    picture = realPath+name;
-                    File files = new File(realPath);
-                    if(!files.exists()){
-                        files.mkdirs();
-                    }
-                    File saveFile = new File(picture);
-                    file.transferTo(saveFile);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
+            String name = FileUpUtil.fileUp(file);
+//            String picture = "";
+//            String name = "";
+//            if(exist_file){
+//                String originalFilename = file.getOriginalFilename();
+//                try{
+//                    Resource r = new ClassPathResource("/file.properties");
+//                    Properties prop = new Properties();
+//                    prop.load(new FileInputStream(r.getFile()));
+//                    String realPath = prop.getProperty("dir");
+//                    name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
+//                    picture = realPath+name;
+//                    File files = new File(realPath);
+//                    if(!files.exists()){
+//                        files.mkdirs();
+//                    }
+//                    File saveFile = new File(picture);
+//                    file.transferTo(saveFile);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//            }
             comEntity.setCreateUser(user.getId().intValue());
             comEntity.setCreateTime(new Date());
             comEntity.setIsDelete(1);
@@ -140,33 +142,34 @@ public class CompanyController {
     @RequiresPermissions("sys:company:update")
     public R update(MultipartFile file,String company){
         //true表示已上传图片
-        Boolean exist_file = file != null;
+//        Boolean exist_file = file != null;
         Company comEntity = JSON.parseObject(company,Company.class);
         Company exist_company = companyService.findCompanyByName(comEntity.getName());
         //判断要修改的用户名是否存在 true表示存在
         Boolean is_exist = exist_company != null && exist_company.getId() != comEntity.getId();
         if(!is_exist){
-            String picture = "";
-            String name = null;
-            if(exist_file){
-                String originalFilename = file.getOriginalFilename();
-                try{
-                    Resource r = new ClassPathResource("/base.properties");
-                    Properties prop = new Properties();
-                    prop.load(new FileInputStream(r.getFile()));
-                    String realPath = prop.getProperty("dir");
-                    name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
-                    picture = realPath+name;
-                    File files = new File(realPath);
-                    if(!files.exists()){
-                        files.mkdirs();
-                    }
-                    File saveFile = new File(picture);
-                    file.transferTo(saveFile);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
+            String name = FileUpUtil.fileUp(file);
+//            String picture = "";
+//            String name = null;
+//            if(exist_file){
+//                String originalFilename = file.getOriginalFilename();
+//                try{
+//                    Resource r = new ClassPathResource("/file.properties");
+//                    Properties prop = new Properties();
+//                    prop.load(new FileInputStream(r.getFile()));
+//                    String realPath = prop.getProperty("dir");
+//                    name = "/"+UUID.randomUUID()+"."+originalFilename.split("\\.")[1];
+//                    picture = realPath+name;
+//                    File files = new File(realPath);
+//                    if(!files.exists()){
+//                        files.mkdirs();
+//                    }
+//                    File saveFile = new File(picture);
+//                    file.transferTo(saveFile);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//            }
             comEntity.setPicture(name);
             companyService.updateByPrimaryKeySelective(comEntity);
             return R.ok();

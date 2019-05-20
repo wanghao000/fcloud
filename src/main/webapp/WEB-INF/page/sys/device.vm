@@ -52,6 +52,29 @@
     <!-- End Panel Other -->
 </div>
 
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    设备运行记录
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table id="tb_run"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 <!-- 全局js -->
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
@@ -109,6 +132,7 @@
             title: '操作',
             formatter:function (value,row,index) {
                 return [
+                    '<a class="btn btn-primary" onclick="show_modal(\''+row.code+'\')"><i class="fa fa-search"></i>运行记录</a> ',
                     #if($shiro.hasPermission("sys:device:update"))
                         '<a class="btn btn-info" onclick="load(\'sys/eq_edit.vm?id=\'+\''+row.code+'\')"><i class="fa fa-paste"> </i> 编辑</a> '
                     #end
@@ -158,6 +182,94 @@
                 }
             }
         });
+    }
+    function show_modal(code){
+        $('#myModal').modal('show');
+        $('#tb_run').bootstrapTable('destroy');
+        //表格初始化函数，相当于构造函数
+        var TableInit = function (url,columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $('#tb_run').bootstrapTable({
+                    url: url,//请求后台的URL（*）
+                    method: 'post',//请求方式（*）
+                    striped: true,//是否显示行间隔色
+                    cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,//是否显示分页（*）
+                    sortable: false,//是否启用排序
+                    sortOrder: "asc",//默认排序方式
+                    queryParams: oTableInit.queryParams,//传递参数（*）
+                    sidePagination: "server",//分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber:1,//初始化加载第一页，默认第一页
+                    pageSize: 4,//每页的记录行数（*）
+                    search: false,//是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: false,
+                    showColumns: false,//是否显示所有的列
+                    showRefresh: false,//是否显示刷新按钮
+                    minimumCountColumns: 2,//最少允许的列数
+                    clickToSelect: true, //是否启用点击选中行
+                    /*height: 500,*///行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",//每一行的唯一标识，一般为主键列
+                    showToggle:false,//是否显示详细视图和列表视图的切换按钮
+                    cardView: false,//是否显示详细视图
+                    detailView: false,//是否显示父子表
+                    columns: columns //填充数据
+                });
+                /* Query();*/
+            };
+            //得到查询的参数
+            oTableInit.queryParams = function (params) {
+                var temp = GetQueryParams();
+                temp["limit"] = params.limit;   //页面大小
+                temp["offset"] = params.offset;  //开始记录数
+                temp["code"] = code;
+                return temp;
+            };
+            return oTableInit;
+        };
+        //1. 定义表格列
+        var columns = [{
+            field: 'info',
+            title: '运行内容',
+            formatter:function (value,row,index) {
+                // alert(value);
+                var dataObj=eval("("+value+")");
+
+                return dataObj.msg;
+            }
+
+        },{
+            field: 'type',
+            title: '内容类型',
+            formatter:function (value,row,index) {
+                var data = new Array(
+                        '<span class="label label-danger">告警</span>',
+                        '<span class="label label-success">正常</span>')
+                return data[value];
+            }
+        },{
+            field: 'createTime',
+            title: '运行时间',
+            formatter:function (value,row,index) {
+                return timestampToTime(value);
+            }
+
+        }
+        ];
+        //2.初始化Table
+        var  oTable = new TableInit('$rc.contextPath/sys/eq/info',columns);
+        oTable.Init();
+    }
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = date.getDate() < 10 ?  '0'+date.getDate()+ ' ' : date.getDate()+ ' ';
+        var h = date.getHours() < 10 ? '0'+date.getHours()+ ':' : date.getHours()+ ':';
+        var m = date.getMinutes() < 10 ? '0'+date.getMinutes()+ ':' : date.getMinutes()+ ':';
+        var s = date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds();
+        return Y+M+D+h+m+s;
     }
 </script>
 

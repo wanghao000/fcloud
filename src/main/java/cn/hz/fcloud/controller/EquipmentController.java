@@ -70,7 +70,13 @@ public class EquipmentController {
 
     @RequestMapping("/companyList")
     public List<Company> companyList(){
-        List<Company> coms= comService.companyList();
+        SysUser user = ShiroUtil.getUserEntity();
+        List<Company> coms = new ArrayList<>();
+        switch (user.getType()){
+            case 1 : coms = comService.companyList();break;
+            case 2 : coms = comService.selectComsByProId(user.getProviderId());break;
+            case 3 : coms.add(comService.getCompanyById(user.getCompanyId()));break;
+        }
         return coms;
     }
 

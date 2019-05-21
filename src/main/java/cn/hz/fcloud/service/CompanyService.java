@@ -31,4 +31,6 @@ public interface CompanyService {
     Company findCompanyByName(String name);
 
     int updateByPrimaryKeySelective(Company company);
+
+    List<Company> selectComsByProId(Long id);
 }

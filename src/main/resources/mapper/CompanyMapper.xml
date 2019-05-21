@@ -223,6 +223,9 @@
     </if>
     GROUP BY c.id order by c.id limit #{offset},#{limit}
   </select>
+  <select id="selectComsByProId" resultType="cn.hz.fcloud.entity.Company">
+    select * from company where provider_id = #{id} and is_delete = 1
+  </select>
   <select id="findComsByProIdCount" resultType="integer">
     select count(c.id) from company c  where c.provider_id = #{id}
     <if test="name!=null and name!=''">

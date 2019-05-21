@@ -39,4 +39,6 @@ public interface CompanyMapper {
     String findCompanyCode();
 
     Company findCompanyByName(String name);
+
+    List<Company> selectComsByProId(Long id);
 }

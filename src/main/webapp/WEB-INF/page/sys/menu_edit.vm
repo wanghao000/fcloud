@@ -96,6 +96,8 @@
 <script src="$rc.contextPath/statics/plugins/layer/layer.js"></script>
 
 <script>
+    //加载菜单树
+    var ztree;
     $(document).ready(function () {
         var setting = {
             data: {
@@ -110,8 +112,7 @@
                 }
             }
         };
-        //加载菜单树
-        var ztree;
+
         jQuery.ajax({
             type: "GET",
             url: "$rc.contextPath/sys/menu/perms",

@@ -15,5 +15,8 @@ public class SysPageController {
 	public String page1(@PathVariable("url") String url){
 		return "sys/" + url ;
 	}
-
+	@RequestMapping("/sys/{parent}/{url}.vm")
+	public String page1(@PathVariable("parent") String parent,@PathVariable("url") String url){
+		return "sys/"+parent+"/" + url ;
+	}
 }

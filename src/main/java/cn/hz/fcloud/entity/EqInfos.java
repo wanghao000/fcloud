@@ -26,33 +26,6 @@ public class EqInfos {
     private String comName;
     private String remark;
 
-    @Override
-    public String toString() {
-        return "EqInfos{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", province=" + province +
-                ", pName='" + pName + '\'' +
-                ", city=" + city +
-                ", cName='" + cName + '\'' +
-                ", district=" + district +
-                ", dName='" + dName + '\'' +
-                ", address='" + address + '\'' +
-                ", lng='" + lng + '\'' +
-                ", lat='" + lat + '\'' +
-                ", createUser=" + createUser +
-                ", isOnline=" + isOnline +
-                ", lastReportTime=" + lastReportTime +
-                ", createTime=" + createTime +
-                ", isDelete=" + isDelete +
-                ", companyId=" + companyId +
-                ", comName='" + comName + '\'' +
-                ", remark='" + remark + '\'' +
-                '}';
-    }
-
     public Integer getId() {
         return id;
     }
@@ -77,7 +50,7 @@ public class EqInfos {
         this.name = name;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
@@ -105,7 +78,7 @@ public class EqInfos {
         return city;
     }
 
-    public void setCity(int city) {
+    public void setCity(Integer city) {
         this.city = city;
     }
 
@@ -189,11 +162,11 @@ public class EqInfos {
         this.createTime = createTime;
     }
 
-    public Integer getisDelete() {
+    public Integer getIsDelete() {
         return isDelete;
     }
 
-    public void setisDelete(Integer isDelete) {
+    public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
 
@@ -219,5 +192,32 @@ public class EqInfos {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "EqInfos{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", province=" + province +
+                ", pName='" + pName + '\'' +
+                ", city=" + city +
+                ", cName='" + cName + '\'' +
+                ", district=" + district +
+                ", dName='" + dName + '\'' +
+                ", address='" + address + '\'' +
+                ", lng='" + lng + '\'' +
+                ", lat='" + lat + '\'' +
+                ", createUser=" + createUser +
+                ", isOnline=" + isOnline +
+                ", lastReportTime=" + lastReportTime +
+                ", createTime=" + createTime +
+                ", isDelete=" + isDelete +
+                ", companyId=" + companyId +
+                ", comName='" + comName + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

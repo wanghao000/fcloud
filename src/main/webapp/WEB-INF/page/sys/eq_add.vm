@@ -18,6 +18,16 @@
     <!-- Sweet Alert -->
     <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
+    <style>
+        .modal-dialog{
+            width: 1200px;
+            height: 500px;
+        }
+        #container{
+            width: 1150px;
+            height: 400px !important;
+        }
+    </style>
 </head>
 
 <body class="gray-bg">
@@ -44,6 +54,10 @@
                                 <select class="form-control m-b" name="companyId" id="companyId">
                                     <option value="-1">请选择</option>
                                 </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <h5  style="visibility:hidden;">隐藏</h5>
+                                <a class="btn btn-primary btn-sm" onclick="show_modal()">点击获取经纬度信息</a>
                             </div>
                         </div>
                         <h5>所在地址</h5>
@@ -109,6 +123,50 @@
             </div>
         </div>
     </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        选取设备经纬度
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="layui-input-block">
+                        <div id="myPageTop">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label>按关键字搜索：</label>
+                                    </td>
+                                    <td class="column2">
+                                        <label>左击获取经纬度：</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" id="tipinput"   autocomplete="off" onkeydown="if(event.keyCode==13)return false;" placeholder="请输入关键字进行搜索" >
+                                    </td>
+                                    <td class="column2">
+                                        <input type="text"  readonly="true" id="lnglat" name="lnglat" >
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="container"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -120,11 +178,12 @@
 <script src="$rc.contextPath/statics/plugins/iCheck/icheck.min.js"></script>
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
-<!-- 百度地图 -->
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=XWDDOFh4FmqtQ3pZSocbHPbd"></script>
+<!--  高德地图 -->
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.9&key=cb8ee286c814c0c8e629b1d21cc3d89c&plugin=AMap.Autocomplete"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.9&key=cb8ee286c814c0c8e629b1d21cc3d89c&plugin=AMap.Autocomplete&plugin=AMap.Geocoder"></script>
 <script src="$rc.contextPath/statics/js/map.js"></script>
 <script>
-    load();
+    // position();
     $("#save").click(function () {
         var data = {
             name : $("#name").val(),
@@ -227,6 +286,10 @@
                });
            });
        });
+    function show_modal(monitor){
+        $('#myModal').modal('show');
+        selectLocation();
+    }
 </script>
 
 

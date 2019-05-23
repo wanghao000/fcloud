@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - 基本表单</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/plugins/bootstrap-table/css/bootstrap-table.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <style>
+        .odiv{
+            position: relative;
+            width: 140px;
+            height: 140px;
+            border-radius: 50% !important;
+            border: #0e9aef 5px solid;
+            display: inline-block;
+        }
+        .odiv>span{
+            position: absolute;
+            font-size: 22px;
+            top: 18%;
+            left: 22%;
+            width: 100%;
+            transform: none;
+        }
+        .odiv>i{
+            display: block;
+            position: absolute;
+            font-size: 22px;
+            top: 55%;
+            left: 35%;
+            width: 100%;
+            transform: none;
+            font-style: normal;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>隐患概览</h5>
+                    <div class="pull-right">
+                        <h5 id="calendar"><i class="fa fa-calendar" aria-hidden="true"></i></h5>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                   <div class="row">
+                       <div class="col-sm-8">
+                            <h5>隐患监控</h5>
+                           <div class="row">
+                                <div class="col-sm-4">
+                                    <img src="$rc.contextPath/statics/img/timg.gif" width="140px">
+                                </div>
+                               <div class="col-sm-4">
+                                   <div class="odiv">
+                                       <span>监控点</span>
+                                        <i id="jkd">1个</i>
+                                   </div>
+                               </div>
+                               <div class="col-sm-4">
+                                   <div class="odiv" style="border: red 5px solid">
+                                       <span>隐患点</span>
+                                       <i id="yhd">1个</i>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="col-sm-4">
+                           <h5>告警统计</h5>
+                          <div id="main" style="height: 200px"></div>
+                       </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>隐患设备列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="tb_content"></table>
+                </div>
+            </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!-- iCheck -->
+<script src="$rc.contextPath/statics/plugins/iCheck/icheck.min.js"></script>
+<!-- Sweet alert -->
+<script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+
+<script src="$rc.contextPath/statics/plugins/echarts/echarts.min.js"></script>
+
+    <!-- Bootstrap table -->
+    <script src="$rc.contextPath/statics/plugins/bootstrap-table/js/bootstrap-table.js"></script>
+    <script src="$rc.contextPath/statics/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+
+    <script>
+        var nowDate = new Date();
+        $("#calendar").append(nowDate.toLocaleDateString());
+        var data;
+        jQuery.ajax({
+            type: "GET",
+            url: "$rc.contextPath/sys/eq/znfx",
+            async:false,
+            success: function (result) {
+                if (result.code == 0) {
+                    console.log(result)
+                    $("#jkd").html(result.jkd+"个")
+                    $("#yhd").html(result.yhd+"个")
+                    data=result.data.rows;
+                } else {
+                    swal("错误", result.msg, "error");
+                }
+            }
+        })
+        /*// 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            radar: [
+                {
+                    indicator: [
+                        {text: '品牌', max: 100}
+                    ],
+                    center: ['50%','50%'],
+                    radius: 50
+                }
+            ],
+            series: [
+                {
+                    type: 'radar',
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data: [
+                        {
+                            value: [60,73,85,40],
+                        }
+                    ]
+                }
+            ]
+        };
+        myChart.setOption(option);*/
+        $('#tb_content').bootstrapTable({
+            data:data,
+            toolbar: '#toolbar',//工具按钮用哪个容器
+            striped: true,//是否显示行间隔色
+            cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,//是否显示分页（*）
+            sortable: false,//是否启用排序
+            sidePagination: "client",//分页方式：client客户端分页，server服务端分页（*）
+            pageNumber:1,//初始化加载第一页，默认第一页
+            pageSize: 5,//每页的记录行数（*）
+            pageList: [5, 10, 20, 30],//可供选择的每页的行数（*）
+            search: false,//是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: false,//是否显示所有的列
+            showRefresh: false,//是否显示刷新按钮
+            minimumCountColumns: 2,//最少允许的列数
+            clickToSelect: true, //是否启用点击选中行
+            /*height: 500,*///行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",//每一行的唯一标识，一般为主键列
+            showToggle:false,//是否显示详细视图和列表视图的切换按钮
+            cardView: false,//是否显示详细视图
+            detailView: false,//是否显示父子表
+            columns:[{
+                field: 'code',
+                title: '编号'
+            },{
+                field: 'name',
+                title: '设备名称'
+            }, {
+                field: 'isOnline',
+                title: '设备状态',
+                formatter:function (value,row,index) {
+                    var data = new Array(
+                            '<span class="label label-danger">离线</span>',
+                            '<span class="label label-primary">在线</span>')
+                    return data[value];
+                }
+            }, {
+                field: 'type',
+                title: '设备类型',
+                formatter:function (value,row,index) {
+                    var data = new Array(
+                            '<span class="label label-info">烟感</span>',
+                            '<span class="label label-info">其他</span>')
+                    return data[value];
+                }
+            },{
+                title: '操作',
+                formatter:function (value,row,index) {
+                    return '<a class="btn btn-info" href="$rc.contextPath/driving.html?lng='+row.lng+'&lat='+row.lat+'" target="_blank"><i class="fa fa-location-arrow"> </i> 导航</a>';
+                }
+            }
+            ]//填充数据
+        });
+    </script>
+
+</body>
+
+</html>

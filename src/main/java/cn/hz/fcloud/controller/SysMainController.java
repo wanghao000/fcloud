@@ -8,15 +8,16 @@ import cn.hz.fcloud.service.ProviderService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/sys/main")
 public class SysMainController {
     @Autowired
@@ -28,6 +29,7 @@ public class SysMainController {
     @Autowired
     private ProviderService providerService;
 
+    @ResponseBody
     @RequestMapping("/info")
     public R info() {
         SysUser user = ShiroUtil.getUserEntity();
@@ -99,18 +101,21 @@ public class SysMainController {
             int equipmentCount = equipmentList.size();
             int alarmCount = 0;
             int lineCount = 0;
-            List<String> codes = new ArrayList<>();
-            for (Equipment equipment : equipmentList) {
-                codes.add(equipment.getCode());
-                alarmCount += equipmentDataService.geetAlarmCountByCode(equipment.getCode());
-                if (equipment.getIsOnline() == 0) {
-                    lineCount++;
+            List<EquipmentDataAndName> dataList=new ArrayList<>();
+            if(equipmentCount!=0){
+                List<String> codes = new ArrayList<>();
+                for (Equipment equipment : equipmentList) {
+                    codes.add(equipment.getCode());
+                    alarmCount += equipmentDataService.geetAlarmCountByCode(equipment.getCode());
+                    if (equipment.getIsOnline() == 0) {
+                        lineCount++;
+                    }
                 }
+                dataList = equipmentDataService.getAlarmList(codes);
             }
             map.put("equipmentCount", equipmentCount);
             map.put("alarmCount", alarmCount);
             map.put("lineCount", lineCount);
-            List<EquipmentDataAndName> dataList = equipmentDataService.getAlarmList(codes);
             map.put("dataList", dataList);
         }
         return R.ok().put("info", map);

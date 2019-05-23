@@ -6,13 +6,17 @@ import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.UDPServerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,8 +38,12 @@ public class UDPServer {
 	private static volatile DatagramSocket socket;
 	static {
 		try {
-			socket = new DatagramSocket(9999);
-		} catch (SocketException e) {
+			Resource r = new ClassPathResource("/base.properties");
+			Properties prop = new Properties();
+			prop.load(new FileInputStream(r.getFile()));
+			String port = prop.getProperty("port");
+			socket = new DatagramSocket(Integer.parseInt(port));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

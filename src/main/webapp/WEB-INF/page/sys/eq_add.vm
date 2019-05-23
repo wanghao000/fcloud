@@ -25,7 +25,10 @@
         }
         #container{
             width: 1150px;
-            height: 400px !important;
+            height: 400px;
+        }
+        .amap-sug-result {
+            z-index: 4096;
         }
     </style>
 </head>
@@ -149,7 +152,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" id="tipinput"   autocomplete="off" onkeydown="if(event.keyCode==13)return false;" placeholder="请输入关键字进行搜索" >
+                                        <input type="text" id="tipinput" autocomplete="off" onkeydown="if(event.keyCode==13)return false;" placeholder="请输入关键字进行搜索" >
                                     </td>
                                     <td class="column2">
                                         <input type="text"  readonly="true" id="lnglat" name="lnglat" >
@@ -179,11 +182,11 @@
 <!-- Sweet alert -->
 <script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
 <!--  高德地图 -->
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.9&key=cb8ee286c814c0c8e629b1d21cc3d89c"></script>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.9&key=cb8ee286c814c0c8e629b1d21cc3d89c&plugin=AMap.Autocomplete"></script>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.9&key=cb8ee286c814c0c8e629b1d21cc3d89c&plugin=AMap.Autocomplete&plugin=AMap.Geocoder"></script>
 <script src="$rc.contextPath/statics/js/map.js"></script>
 <script>
-    // position();
     $("#save").click(function () {
         var data = {
             name : $("#name").val(),
@@ -254,41 +257,43 @@
            })
 
            $("#province").change(function(){
-               // alert($("#province option:selected").text());
-               url = "$rc.contextPath/sys/china/show/";
-               if ($(this).val() == "") return;
-               $("#city option").remove();
-               $("#district option").remove();
-               var html = "<option value='-1'>请选择</option>";
-               // $("#city").append(html);
-               $("#district").append(html);
-               var code = $(this).find("option:selected").attr("exid");
-               url+=code;
-               jQuery.post(url,function (pdata) {
-                   jQuery.each(pdata,function(idx,item){
-                       html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-                   });
-                   $("#city").append(html);
-               })
+               ## url = "$rc.contextPath/sys/china/show/";
+               ## if ($(this).val() == "") return;
+               ## $("#city option").remove();
+               ## $("#district option").remove();
+               ## var html = "<option value='-1'>请选择</option>";
+               ## // $("#city").append(html);
+               ## $("#district").append(html);
+               ## var code = $(this).find("option:selected").attr("exid");
+               ## url+=code;
+               ## jQuery.post(url,function (pdata) {
+               ##     jQuery.each(pdata,function(idx,item){
+               ##         html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+               ##     });
+               ##     $("#city").append(html);
+               ## })
+               provinceChange();
            });
            $("#city").change(function(){
-               url = "$rc.contextPath/sys/china/show/";
-               if ($(this).val() == "") return;
-               $("#district option").remove();
-               var code = $(this).find("option:selected").attr("exid");
-               var html = "<option value='-1'>请选择</option>";
-               url += code;
-               jQuery.post(url,function (pdata) {
-                   jQuery.each(pdata,function(idx,item){
-                       html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
-                   });
-                   $("#district").append(html);
-               });
+               ## url = "$rc.contextPath/sys/china/show/";
+               ## if ($(this).val() == "") return;
+               ## $("#district option").remove();
+               ## var code = $(this).find("option:selected").attr("exid");
+               ## var html = "<option value='-1'>请选择</option>";
+               ## url += code;
+               ## jQuery.post(url,function (pdata) {
+               ##     jQuery.each(pdata,function(idx,item){
+               ##         html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+               ##     });
+               ##     $("#district").append(html);
+               ## });
+               cityChange();
            });
+
        });
     function show_modal(monitor){
         $('#myModal').modal('show');
-        selectLocation();
+        position();
     }
 </script>
 

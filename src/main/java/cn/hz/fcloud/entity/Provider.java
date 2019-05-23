@@ -1,6 +1,7 @@
 package cn.hz.fcloud.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class Provider {
     private Long id;
@@ -37,6 +38,11 @@ public class Provider {
 
     private Integer eqsCount;
 
+    private List<Company> children;
+
+    private boolean open;
+
+    public boolean isParent = true;
 
     public Integer getEqsCount() {
         return eqsCount;
@@ -173,6 +179,24 @@ public class Provider {
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
+
+    public List<Company> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Company> children) {
+        this.children = children;
+    }
+
+    public boolean isOpen() {
+        return true;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+
 
     @Override
     public String toString() {

@@ -9,6 +9,7 @@ import cn.hz.fcloud.service.ProviderService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.plaf.synth.SynthStyle;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/sys/provider")
@@ -29,6 +27,8 @@ public class ProviderController {
 
     @Autowired
     private ProviderService providerService;
+    @Autowired
+    private CompanyService companyService;
 
     private SysUser user;
 
@@ -61,5 +61,33 @@ public class ProviderController {
     @RequiresPermissions("sys:provider:update")
     public R updateProvider(@RequestBody Provider provider){
         return providerService.updateByPrimaryKeySelective(provider)>0?R.ok():R.error();
+    }
+
+    @RequestMapping("/ztree")
+    public R ztree(){
+        SysUser user = ShiroUtil.getUserEntity();
+
+        if(user.getType()==1) {
+            List<Provider> list = providerService.selectAll();
+            for (Provider p : list) {
+                p.setChildren(companyService.selectComsByProId(p.getId()));
+            }
+            return R.ok().put("data", JSONArray.toJSON(list));
+        }
+        if(user.getType()==2){
+            Provider provider = providerService.getProviderById(user.getProviderId());
+            provider.setChildren(companyService.selectComsByProId(provider.getId()));
+            return R.ok().put("data", JSONArray.toJSON(provider));
+        }
+
+        if(user.getType()==3){
+            Company company = companyService.getCompanyById(user.getCompanyId());
+            Provider provider = providerService.getProviderById(company.getId());
+            List<Company> list = new ArrayList<>();
+            list.add(company);
+            provider.setChildren(list);
+            return R.ok().put("data", JSONArray.toJSON(provider));
+        }
+        return null;
     }
 }

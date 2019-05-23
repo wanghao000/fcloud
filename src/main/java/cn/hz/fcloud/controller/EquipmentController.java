@@ -63,7 +63,13 @@ public class EquipmentController {
 
         return new TableReturn(eqs,count);
     }
-
+    @RequestMapping("/list/{companyId}")
+    public TableReturn findAllEquiments(@RequestBody Map<String,Object> map,@PathVariable("companyId")Long companyId ){
+        map.put("id",companyId);
+        List<EqInfos> eqs = EqInfosService.findByComId(map);
+        int count = EqInfosService.findByComIdCount(map);
+        return new TableReturn(eqs,count);
+    }
     @RequestMapping("/find/{code}")
     public EqInfos editEquiment(@PathVariable("code") String code){
         return EqInfosService.findOne(code);

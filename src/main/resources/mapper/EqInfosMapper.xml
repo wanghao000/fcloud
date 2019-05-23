@@ -18,9 +18,12 @@
        (SELECT name from sys_china where id = e.district)as d_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
        where 1 = 1
-           <if test="name!=null and name!=''">
-                and e.name like CONCAT('%',#{name},'%')
-           </if>
+        <if test="name!=null and name!=''">
+            and e.name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="type!=null and type!=''">
+            and e.type = #{type}
+        </if>
            order by e.id limit #{offset},#{limit}
     </select>
 
@@ -29,6 +32,9 @@
         where 1 = 1
         <if test="name!=null and name!=''">
             and e.name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="type!=null and type!=''">
+            and e.type = #{type}
         </if>
     </select>
 
@@ -43,6 +49,9 @@
         <if test="name!=null and name!=''">
             and e.name like CONCAT('%',#{name},'%')
         </if>
+        <if test="type!=null and type!=''">
+            and e.type = #{type}
+        </if>
         order by e.id limit #{offset},#{limit}
     </select>
 
@@ -51,6 +60,9 @@
         where e.company_id = #{id}
         <if test="name!=null and name!=''">
             and e.name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="type!=null and type!=''">
+            and e.type = #{type}
         </if>
     </select>
     <select id="findByProviderId" resultType="cn.hz.fcloud.entity.EqInfos">
@@ -62,6 +74,9 @@
         <if test="name!=null and name!=''">
             and e.name like CONCAT('%',#{name},'%')
         </if>
+        <if test="type!=null and type!=''">
+            and e.type = #{type}
+        </if>
         order by e.id limit #{offset},#{limit}
     </select>
 
@@ -71,6 +86,9 @@
         FROM equipment e WHERE e.company_id in (SELECT c.id FROM company c LEFT JOIN provider p on c.provider_id = p.id WHERE p.id = #{id})
         <if test="name!=null and name!=''">
             and e.name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="type!=null and type!=''">
+            and e.type = #{type}
         </if>
     </select>
 </mapper>

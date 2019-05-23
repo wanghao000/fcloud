@@ -9,6 +9,7 @@ public class EquipmentDataAndName {
     private String info;
     private int type;
     private Date createTime;
+    private Integer isOnline;
 
     public int getId() {
         return id;
@@ -56,5 +57,26 @@ public class EquipmentDataAndName {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(Integer isOnline) {
+        this.isOnline = isOnline;
+    }
+
+    @Override
+    public String toString() {
+        return "EquipmentDataAndName{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", info='" + info + '\'' +
+                ", type=" + type +
+                ", createTime=" + createTime +
+                ", isOnline=" + isOnline +
+                '}';
     }
 }

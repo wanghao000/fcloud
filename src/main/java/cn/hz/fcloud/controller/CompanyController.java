@@ -1,29 +1,16 @@
 package cn.hz.fcloud.controller;
 
-import cn.hz.fcloud.entity.Company;
-import cn.hz.fcloud.entity.CompanyInfos;
-import cn.hz.fcloud.entity.Provider;
-import cn.hz.fcloud.entity.SysUser;
-import cn.hz.fcloud.service.CompanyInfosService;
-import cn.hz.fcloud.service.CompanyService;
-import cn.hz.fcloud.service.ProviderService;
-import cn.hz.fcloud.service.SysUserService;
+import cn.hz.fcloud.entity.*;
+import cn.hz.fcloud.service.*;
 import cn.hz.fcloud.utils.FileUpUtil;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.*;
 import java.util.*;
 
 @RestController
@@ -38,6 +25,8 @@ public class CompanyController {
     private SysUserService sysUserService;
     @Autowired
     private CompanyInfosService companyInfosService;
+    @Autowired
+    private EqService eqService;
 
     private SysUser user;
 
@@ -138,5 +127,11 @@ public class CompanyController {
         }else{
             return R.error("公司名已存在");
         }
+    }
+
+    @RequestMapping("/monitor")
+    public List<Eq> monitor(){
+        user = ShiroUtil.getUserEntity();
+        return eqService.findByComId(user.getCompanyId());
     }
 }

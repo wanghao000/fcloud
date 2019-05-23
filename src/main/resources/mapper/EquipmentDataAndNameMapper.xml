@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hz.fcloud.dao.EquipmentDataAndNameMapper">
+    <select id="findAll" resultType="cn.hz.fcloud.entity.EquipmentDataAndName">
+        select ea.*,e.name,e.is_online from equipment_data ea,equipment e where ea.code = e.code and to_days(ea.create_time)=to_days(now())
+    </select>
+    <select id="findByComId"  resultType="cn.hz.fcloud.entity.EquipmentDataAndName">
+         select ea.*,e.name,e.is_online from equipment_data ea,equipment e where ea.code = e.code and to_days(ea.create_time)=to_days(now()) and e.company_id = #{id}
+    </select>
+</mapper>

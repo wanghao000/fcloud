@@ -18,8 +18,8 @@ public interface EquipmentMapper {
     int lineCount();
 
     int countAll();
-
-    List<Equipment> selectByCompanyId(Long id);
+    //企业下设备列表
+    List<Equipment> selectByCompanyId(Long companyId);
 
     List<Equipment> test();
     int updateEq(Equipment eq);

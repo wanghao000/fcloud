@@ -20,7 +20,7 @@ $(document).ready(function(){
         success: function(result){
             if(result.code == 0){
                 if(result.user.type==3){
-                    $("iframe[name=iframe0]").attr("src","sys/main_1.vm").attr("data-id","sys/main_1.vm");
+                    $("iframe[name=iframe0]").attr("src","sys/main_1.vm");
                 }
                 $("#nickname").text(result.user.nickname);
                 $("#username").text(result.user.username);

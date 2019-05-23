@@ -8,6 +8,7 @@ import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -256,5 +257,26 @@ public class EquipmentController {
     public TableReturn info(@RequestBody Map<String,Object> map){
         List<EquipmentData> data = eqdataService.getInfoByCode(map);
         return new TableReturn(data,eqdataService.getInfoCount(map));
+    }
+
+    @RequestMapping("/znfx")
+    public R znfx(){
+        //查出该账号所属哪个公司Id
+        SysUser user = ShiroUtil.getUserEntity();
+        long companyId = user.getCompanyId();
+        List<Equipment> equipmentList = eqservice.getEquipmentList(companyId);
+        List<Equipment> alarmList = alarmDevice(equipmentList);
+        return R.ok().put("jkd",equipmentList.size()).put("yhd",alarmList.size()).put("data",new TableReturn(alarmList,alarmList.size()));
+    }
+
+    //查询报警设备
+    public List<Equipment> alarmDevice(List<Equipment> equipmentList){
+        List<Equipment> datas = new ArrayList<>();
+        for(Equipment eq:equipmentList){
+            if(eqdataService.geetAlarmCountByCode(eq.getCode())>0){
+                datas.add(eq);
+            }
+        }
+        return datas;
     }
 }

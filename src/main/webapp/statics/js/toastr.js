@@ -1,7 +1,7 @@
 var i = -1;
 var toastCount = 0;
 var $toastlast;
-var url='localhost:8080';
+var url=window.location.hostname +':'+window.location.port;
 function showtoast(shortCutFunction,msg,title) {
     var toastIndex = toastCount++;
     toastr.options = {

@@ -13,7 +13,7 @@ public interface EquipmentService {
 	void updateReportTimeAndOnline(Equipment equipment);
 	int lineCount();
     int countAll();
-    List<Equipment> getEquipmentList(Long id);
+    List<Equipment> getEquipmentList(Long companyId);
     int updateEq(Equipment eq);
 	int modifyState(String code,int isDelete);
     List<Map<String, Object>> findTypeAndCount();

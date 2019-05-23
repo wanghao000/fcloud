@@ -49,8 +49,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public List<Equipment> getEquipmentList(Long id) {
-        return equipmentMapper.selectByCompanyId(id);
+    public List<Equipment> getEquipmentList(Long companyId) {
+        return equipmentMapper.selectByCompanyId(companyId);
     }
 
     @Override

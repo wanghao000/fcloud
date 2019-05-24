@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>H+ 后台主题UI框架 - 基本表单</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/font-awesome.min.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="$rc.contextPath/statics/css/style.css" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="$rc.contextPath/statics/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>修改密码</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" onsubmit="return false;">
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <h5>原密码：</h5>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="oldpwd">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <h5>新密码：</h5>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="newpwd">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <h5>确认密码：</h5>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" id="confirm">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-5">
+                                <button class="btn btn-primary" id="save">确认修改</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<script src="$rc.contextPath/statics/js/jquery.min.js"></script>
+<script src="$rc.contextPath/statics/plugins/bootstrap/bootstrap.min.js"></script>
+
+<!-- iCheck -->
+<script src="$rc.contextPath/statics/plugins/iCheck/icheck.min.js"></script>
+<!-- Sweet alert -->
+<script src="$rc.contextPath/statics/plugins/sweetalert/sweetalert.min.js"></script>
+<script>
+    //load();
+    $("#save").click(function () {
+        if($("#newpwd").val() != $("#confirm").val()){
+            swal("错误", "两次输入密码不一致", "error");return;
+        }
+        var data = {
+            oldpwd : $("#oldpwd").val(),
+            newpwd : $("#newpwd").val(),
+        };
+        swal(
+                {
+                    title : "确认修改密码吗？",
+                    text : "",
+                    type : "warning",
+                    showCancelButton : true,
+                    confirmButtonColor : '#DD6B55',
+                    confirmButtonText : 'Yes',
+                    cancelButtonText : "No",
+                    closeOnConfirm : false
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        jQuery.ajax({
+                            type: "POST",
+                            url: "$rc.contextPath/sys/user/modify",
+                            data: data,
+                            dataType: "json",
+                            success: function(result){
+                                if(result.code == 0){//返回成功
+                                    swal("成功", "修改成功", "success");
+                                    var localObj = window.location; //这个的意思是获取当前页面的地址
+                                    var protocol = location.protocol //获取http或https
+                                    var host = localObj.host //获取JSP地址栏IP和端口号 //localhost:8080
+                                    var contextPath = localObj.pathname.split("/")[1]; //获取项目名
+                                    var basePath = protocol +"//"+host+"/"+contextPath;
+                                    window.location.href = basePath+"/logout";
+                                }else {
+                                    swal("错误", result.msg, "error");
+                                }
+                            }
+                        });
+                    }
+                    })
+    });
+</script>
+
+
+</body>
+
+</html>

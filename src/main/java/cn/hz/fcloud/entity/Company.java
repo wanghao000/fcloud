@@ -33,6 +33,10 @@ public class Company {
 
     private String code;
 
+    private String contact;
+
+    private String contactPhone;
+
     public Long getId() {
         return id;
     }
@@ -153,6 +157,22 @@ public class Company {
         this.code = code;
     }
 
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
     @Override
     public String toString() {
         return "Company{" +
@@ -170,7 +190,9 @@ public class Company {
                 ", createTime=" + createTime +
                 ", isDelete=" + isDelete +
                 ", eqsCount=" + eqsCount +
-                ", code=" + code +
+                ", code='" + code + '\'' +
+                ", contact='" + contact + '\'' +
+                ", contactPhone='" + contactPhone + '\'' +
                 '}';
     }
 }

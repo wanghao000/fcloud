@@ -66,6 +66,9 @@
     $(function() {
         //1. 定义表格列
         var columns = [{
+            field: 'code',
+            title: '编号'
+        },{
             field: 'name',
             title: '服务商名称'
         },{

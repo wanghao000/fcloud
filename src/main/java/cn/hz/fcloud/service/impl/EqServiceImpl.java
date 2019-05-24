@@ -20,4 +20,14 @@ public class EqServiceImpl implements EqService {
     public List<Eq> findByComId(Long id){
         return mapper.findByComId(id);
     }
+
+    @Override
+    public List<Eq> findAllEqs() {
+        return mapper.findAllEqs();
+    }
+
+    @Override
+    public List<Eq> findByProvider(Long id) {
+        return mapper.findByProvider(id);
+    }
 }

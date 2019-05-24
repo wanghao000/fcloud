@@ -123,6 +123,7 @@ var navigation = function(){
 }
 
 var showPosition = function (monitor) {
+    // console.log(monitor);
     var map = new AMap.Map("container", {
         resizeEnable: true,
         center: [monitor.lng, monitor.lat],
@@ -146,7 +147,20 @@ var showPosition = function (monitor) {
     //实例化信息窗体
     var title = monitor.name+'<span style="font-size:11px;color:#F00;"></span>',
         content = [];
-    content.push("<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址："+monitor.address);
+    var address = monitor.address;
+    var contact = monitor.contact;
+    var contact_phone = monitor.contact_phone;
+    var localObj = window.location; //这个的意思是获取当前页面的地址
+    var protocol = location.protocol //获取http或https
+    var host = localObj.host //获取JSP地址栏IP和端口号 //localhost:8080
+    var contextPath = localObj.pathname.split("/")[1]; //获取项目名
+    var basePath = protocol +"//"+host+"/"+contextPath;
+    address = (address == "" || address == null)?"暂无信息":address;
+    contact = (contact == "" || contact == null)?"暂无信息":contact;
+    contact_phone = (contact_phone == "" || contact_phone == null)?"暂无信息":contact_phone;
+    content.push("<img src='"+basePath+"/statics/img/address.png' style='width:20px'>地址："+address);
+    content.push("<img src='"+basePath+"/statics/img/contact.png' style='width:20px'>联系人："+contact);
+    content.push("<img src='"+basePath+"/statics/img/phone.png'  style='width:20px'>联系人电话："+contact_phone);
     var infoWindow = new AMap.InfoWindow({
         isCustom: true,  //使用自定义窗体
         content: createInfoWindow(title, content.join("<br/>")),

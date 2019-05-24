@@ -3,8 +3,20 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hz.fcloud.dao.EqMapper">
     <select id="findByComId"  resultType="cn.hz.fcloud.entity.Eq">
-        SELECT e.id,e.name,e.code,e.is_online,e.lng,e.lat,e.address,ea.count is_alarm from equipment e
+          SELECT e.id,e.name,e.code,e.is_online,e.lng,e.lat,e.address,c.contact,c.contact_phone,ea.count is_alarm from equipment e
         LEFT JOIN (SELECT count(code) count,code from equipment_data WHERE to_days(create_time)=to_days(now()) GROUP BY code) ea
-        on e.code = ea.code where e.company_id = #{id}
+        on e.code = ea.code left join company c on c.id = e.company_id where e.company_id = #{id}
+    </select>
+
+    <select id="findAllEqs" resultType="cn.hz.fcloud.entity.Eq">
+          SELECT e.id,e.name,e.code,e.is_online,e.lng,e.lat,e.address,c.contact,c.contact_phone,ea.count is_alarm from equipment e
+        LEFT JOIN (SELECT count(code) count,code from equipment_data WHERE to_days(create_time)=to_days(now()) GROUP BY code) ea
+        on e.code = ea.code left join company c on c.id = e.company_id
+    </select>
+
+    <select id="findByProvider" resultType="cn.hz.fcloud.entity.Eq">
+          SELECT e.id,e.name,e.code,e.is_online,e.lng,e.lat,e.address,c.contact,c.contact_phone,ea.count is_alarm from equipment e
+        LEFT JOIN (SELECT count(code) count,code from equipment_data WHERE to_days(create_time)=to_days(now()) GROUP BY code) ea
+        on e.code = ea.code left join company c on c.id = e.company_id WHERE e.company_id IN (SELECT id FROM company WHERE provider_id = #{id})
     </select>
 </mapper>

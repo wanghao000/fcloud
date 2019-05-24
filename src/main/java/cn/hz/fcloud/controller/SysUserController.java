@@ -5,9 +5,12 @@ import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.ProviderService;
 import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.R;
+import cn.hz.fcloud.utils.ServiceException;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,6 +73,24 @@ public class SysUserController {
             return R.error("更新失败");
         }
         return R.ok();
+    }
+
+    @RequestMapping("/modify")
+    public R modify(String oldpwd,String newpwd){
+        SysUser sysUser = ShiroUtil.getUserEntity();
+//        SimpleHash pwd = new SimpleHash("MD5",sysUser.getPassword(), ByteSource.Util.bytes(sysUser.getNickname()),1024);
+        SimpleHash old = new SimpleHash("MD5",oldpwd, ByteSource.Util.bytes(sysUser.getUsername()),1024);
+        if(!sysUser.getPassword().equals(old.toString())){
+            throw new ServiceException("原密码输入错误!");
+        }
+        SysUser user = new SysUser();
+        SimpleHash newp = new SimpleHash("MD5",newpwd, ByteSource.Util.bytes(sysUser.getUsername()),1024);
+        user.setId(sysUser.getId());
+        user.setPassword(newp.toString());
+        if(sysUserService.update(user)>0){
+            return R.ok();
+        }
+        return R.error("更新失败!");
     }
 
     @RequestMapping("/use/{id}")

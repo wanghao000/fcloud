@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="cn.hz.fcloud.entity.Provider">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="service_tel" jdbcType="VARCHAR" property="serviceTel" />
     <result column="province" jdbcType="INTEGER" property="province" />
     <result column="city" jdbcType="INTEGER" property="city" />
@@ -17,7 +18,7 @@
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, service_tel, province, city, district, contacts, contacts_phone, address, 
+    id, name, code,service_tel, province, city, district, contacts, contacts_phone, address,
     remark, create_user, create_time, is_delete
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="cn.hz.fcloud.entity.Provider">
@@ -32,7 +33,7 @@
   <select id="findAllProvider" resultType="cn.hz.fcloud.entity.Provider">
 SELECT
 	count(e.id) eqsCount,
-	pc.id,pc.name,pc.service_tel,pc.province,pc.city,pc.district,pc.contacts,pc.contacts_phone,pc.address,pc.remark,pc.create_user,pc.create_time,pc.is_delete
+	pc.id,pc.name,pc.code,pc.service_tel,pc.province,pc.city,pc.district,pc.contacts,pc.contacts_phone,pc.address,pc.remark,pc.create_user,pc.create_time,pc.is_delete
 FROM
 	equipment e
 RIGHT JOIN (
@@ -66,14 +67,14 @@ GROUP BY
   <update id="modifyState">
     update provider set is_delete = #{isDelete} where id = #{id}
   </update>
-  <insert id="insert" parameterType="cn.hz.fcloud.entity.Provider">
-    insert into provider (id, name, service_tel, 
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hz.fcloud.entity.Provider">
+    insert into provider (id, name, code,service_tel,
       province, city, district, 
       contacts, contacts_phone, address, 
       remark, create_user, create_time, 
       is_delete)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{serviceTel,jdbcType=VARCHAR}, 
-      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR}, #{serviceTel,jdbcType=VARCHAR},
+      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER},
       #{contacts,jdbcType=VARCHAR}, #{contactsPhone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{isDelete,jdbcType=INTEGER})
@@ -232,5 +233,11 @@ GROUP BY
     select
     id,name
     from provider
+  </select>
+  <select id="findProviderCode" resultType="String">
+     select code from provider order by code desc limit 1
+  </select>
+  <select id="findProviderByName" resultType="cn.hz.fcloud.entity.Provider">
+       select * from provider where name = #{name}
   </select>
 </mapper>

@@ -19,4 +19,15 @@ public interface ProviderService {
     int updateByPrimaryKeySelective(Provider provider);
 
     List<Provider> selectIdAndName();
+
+    //获取最后生成的服务商编号
+    String findProviderCode();
+
+
+    /**
+     * 输入服务商名字判断服务商是否存在
+     * @param name 服务商名字
+     * @return
+     */
+    Provider findProviderByName(String name);
 }

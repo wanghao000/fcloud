@@ -33,13 +33,13 @@
     insert into company (id, name, province, 
       city, district, provider_id, 
       picture, address, remark, 
-      create_user, create_time, is_delete,code
+      create_user, create_time, is_delete,code,contact,contact_phone
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
       #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{providerId,jdbcType=BIGINT}, 
       #{picture,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
-      ,#{code,jdbcType=VARCHAR}
+      ,#{code,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},#{contactPhone,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="cn.hz.fcloud.entity.Company">
@@ -156,6 +156,12 @@
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null">
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}

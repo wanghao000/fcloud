@@ -1,10 +1,7 @@
 package cn.hz.fcloud.controller;
 
 import cn.hz.fcloud.entity.*;
-import cn.hz.fcloud.service.CompanyService;
-import cn.hz.fcloud.service.EqInfosService;
-import cn.hz.fcloud.service.EquipmentDataService;
-import cn.hz.fcloud.service.EquipmentService;
+import cn.hz.fcloud.service.*;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
@@ -35,6 +32,8 @@ public class EquipmentController {
     private EqInfosService EqInfosService;
     @Autowired
     private EquipmentDataService eqdataService;
+    @Autowired
+    private EqService eqService;
 
     @RequestMapping("/save")
     @RequiresPermissions("sys:device:save")
@@ -284,5 +283,17 @@ public class EquipmentController {
             }
         }
         return datas;
+    }
+
+    @RequestMapping("/monitor")
+    public List<Eq> monitor(){
+        SysUser user = ShiroUtil.getUserEntity();
+        List<Eq> list = null;
+        switch (user.getType()){
+            case 1 : list = eqService.findAllEqs();break;
+            case 2 : list = eqService.findByProvider(user.getProviderId());break;
+            case 3 : list = eqService.findByComId(user.getCompanyId());break;
+        }
+        return list;
     }
 }

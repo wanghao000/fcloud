@@ -116,6 +116,8 @@ public class CompanyController {
     @RequiresPermissions("sys:company:update")
     public R update(MultipartFile file,String company){
         Company comEntity = JSON.parseObject(company,Company.class);
+        System.out.println("***************************************");
+        System.out.println(comEntity);
         Company exist_company = companyService.findCompanyByName(comEntity.getName());
         //判断要修改的用户名是否存在 true表示存在
         Boolean is_exist = exist_company != null && exist_company.getId() != comEntity.getId();

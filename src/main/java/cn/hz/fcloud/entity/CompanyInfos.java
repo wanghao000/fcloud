@@ -39,6 +39,10 @@ public class CompanyInfos {
 
     private String code;
 
+    private String contact;
+
+    private String contactPhone;
+
     public Long getId() {
         return id;
     }
@@ -111,6 +115,14 @@ public class CompanyInfos {
         this.providerId = providerId;
     }
 
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
     public String getPicture() {
         return picture;
     }
@@ -175,12 +187,20 @@ public class CompanyInfos {
         this.code = code;
     }
 
-    public String getProName() {
-        return proName;
+    public String getContact() {
+        return contact;
     }
 
-    public void setProName(String proName) {
-        this.proName = proName;
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     @Override
@@ -204,6 +224,8 @@ public class CompanyInfos {
                 ", isDelete=" + isDelete +
                 ", eqsCount=" + eqsCount +
                 ", code='" + code + '\'' +
+                ", contact='" + contact + '\'' +
+                ", contactPhone='" + contactPhone + '\'' +
                 '}';
     }
 }

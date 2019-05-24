@@ -9,10 +9,51 @@ import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.websocket.CigaretteWebsocketHandler;
 import cn.hz.fcloud.websocket.CigaretteWebsocketHandlerInterceptor;
 import org.json.JSONObject;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 public class UDPServerUtil {
+    private static final byte[] key = {(byte) 0xEC,(byte) 0xAD,0x51,0x5A,0x44,0x41,(byte) 0xCE,(byte) 0xDA};
+
+    public static boolean getEncryptionConfig(){
+        ClassPathResource resource = new ClassPathResource("/base.properties");
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream(resource.getFile()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Boolean.parseBoolean(properties.getProperty("encryption"));
+    }
+
+    /**
+     *
+     * @param b 需要加解密的byte[]
+     * @param length 数组的长度
+     */
+    public static void encryption(byte[] b,int length){
+        int keyIndex = 0;
+        for (int i = 4; i < length-4; i++) {
+            b[i] ^= key[keyIndex];
+            if(keyIndex == key.length-1) {
+                keyIndex = 0;
+                continue;
+            }
+            keyIndex++;
+        }
+    }
+
+    /**
+     *
+     * @param code 设备imei
+     * @param msg 上报的信息
+     * @param date 上报时间
+     * @return
+     */
     public static String toJsonString(String code, String msg, String date){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", code);
@@ -21,6 +62,11 @@ public class UDPServerUtil {
         return jsonObject.toString();
     }
 
+    /**
+     * 查找超时记录
+     * @param equipmentService
+     * @param limitTime 允许的时长（毫秒）
+     */
     public static void findExceedTimeRecord(EquipmentService equipmentService, long limitTime){
         List<Equipment> all = equipmentService.findAll();
         for (Equipment equipment : all) {

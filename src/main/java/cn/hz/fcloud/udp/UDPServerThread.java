@@ -17,7 +17,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
 
 public class UDPServerThread extends Thread {
 
@@ -30,7 +29,6 @@ public class UDPServerThread extends Thread {
 	private EquipmentDataService equipmentDataService;
 	private SysUserService sysUserService;
 	private CompanyService companyService;
-	private Timer timer = new Timer();
 
 	public UDPServerThread(byte[] b, DatagramPacket p, DatagramSocket socket,EquipmentService equipmentService, EquipmentDataService equipmentDataService, SysUserService sysUserService, CompanyService companyService) {
 		this.b = b;
@@ -43,8 +41,8 @@ public class UDPServerThread extends Thread {
 	}
 
 	enum warning{
-		//无报警     报警          手动测试   开机
-		NORMAL(1),WARNING(0),TEST(2),OPEN(3);
+		//无报警     报警
+		NORMAL(1),WARNING(0);
 		private int value;
 		warning(int i){
 			this.value = i;
@@ -56,6 +54,10 @@ public class UDPServerThread extends Thread {
 
 	@Override
 	public void run() {
+		if(UDPServerUtil.getEncryptionConfig()) {
+			UDPServerUtil.encryption(b, p.getLength());
+		}
+
 		String receive = new String(b, 0, p.getLength());
 		logger.info("receive:  "+receive);
 		
@@ -74,11 +76,12 @@ public class UDPServerThread extends Thread {
 		byte[] rb = null;
 
 		if (receive.startsWith("FA01")) {
+			equipmentService.updateReportTimeAndOnline(new Equipment(imei, 1, new Date()));
 			rb = ("F581"+imei+"0D0A").getBytes();
             msg = "开机";
             JSONObject info = new JSONObject();
             info.put("msg", msg);
-            equipmentDataService.addRecord(new EquipmentData(imei, info.toString(), warning.OPEN.getValue(), new Date()));
+            equipmentDataService.addRecord(new EquipmentData(imei, info.toString(), warning.NORMAL.getValue(), new Date()));
 		}
 		if (receive.startsWith("FA02")) {
 			equipmentService.updateReportTimeAndOnline(new Equipment(imei, 1, new Date()));
@@ -119,7 +122,7 @@ public class UDPServerThread extends Thread {
 					break;
 				case "1601":
 				    msg = "自检";
-					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.TEST.getValue(), new Date()));
+					equipmentDataService.addRecord(new EquipmentData(imei, UDPServerUtil.toJsonString(flag, msg, date), warning.WARNING.getValue(), new Date()));
 					UDPServerUtil.sendMsgIf(sysUserService, companyService, equipmentService, imei, UDPServerUtil.returnHtmlJson(imei, msg, 0, date));
 					break;
 				case "1800":
@@ -140,6 +143,9 @@ public class UDPServerThread extends Thread {
 		DatagramPacket rpacket = new DatagramPacket(rb, rb.length, address, port);
 		try {
 			String string = new String(rpacket.getData(), "utf-8");
+			if(UDPServerUtil.getEncryptionConfig()) {
+				UDPServerUtil.encryption(rb, rb.length);
+			}
 			System.out.println("return:  "+string);
 			socket.send(rpacket);
 		} catch (IOException e) {

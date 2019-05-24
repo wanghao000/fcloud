@@ -38,6 +38,12 @@
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
+                                <label class="control-label">设备名</label>
+                                <input type="text" id="name" class="form-control" placeholder="设备名">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
                                 <label class="control-label">设备类型</label>
                                 <select class="form-control" id="type">
                                     <option value="">全部</option>
@@ -78,7 +84,7 @@
                                         </button>
                                     #end
                                 </div>
-                                <input type="text" placeholder="搜索" class="form-control col-sm-3" id="name" style="position: absolute;margin-top: 10px;margin-left: 70%;width: 20%;">
+
                                 <table id="tb_content"></table>
                             </div>
                             <!-- End Example Events -->
@@ -191,9 +197,7 @@
         oTable.Init();
     })
 
-    $('#name').bind('input propertychange', function(){
-            Query();
-    })
+
     function GetQueryParams() {
         //以下参数，为各具体功能根据查询条件进行修改
         //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -339,6 +343,7 @@
     })
     function onClick(event, treeId, treeNode, clickFlag) {
         console.log(treeNode.id)
+        console.log(treeNode.isParent)
         $('#tb_content').bootstrapTable('destroy');
         $(function() {
             //1. 定义表格列

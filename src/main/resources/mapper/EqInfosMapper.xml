@@ -24,7 +24,10 @@
         <if test="type!=null and type!=''">
             and e.type = #{type}
         </if>
-           order by e.id limit #{offset},#{limit}
+           order by e.id
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
     </select>
 
     <select id="findAllCount" resultType="integer">
@@ -52,7 +55,10 @@
         <if test="type!=null and type!=''">
             and e.type = #{type}
         </if>
-        order by e.id limit #{offset},#{limit}
+        order by e.id
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
     </select>
 
     <select id="findByComIdCount" resultType="integer">
@@ -77,7 +83,10 @@
         <if test="type!=null and type!=''">
             and e.type = #{type}
         </if>
-        order by e.id limit #{offset},#{limit}
+        order by e.id
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
     </select>
 
 

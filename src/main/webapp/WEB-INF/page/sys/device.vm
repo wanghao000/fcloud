@@ -282,7 +282,6 @@
             formatter:function (value,row,index) {
                 // alert(value);
                 var dataObj=eval("("+value+")");
-
                 return dataObj.msg;
             }
 
@@ -327,7 +326,6 @@
         url: "$rc.contextPath/sys/provider/ztree",
         success: function (result) {
             if (result.code == 0) {
-                console.log(result.data)
                 var setting = {
                     callback: {
                         onClick: onClick
@@ -342,8 +340,6 @@
         }
     })
     function onClick(event, treeId, treeNode, clickFlag) {
-        console.log(treeNode.id)
-        console.log(treeNode.isParent)
         $('#tb_content').bootstrapTable('destroy');
         $(function() {
             //1. 定义表格列

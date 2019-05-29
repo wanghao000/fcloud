@@ -107,11 +107,11 @@
                         <div class="form-group">
                             <div class="col-sm-6">
                                 <h5>经度</h5>
-                                <input type="text" class="form-control" id="lng">
+                                <input type="text" class="form-control" id="lng" readonly>
                             </div>
                             <div class="col-sm-6">
                                 <h5>纬度</h5>
-                                <input type="text" class="form-control" id="lat">
+                                <input type="text" class="form-control" id="lat" readonly>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -291,7 +291,7 @@
            });
 
        });
-    function show_modal(monitor){
+    function show_modal(){
         $('#myModal').modal('show');
         position();
     }

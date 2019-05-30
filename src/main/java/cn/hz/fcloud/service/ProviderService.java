@@ -30,4 +30,11 @@ public interface ProviderService {
      * @return
      */
     Provider findProviderByName(String name);
+
+    /**
+     * 服务商报警排行服务
+     * @param type
+     * @return
+     */
+    List<Map<String,Object>>  getProviderRanking(int type);
 }

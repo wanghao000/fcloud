@@ -15,7 +15,7 @@
         }
 
         .info {
-            min-width: 15rem;
+            min-width: 10rem;
         }
 
         .search {
@@ -55,25 +55,25 @@
 <body>
 <div id="container"></div>
 <div class="info">
-    <p style="color: rgb(255, 133, 27)">接入单位：<span></span></p>
+    <p style="color: rgb(255, 133, 27)">接入单位：<span id="companyCount"></span></p>
     <hr>
-    <p style="color: rgb(221, 75, 57)">当前报警：<span></span></p>
+    <p style="color: rgb(221, 75, 57)">当前报警：<span id="alarmCount"></span></p>
     <hr>
-    <p style="color: rgb(51, 133, 255)">接入设备：<span></span></p>
+    <p style="color: rgb(51, 133, 255)">接入设备：<span id="equipmentCount"></span></p>
     <hr>
-    <p style="color: rgb(0, 166, 90)">在线网关：<span></span></p>
+    <p style="color: rgb(0, 166, 90)">在线网关：<span id="online_way">0</span></p>
     <hr>
-    <p style="color: rgb(153, 153, 153)">离线网关：<span></span></p>
+    <p style="color: rgb(153, 153, 153)">离线网关：<span id="off_way">0</span></p>
 </div>
 <div class="search">
-    <input type="text" class="in" placeholder="回车进行搜索">
+    <input type="text" class="in" placeholder="回车进行编号搜索" onkeydown="keyup_submit(event);">
 </div>
 <div class="checkbox">
-    <input type="checkbox" checked>火警
-    <input type="checkbox" checked>故障
-    <input type="checkbox" checked>正常
-    <input type="checkbox" checked>离线
-    <input type="checkbox" checked>全选
+    <input id="box_fire" type="checkbox" checked>火警
+    <input id="box_error" type="checkbox" checked>故障
+    <input id="box_on" type="checkbox" checked>正常
+    <input id="box_off" type="checkbox" checked>离线
+    <input id="box_all" type="checkbox" checked>全选
 </div>
 <script src="$rc.contextPath/statics/js/jquery.min.js"></script>
 <!-- 加载地图JSAPI脚本 -->
@@ -81,7 +81,65 @@
 <!-- UI组件库 1.0 -->
 <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 <script>
+    //复选框的监听事件
+    var box_fire = $("#box_fire");
+    var box_error = $("#box_error");
+    var box_on = $("#box_on");
+    var box_off = $("#box_off");
+    var box_all = $("#box_all");
+    box_fire.change(function () {
+        o();
+    });
+    box_error.change(function () {
+        o();
+    });
+    box_on.change(function () {
+        o();
+    });
+    box_off.change(function () {
+        o();
+    });
+
+    function o() {
+        if (box_fire.is(":checked") && box_error.is(":checked") && box_on.is(":checked") && box_off.is(":checked")) {
+            box_all.prop("checked", "checked");
+        } else {
+            box_all.attr("checked", false);
+        }
+    }
+
+    box_all.change(function () {
+        if (box_all.is(":checked")) {
+            box_fire.prop("checked", "checked");
+            box_error.prop("checked", "checked");
+            box_on.prop("checked", "checked");
+            box_off.prop("checked", "checked");
+        } else {
+            box_fire.attr("checked", false);
+            box_error.attr("checked", false);
+            box_on.attr("checked", false);
+            box_off.attr("checked", false);
+        }
+    });
+    //加载状态信息
+    jQuery.ajax({
+        url: "$rc.contextPath/sys/main/info",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            if (result.code == 0) {
+                // console.log(result.info)
+                $("#alarmCount").text(result.info.alarmCount);
+                $("#companyCount").text(result.info.companyCount);
+                $("#equipmentCount").text(result.info.equipmentCount);
+            } else {
+                console.log(result)
+            }
+        }
+    })
     //加载设备数据
+    var data;
     jQuery.ajax({
         url: "$rc.contextPath/sys/eq/list",
         type: "POST",
@@ -92,6 +150,7 @@
             type: ''
         }),
         success: function (result) {
+            data = result;
             var markers = new Array();
             for (var i = 0; i < result.total; i++) {
                 var obj = {position: [result.rows[i].lng, result.rows[i].lat], data: result.rows[i]};
@@ -127,14 +186,16 @@
             });
             //自适应屏幕
             map.setFitView();
+
             //弹框
             function info(data, map, marker) {
                 var infoWindow = new SimpleInfoWindow({
 
                     infoTitle: '<strong>设备名称:' + data.name + '</strong>',
                     infoBody: '<p class="my-desc"><strong>所属公司:' + data.comName + '</strong> <br/> ' +
+                    '<p class="my-desc"><strong>设备类型:' + data.type + '</strong> <br/> ' +
                     '<p class="my-desc"><strong>编号:' + data.code + '</strong> <br/> ' +
-                    '<p class="my-desc"><strong>状态:' + (data.isOnline==0?"离线":"在线") + '</strong> <br/> ',
+                    '<p class="my-desc"><strong>状态:' + (data.isOnline == 0 ? "离线" : "在线") + '</strong> <br/> ',
 
                     //基点指向marker的头部位置
                     offset: new AMap.Pixel(-2, -30)
@@ -147,7 +208,29 @@
 
     }
 
+    function keyup_submit(e) {
+        var evt = window.event || e;
+        if (evt.keyCode == 13) {
+           var input = $(".in").val();
 
+            var array = data.rows;
+            console.log(array);
+            var newarray = new Array();
+            for(var i=0;i<array.length;i++){
+                var obj = array[i];
+                if(obj.code.indexOf(input)!=-1){
+                    newarray.push(obj);
+                }
+            }
+
+            var markers = new Array();
+            for (var i = 0; i < newarray.length; i++) {
+                var obj = {position: [newarray[i].lng, newarray[i].lat], data: newarray[i]};
+                markers.push(obj)
+            }
+            loadMap(markers)
+        }
+    }
 </script>
 </body>
 </html>

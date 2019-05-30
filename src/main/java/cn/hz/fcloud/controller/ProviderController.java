@@ -124,4 +124,9 @@ public class ProviderController {
         }
         return null;
     }
+    @RequestMapping("/pRanking/{type}")
+    public R ranking(@PathVariable("type")int type){
+        List<Map<String,Object>> data = providerService.getProviderRanking(type);
+        return R.ok().put("data",data);
+    }
 }

@@ -3,6 +3,7 @@ package cn.hz.fcloud.dao;
 import cn.hz.fcloud.entity.Provider;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,4 +40,10 @@ public interface ProviderMapper {
      */
     Provider findProviderByName(String name);
 
+    /**
+     * 服务商报警排行
+     * @param type
+     * @return
+     */
+    List<Map<String,Object>> alarmRanking(int type);
 }

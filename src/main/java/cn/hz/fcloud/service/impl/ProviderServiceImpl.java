@@ -56,4 +56,9 @@ public class ProviderServiceImpl implements ProviderService {
     public Provider findProviderByName(String name) {
         return providerMapper.findProviderByName(name);
     }
+
+    @Override
+    public List<Map<String, Object>> getProviderRanking(int type) {
+        return providerMapper.alarmRanking(type);
+    }
 }

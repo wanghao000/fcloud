@@ -6,6 +6,7 @@ import cn.hz.fcloud.entity.SysUser;
 import cn.hz.fcloud.service.CompanyService;
 import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.service.ProviderService;
+import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
@@ -29,6 +30,8 @@ public class ProviderController {
     private ProviderService providerService;
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private SysUserService sysUserService;
 
     private SysUser user;
 
@@ -40,11 +43,42 @@ public class ProviderController {
     @RequestMapping("/save")
     @RequiresPermissions("sys:provider:save")
     public R insertProvider(@RequestBody Provider provider){
-        user = ShiroUtil.getUserEntity();
-        provider.setCreateTime(new Date());
-        provider.setIsDelete(1);
-        provider.setCreateUser(user.getId());
-        return providerService.insert(provider)>0? R.ok():R.error();
+        //判断服务商名是否存在 true表示存在
+        Boolean is_exist = null != providerService.findProviderByName(provider.getName());
+        if(!is_exist){
+            Map<String,Object> map = new HashMap<String, Object>();
+            user = ShiroUtil.getUserEntity();
+            provider.setCreateTime(new Date());
+            provider.setIsDelete(1);
+            provider.setCreateUser(user.getId());
+            String code = providerService.findProviderCode();
+            String newCode = "";
+            if(code != "" && code != null){
+                int temp = Integer.valueOf(code.split("B")[1])+1;
+                String s = String.format("%05d", temp);
+                newCode = "B"+s;
+            }else{
+                newCode = "B00001";
+            }
+            provider.setCode(newCode);
+            providerService.insert(provider);
+            SysUser newUser = new SysUser();
+            newUser.setUsername(newCode);
+            newUser.setIsDelete(1);
+            newUser.setCreateTime(new Date());
+            newUser.setCreateUser(user.getId());
+            newUser.setPassword("000000");
+            newUser.setType(2);
+            newUser.setNickname(provider.getName());
+            newUser.setProviderId(provider.getId());
+            sysUserService.save(newUser);
+            map.put("code",newCode);
+            map.put("pwd","000000");
+            map.put("result","success");
+            return R.ok(map);
+        }else{
+            return R.error("该服务商名已存在!");
+        }
     }
 
     @RequestMapping("/modify/{id}/{isDelete}")
@@ -89,5 +123,10 @@ public class ProviderController {
             return R.ok().put("data", JSONArray.toJSON(provider));
         }
         return null;
+    }
+    @RequestMapping("/pRanking/{type}")
+    public R ranking(@PathVariable("type")int type){
+        List<Map<String,Object>> data = providerService.getProviderRanking(type);
+        return R.ok().put("data",data);
     }
 }

@@ -10,6 +10,8 @@ public class Eq {
     private Float lng;
     private Float lat;
     private String address;
+    private String contact;
+    private String contactPhone;
 
     public Integer getId() {
         return id;
@@ -75,6 +77,22 @@ public class Eq {
         this.address = address;
     }
 
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
     @Override
     public String toString() {
         return "Eq{" +
@@ -86,6 +104,8 @@ public class Eq {
                 ", lng=" + lng +
                 ", lat=" + lat +
                 ", address='" + address + '\'' +
+                ", contact='" + contact + '\'' +
+                ", contactPhone='" + contactPhone + '\'' +
                 '}';
     }
 }

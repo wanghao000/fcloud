@@ -21,8 +21,14 @@
     <link href="$rc.contextPath/statics/plugins/layer/skin/moon/style.css" rel="stylesheet">
 
     <style>
-        .hide_img{ display:none; z-index:9999; position:absolute;}
-        .show_img:hover +.hide_img{ display:block}
+        .modal-dialog{
+            width: 600px;
+            height: 500px;
+        }
+        #CompanyImg{
+            width: 550px;
+            height: 400px;
+        }
     </style>
 
 </head>
@@ -54,7 +60,26 @@
             </div>
         </div>
     </div>
-    <!-- End Panel Other -->
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        企业图片
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="layui-input-block">
+                        <img id="CompanyImg" src="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- 全局js -->
@@ -177,7 +202,9 @@
     }
 
     function loadImg (value){
-        window.open("/upload"+value);
+        $('#myModal').modal('show');
+        $("#CompanyImg").attr("src","/upload"+value);
+        // window.open("/upload"+value);
             // layer.open({
             //     type: 1,
             //     title: false,

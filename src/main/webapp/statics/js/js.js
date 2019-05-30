@@ -33,115 +33,102 @@ $(function () {
     });
     $.ajax({
         type:"post",
-        url:"sys/eq/findCompanyAndCount",
+        url:"sys/provider/pRanking/0",
         dataType:"json",
         success:function (data) {
-            echarts_5(data);
+            var x =[];
+            var y =[];
+            var obj={};
+            for(var i=0;i<data.data.length;i++){
+                x.push(data.data[i].fws);
+                y.push(data.data[i].num);
+            }
+            obj["x"]=x;
+            obj["y"]=y;
+            echarts_5(obj)
         }
     });
-    $.ajax({
+/*    $.ajax({
         type:"post",
         url:"sys/eq/findCompanyAlarmCount",
         dataType:"json",
         success:function (data) {
             echarts_6(data);
         }
+    });*/
+    $.ajax({
+        type:"post",
+        // async:"false",
+        url:"sys/eq/findAreaAlarmCount",
+        dataType:"json",
+        success:function(result){
+            var o =[];
+            for(var i=0;i<(result.length>5?5:result.length);i++){
+                o.push({
+                    name: result[i].sn,
+                    value: result[i].csi
+                });
+            }
+            echarts_6(o)
+            console.log(o)
+        }
     });
 //echarts_32();
 //echarts_33();
 function echarts_1(data) {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('echart1'));
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('echart1'));
 
-       option = {
-  //  backgroundColor: '#00265f',
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
-        }
-    },
-    grid: {
-        left: '0%',
-		top:'10px',
-        right: '0%',
-        bottom: '4%',
-       containLabel: true
-    },
-    xAxis: [{
-        type: 'category',
-      		// data: ['烟感'],
-      		data: data.name,
-        axisLine: {
-            show: true,
-         lineStyle: {
-                color: "rgba(255,255,255,.1)",
-                width: 1,
-                type: "solid"
+    var option = {
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
         },
-
-        axisTick: {
-            show: false
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
         },
-		axisLabel:  {
-                interval: 0,
-               // rotate:50,
+        xAxis:  {
+            type: 'value',
+            axisLine: {
                 show: true,
-                splitNumber: 15,
+                lineStyle: {
+                    color: "rgba(255,255,255,.6)",
+                    width: 1,
+                    type: "solid"
+                }
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: ['周一','周二','周三','周四'],
+            axisLabel: {
+                //formatter: '{value} %'
+                show:true,
                 textStyle: {
- 					color: "rgba(255,255,255,.6)",
-                    fontSize: '12'
+                    color: "rgba(255,255,255,.6)"
                 }
             }
-    }],
-    yAxis: [{
-        type: 'value',
-        axisLabel: {
-           //formatter: '{value} %'
-			show:true,
-			 textStyle: {
- 					color: "rgba(255,255,255,.6)",
-                    fontSize: '12'
-                }
         },
-        axisTick: {
-            show: false
-        },
-        axisLine: {
-            show: true,
-            lineStyle: {
-                color: "rgba(255,255,255,.1	)",
-                width: 1,
-                type: "solid"
+        series: [
+            {
+                name: '直接访问',
+                type: 'bar',
+                stack: '总量',
+                label: {
+                    normal: {
+                        show: true,
+                        position: 'insideRight'
+                    }
+                },
+                data: [320, 302, 301, 334]
             }
-        },
-        splitLine: {
-            lineStyle: {
-               color: "rgba(255,255,255,.1)"
-            }
-        }
-    }],
-    series: [
-		{
-		    name: "数量",
-        type: 'bar',
-        // data: [2],
-        data: data.count,
-        barWidth:'35%', //柱子宽度
-       // barGap: 1, //柱子之间间距
-        itemStyle: {
-            normal: {
-                color:'#2f89cf',
-                opacity: 1,
-				barBorderRadius: 5
-            }
-        }
-    }
-
-	]
-};
-
+        ]
+    };
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         window.addEventListener("resize",function(){
@@ -149,101 +136,38 @@ function echarts_1(data) {
         });
     }
 function echarts_2(data) {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('echart2'));
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('echart2'));
+    var option = {
+        tooltip : {
+            formatter: "{a} <br/>{b} : {c}%"
+        },
+        toolbox: {
+            feature: {
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                name: '业务指标',
+                type: 'gauge',
+                detail: {formatter:'{value}%'},
+                data: [{value: 50, name: '完成率'}]
+            }
+        ]
+    };
 
-       option = {
-  //  backgroundColor: '#00265f',
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: { type: 'shadow'}
-    },
-    grid: {
-        left: '0%',
-		top:'10px',
-        right: '0%',
-        bottom: '4%',
-       containLabel: true
-    },
-    xAxis: [{
-        type: 'category',
-      		// data: ['浙江', '上海', '江苏', '广东', '北京', '深圳', '安徽'],
-      		data: data.name,
-        axisLine: {
-            show: true,
-         lineStyle: {
-                color: "rgba(255,255,255,.1)",
-                width: 1,
-                type: "solid"
-            }
-        },
+    setInterval(function () {
+        option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+        myChart.setOption(option, true);
+    },2000);
 
-        axisTick: {
-            show: false
-        },
-		axisLabel:  {
-                interval: 0,
-               // rotate:50,
-                show: true,
-                splitNumber: 15,
-                textStyle: {
- 					color: "rgba(255,255,255,.6)",
-                    fontSize: '12'
-                }
-            }
-    }],
-    yAxis: [{
-        type: 'value',
-        axisLabel: {
-           //formatter: '{value} %'
-			show:true,
-			 textStyle: {
- 					color: "rgba(255,255,255,.6)",
-                    fontSize: '12'
-                }
-        },
-        axisTick: {
-            show: false
-        },
-        axisLine: {
-            show: true,
-            lineStyle: {
-                color: "rgba(255,255,255,.1	)",
-                width: 1,
-                type: "solid"
-            }
-        },
-        splitLine: {
-            lineStyle: {
-               color: "rgba(255,255,255,.1)"
-            }
-        }
-    }],
-    series: [
-		{
-        name: "次数",
-        type: 'bar',
-        // data: [1500, 1200, 600, 200, 300, 300, 900],
-        data: data.count,
-        barWidth:'35%', //柱子宽度
-       // barGap: 1, //柱子之间间距
-        itemStyle: {
-            normal: {
-                color:'#27d08a',
-                opacity: 1,
-				barBorderRadius: 5
-            }
-        }
-    }
-
-	]
-};
-
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-        window.addEventListener("resize",function(){
-            myChart.resize();
-        });
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){
+        myChart.resize();
+    });
     }
 function echarts_31(data){
     $("#fb1").append("<table id='alarm' width="+$('#fb1').width()+" style='table-layout: fixed;'><tr><td style='color: red;text-align: center;'>设备编号</td><td style='color: red;text-align: center;'>地点</td><td style='color: red;text-align: center;'>类型</td><td style='color: red;text-align: center;'>时间</td></tr>");
@@ -273,9 +197,10 @@ function echarts_5(data) {
        containLabel: true
     },
     xAxis: [{
+        show:true,
         type: 'category',
-      		// data: ['浙江', '上海', '江苏', '广东', '北京', '深圳', '安徽', '四川'],
-      		data: data.name,
+      		 // data: ['浙江12321321312'.substring(0,3)+"...", '上海', '江苏', '广东', '北京', '深圳', '安徽', '四川'],
+      		data: data.x,
         axisLine: {
             show: true,
          lineStyle: {
@@ -298,7 +223,15 @@ function echarts_5(data) {
                     fontSize: '12'
                 }
             }
-    }],
+    }],  dataZoom: [{
+               type: 'slider',
+               show: true, //flase直接隐藏图形
+               xAxisIndex: [0],
+               left: '9%', //滚动条靠左侧的百分比
+               bottom: -5,
+               start: 0,//滚动条的起始位置
+               end: 40 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+           }],
     yAxis: [{
         type: 'value',
         axisLabel: {
@@ -330,7 +263,7 @@ function echarts_5(data) {
         name: "数量",
         type: 'bar',
         // data: [2, 3, 3, 9, 15, 12, 6, 4, 6, 7, 4, 10],
-        data: data.count,
+        data: data.y,
         barWidth:'35%', //柱子宽度
        // barGap: 1, //柱子之间间距
         itemStyle: {
@@ -351,98 +284,33 @@ function echarts_5(data) {
         });
     }
 function echarts_6(data) {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('echart6'));
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('echart6'));
 
-       option = {
-  //  backgroundColor: '#00265f',
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
-        }
-    },
-
-    grid: {
-        left: '0%',
-		top:'10px',
-        right: '0%',
-        bottom: '2%',
-       containLabel: true
-    },
-    xAxis: [{
-        type: 'category',
-      		// data: ['浙江', '上海', '江苏', '广东', '北京', '深圳', '安徽', '四川'],
-      		data: data.name,
-        axisLine: {
-            show: true,
-         lineStyle: {
-                color: "rgba(255,255,255,.1)",
-                width: 1,
-                type: "solid"
-            }
+    var option = {
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
-
-        axisTick: {
-            show: false
-        },
-		axisLabel:  {
-                interval: 0,
-               // rotate:50,
-                show: true,
-                splitNumber: 15,
-                textStyle: {
- 					color: "rgba(255,255,255,.6)",
-                    fontSize: '12'
+        series : [
+            {
+                name: '地区',
+                type: 'pie',
+                radius : '60%',
+                center: ['50%', '50%'],
+                data: data,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
                 }
             }
-    }],
-    yAxis: [{
-        type: 'value',
-        axisLabel: {
-           //formatter: '{value} %'
-			show:true,
-			 textStyle: {
- 					color: "rgba(255,255,255,.6)",
-                    fontSize: '12'
-                }
-        },
-        axisTick: {
-            show: false
-        },
-        axisLine: {
-            show: true,
-            lineStyle: {
-                color: "rgba(255,255,255,.1	)",
-                width: 1,
-                type: "solid"
-            }
-        },
-        splitLine: {
-            lineStyle: {
-               color: "rgba(255,255,255,.1)"
-            }
-        }
-    }],
-    series: [{
-        name: "次数",
-        type: 'bar',
-        // data: [2, 3, 3, 9, 15, 12, 6, 4, 6, 7, 4, 10],
-        data: data.count,
-        barWidth:'35%', //柱子宽度
-       // barGap: 1, //柱子之间间距
-        itemStyle: {
-            normal: {
-                color:'#2f89cf',
-                opacity: 1,
-				barBorderRadius: 5
-            }
-        }
-    }
-	]
-};
+        ]
+    };
 
-        // 使用刚指定的配置项和数据显示图表。
+    // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         window.addEventListener("resize",function(){
             myChart.resize();

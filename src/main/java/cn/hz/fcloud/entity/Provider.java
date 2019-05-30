@@ -8,6 +8,8 @@ public class Provider {
 
     private String name;
 
+    private String code;
+
     private String serviceTel;
 
     private Integer province;
@@ -196,13 +198,20 @@ public class Provider {
         this.open = open;
     }
 
+    public String getCode() {
+        return code;
+    }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     @Override
     public String toString() {
         return "Provider{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
                 ", serviceTel='" + serviceTel + '\'' +
                 ", province=" + province +
                 ", pName='" + pName + '\'' +
@@ -218,6 +227,9 @@ public class Provider {
                 ", createTime=" + createTime +
                 ", isDelete=" + isDelete +
                 ", eqsCount=" + eqsCount +
+                ", children=" + children +
+                ", open=" + open +
+                ", isParent=" + isParent +
                 '}';
     }
 }

@@ -14,7 +14,7 @@ public class UdpTest {
 
 	public static void main(String[] args) {
 		try {
-			final String IMEI = "9123456";
+			final String IMEI = "1234567";
 			InetAddress address = InetAddress.getByName("localhost");
 			int port = 9999;
 			byte[] b = ("FA01"+IMEI+"00492H00490D0A").getBytes();//开机

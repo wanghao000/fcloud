@@ -134,10 +134,17 @@
             dataType: "json",
             contentType:"application/json;charset=UTF-8",
             success: function(result){
-                if(result.code == 0){//返回成功
-                    history.go(-1);
-                }else{
-                    swal("错误",result.msg,"error" );
+                if(result.result == "success"){//返回成功
+                    swal({
+                        title: "成功",
+                        text: "公司编号为" + result.code + "密码为" + result.pwd,
+                        confirmButtonColor: "#1aad19",
+                        confirmButtonText: "确认"
+                    }, function (isConfirm) {
+                        history.go(-1);
+                    })
+                }else {
+                    swal("错误", result.msg, "error");
                 }
             }
         });

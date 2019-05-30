@@ -20,11 +20,11 @@
 
     <style>
         .modal-dialog{
-            width: 1200px;
+            width: 900px;
             height: 500px;
         }
         #container{
-            width: 1150px;
+            width: 850px;
             height: 400px;
         }
         .amap-sug-result {

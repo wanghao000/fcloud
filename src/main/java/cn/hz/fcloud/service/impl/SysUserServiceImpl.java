@@ -90,6 +90,10 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public int update(SysUser user) {
+        if (user.getPassword() != null && user.getPassword() != "") {
+            SysUser sysUser = ShiroUtil.getUserEntity();
+            user.setPassword(user.getPassword());
+        }
         return sysUserMapper.updateByPrimaryKeySelective(user);
     }
 

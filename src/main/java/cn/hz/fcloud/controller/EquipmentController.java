@@ -1,11 +1,19 @@
 package cn.hz.fcloud.controller;
 
-import cn.hz.fcloud.entity.*;
-import cn.hz.fcloud.service.*;
+import cn.hz.fcloud.entity.Company;
+import cn.hz.fcloud.entity.Eq;
+import cn.hz.fcloud.entity.EqInfos;
+import cn.hz.fcloud.entity.Equipment;
+import cn.hz.fcloud.entity.EquipmentData;
+import cn.hz.fcloud.entity.SysUser;
+import cn.hz.fcloud.service.CompanyService;
+import cn.hz.fcloud.service.EqInfosService;
+import cn.hz.fcloud.service.EqService;
+import cn.hz.fcloud.service.EquipmentDataService;
+import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.utils.R;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 设备controller
+ */
 @RestController
 @RequestMapping("/sys/eq")
 public class EquipmentController {
@@ -135,7 +146,11 @@ public class EquipmentController {
         lineNum.put("online", online);
         return lineNum;
     }
-	
+
+    /**
+     * 设备类型、类型数量
+     * @return 管理员返回所有，服务商返回其下的
+     */
 	@RequestMapping("/typeAndCount")
     @ResponseBody
     public Map<String, Object> typeAndCount(){
@@ -160,6 +175,10 @@ public class EquipmentController {
         return tac;
 	}
 
+    /**
+     * 报警的设备、报警次数
+     * @return 管理员返回所有，服务商返回其下的
+     */
     @RequestMapping("/alarmEquipmentAndCount")
     @ResponseBody
     public Map<String, Object> alarmEquipmentAndCount(){
@@ -184,6 +203,10 @@ public class EquipmentController {
         return aec;
     }
 
+    /**
+     * 公司和公司其下设备数
+     * @return 管理员返回所有，服务商返回其下的
+     */
     @RequestMapping("/findCompanyAndCount")
     @ResponseBody
     public Map<String, Object> findCompanyAndCount(){
@@ -206,6 +229,10 @@ public class EquipmentController {
         return cc;
     }
 
+    /**
+     * 查询公司报警数
+     * @return 管理员返回所有，服务商返回其下的
+     */
     @RequestMapping("findCompanyAlarmCount")
     @ResponseBody
     public Map<String, Object> findCompanyAlarmCount(){
@@ -228,6 +255,10 @@ public class EquipmentController {
         return cac;
     }
 
+    /**
+     * 查询近7天报警数
+     * @return 管理员返回所有，服务商返回其下的
+     */
     @RequestMapping("find7dayAlarmCount")
     @ResponseBody
     public Map<String, Object> find7dayAlarmCount(){
@@ -250,6 +281,10 @@ public class EquipmentController {
         return cac;
     }
 
+    /**
+     * 最近5条报警记录
+     * @return 管理员返回所有，服务商返回其下的
+     */
     @RequestMapping("recent5Record")
     @ResponseBody
     public List<Map<String, Object>> recent5Record(){
@@ -257,6 +292,10 @@ public class EquipmentController {
         return user.getType() == 1?eqdataService.recent5Record():eqdataService.recent5RecordByUser(user.getId());
     }
 
+    /**
+     * 查询地区报警数
+     * @return 管理员返回所有，服务商返回其下的
+     */
     @RequestMapping("findAreaAlarmCount")
     @ResponseBody
     public List<Map<String, Object>> findAreaAlarmCount(){

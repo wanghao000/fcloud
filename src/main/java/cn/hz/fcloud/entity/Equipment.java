@@ -2,6 +2,9 @@ package cn.hz.fcloud.entity;
 
 import java.util.Date;
 
+/**
+ * 设备实体类
+ */
 public class Equipment {
     private Integer id;
     private String code;

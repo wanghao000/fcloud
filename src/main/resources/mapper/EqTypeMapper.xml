@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hz.fcloud.dao.EqTypeMapper">
+    <select id="findAllTypes"  resultType="cn.hz.fcloud.entity.EquipmentType">
+         select * from equipment_type
+    </select>
+
+    <insert id="insertType" parameterType="cn.hz.fcloud.entity.EquipmentType">
+        insert equipment_type(name,remark) values(#{name},#{remark});
+    </insert>
+</mapper>

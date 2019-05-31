@@ -1,5 +1,5 @@
 
-var position = function(){
+function  position(){
 
     var map = new AMap.Map("container", {
         resizeEnable: true,
@@ -10,16 +10,17 @@ var position = function(){
     var clickEventListener = map.on('click', function(e) {
         document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
         addMarker(e.lnglat.getLng(),e.lnglat.getLat());
-        //这边是数组
-        var lnglatXY=[e.lnglat.getLng(),e.lnglat.getLat()];
-        regeocoder(lnglatXY);
     });
-
-    var auto = new AMap.Autocomplete({
-        input: "tipinput"
+     map.plugin(["AMap.Autocomplete"],function() {
+         var auto = new AMap.Autocomplete({
+            input: "tipinput"
+        });
+         //注册监听，当选中某条记录时会触发
+         AMap.event.addListener(auto, "select", select);
     });
-    //注册监听，当选中某条记录时会触发
-    AMap.event.addListener(auto, "select", select);
+    // var auto = new AMap.Autocomplete({
+    //     input: "tipinput"
+    // });
     function select(e) {
         var lng = e.poi.location.lng;
         var lat = e.poi.location.lat;
@@ -44,6 +45,8 @@ var position = function(){
         marker.setMap(map);
         $("#lng").val(lng);
         $('#lat').val(lat);
+        var lnglatXY=[lng,lat];
+        regeocoder(lnglatXY);
     }
 
     //坐标-地址
@@ -61,10 +64,9 @@ var position = function(){
     }
 
     function geocoder_CallBack(data) {
-        console.log(data.regeocode.addressComponent);
-        // setAddress(data.regeocode.addressComponent);
         var address = data.regeocode.formattedAddress; //返回地址描述
         document.getElementById("tipinput").value=address;
+        $("#address").val(address);
     }
         AMap.plugin('AMap.Geolocation', function() {
             var geolocation = new AMap.Geolocation({

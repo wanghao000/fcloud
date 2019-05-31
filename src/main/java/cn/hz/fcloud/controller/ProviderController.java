@@ -8,6 +8,7 @@ import cn.hz.fcloud.service.EquipmentService;
 import cn.hz.fcloud.service.ProviderService;
 import cn.hz.fcloud.service.SysUserService;
 import cn.hz.fcloud.utils.R;
+import cn.hz.fcloud.utils.SerialNumberUtil;
 import cn.hz.fcloud.utils.ShiroUtil;
 import cn.hz.fcloud.utils.TableReturn;
 import com.alibaba.fastjson.JSONArray;
@@ -52,13 +53,21 @@ public class ProviderController {
             provider.setIsDelete(1);
             provider.setCreateUser(user.getId());
             String code = providerService.findProviderCode();
-            String newCode = "";
-            if(code != "" && code != null){
-                int temp = Integer.valueOf(code.split("B")[1])+1;
-                String s = String.format("%05d", temp);
-                newCode = "B"+s;
-            }else{
-                newCode = "B00001";
+//            String newCode = "";
+//            if(code != "" && code != null){
+//                int temp = Integer.valueOf(code.split("B")[1])+1;
+//                String s = String.format("%05d", temp);
+//                newCode = "B"+s;
+//            }else{
+//                newCode = "B00001";
+//            }
+//            provider.setCode(newCode);
+            String newCode = SerialNumberUtil.generateNumner();
+            //判断用户名是否存在 true表示存在
+            Boolean code_is_exist  = null != sysUserService.queryByUserName(newCode);
+            while (code_is_exist){
+                newCode = SerialNumberUtil.generateNumner();
+                code_is_exist  = null != sysUserService.queryByUserName(newCode);
             }
             provider.setCode(newCode);
             providerService.insert(provider);
@@ -127,6 +136,11 @@ public class ProviderController {
     @RequestMapping("/pRanking/{type}")
     public R ranking(@PathVariable("type")int type){
         List<Map<String,Object>> data = providerService.getProviderRanking(type);
+        return R.ok().put("data",data);
+    }
+    @RequestMapping("/cRanking")
+    public R cranking(){
+        List<Map<String,Object>> data = providerService.getCompanyRanking();
         return R.ok().put("data",data);
     }
 }

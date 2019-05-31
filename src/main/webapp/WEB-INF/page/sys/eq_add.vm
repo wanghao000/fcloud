@@ -46,10 +46,10 @@
                     <form class="form-horizontal" onsubmit="return false;">
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <h5>设备类型</h5>
+                                <h5>设备类型<span class="glyphicon glyphicon-plus" title="点击添加设备类型" onclick="addType()" style="margin-left: 10px;"></span></h5>
                                 <select class="form-control m-b" name="type" id="type">
                                     <option value="-1">请选择</option>
-                                    <option value="0">烟感</option>
+##                                    <option value="0">烟感</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
@@ -107,11 +107,11 @@
                         <div class="form-group">
                             <div class="col-sm-6">
                                 <h5>经度</h5>
-                                <input type="text" class="form-control" id="lng">
+                                <input type="text" class="form-control" id="lng" readonly>
                             </div>
                             <div class="col-sm-6">
                                 <h5>纬度</h5>
-                                <input type="text" class="form-control" id="lat">
+                                <input type="text" class="form-control" id="lat" readonly>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -122,6 +122,37 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="addView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        添加设备类型
+                    </h4>
+                </div>
+                <div class="modal-body" style="height: 200px">
+                    <div class="layui-input-block">
+                            <div class="col-sm-12">
+                                <h5>设备类型</h5>
+                                <input type="text" class="form-control" id="typeName">
+                            </div>
+                            <div class="col-sm-12">
+                                <h5>备注</h5>
+                                <input type="textarea" class="form-control" id="typeRemark">
+                            </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="saveType()">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -237,6 +268,15 @@
                checkboxClass: 'icheckbox_square-green',
                radioClass: 'iradio_square-green',
            });
+           //加载类型
+           url = "$rc.contextPath/sys/type/list"
+           jQuery.post(url,function (pdata) {
+               var html = "";
+               jQuery.each(pdata,function(idx,item){
+                   html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+               });
+               $("#type").append(html);
+           })
            //加载公司
            url = "$rc.contextPath/sys/eq/companyList"
            jQuery.post(url,function (pdata) {
@@ -291,9 +331,45 @@
            });
 
        });
-    function show_modal(monitor){
+    function show_modal(){
         $('#myModal').modal('show');
         position();
+    }
+    function addType(){
+        $('#addView').modal('show');
+    }
+    function saveType() {
+        var data = {
+            name : $("#typeName").val(),
+            remark : $("#typeRemark").val(),
+        };
+        jQuery.ajax(
+                {
+                    type:"POST",
+                    url: "$rc.contextPath/sys/type/save",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType:"application/json;charset=UTF-8",
+                    success: function(result){
+                        if(result.code == 0){
+                            swal("成功","添加类型成功!","success");
+                            //加载类型
+                            $("#type").html("<option value='-1'>请选择</option>");
+                            url = "$rc.contextPath/sys/type/list"
+                            jQuery.post(url,function (pdata) {
+                                var html = "";
+                                jQuery.each(pdata,function(idx,item){
+                                    html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+                                });
+                                $("#type").append(html);
+                            })
+                        }else{
+                            swal("错误","添加类型失败!","error");
+                        }
+                    }
+                }
+        )
+        $('#addView').modal('hide');
     }
 </script>
 

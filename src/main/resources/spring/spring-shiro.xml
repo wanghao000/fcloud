@@ -41,6 +41,7 @@
                 /statics/**=anon
                 /login.html=anon
                 /sys/login=anon
+                /wechat/**=anon
                 /logout=logout
                 /**=authc
             </value>

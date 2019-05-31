@@ -2,10 +2,7 @@ package cn.hz.fcloud.controller;
 
 import cn.hz.fcloud.entity.*;
 import cn.hz.fcloud.service.*;
-import cn.hz.fcloud.utils.FileUpUtil;
-import cn.hz.fcloud.utils.R;
-import cn.hz.fcloud.utils.ShiroUtil;
-import cn.hz.fcloud.utils.TableReturn;
+import cn.hz.fcloud.utils.*;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,14 +75,22 @@ public class CompanyController {
             comEntity.setCreateTime(new Date());
             comEntity.setIsDelete(1);
             comEntity.setPicture(name);
-            String code = companyService.findCompanyCode();
-            String newCode = "";
-            if(code != "" && code != null){
-                int temp = Integer.valueOf(code.split("A")[1])+1;
-                String s = String.format("%05d", temp);
-                newCode = "A"+s;
-            }else{
-                newCode = "A00001";
+//            String code = companyService.findCompanyCode();
+//            String newCode = "";
+//            if(code != "" && code != null){
+//                int temp = Integer.valueOf(code.split("A")[1])+1;
+//                String s = String.format("%05d", temp);
+//                newCode = "A"+s;
+//            }else{
+//                newCode = "A00001";
+//            }
+//            comEntity.setCode(newCode);
+            String newCode = SerialNumberUtil.generateNumner();
+            //判断用户名是否存在 true表示存在
+            Boolean code_is_exist  = null != sysUserService.queryByUserName(newCode);
+            while (code_is_exist){
+                newCode = SerialNumberUtil.generateNumner();
+                code_is_exist  = null != sysUserService.queryByUserName(newCode);
             }
             comEntity.setCode(newCode);
             companyService.insert(comEntity);

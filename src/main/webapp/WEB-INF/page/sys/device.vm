@@ -398,7 +398,7 @@
                 #end
             ];
             //2.初始化Table
-            var  oTable = new TableInit('$rc.contextPath/sys/eq/list/'+treeNode.id,columns);
+            var  oTable = new TableInit(treeNode.isParent?('$rc.contextPath/sys/eq/list/a/'+treeNode.id):('$rc.contextPath/sys/eq/list/'+treeNode.id),columns);
             oTable.Init();
         })
     }

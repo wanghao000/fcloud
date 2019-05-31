@@ -240,4 +240,24 @@ GROUP BY
   <select id="findProviderByName" resultType="cn.hz.fcloud.entity.Provider">
        select * from provider where name = #{name}
   </select>
+  <select id="alarmRanking" resultType="java.util.HashMap">
+    SELECT provider.`name` fws,COUNT(1) as num
+    FROM `equipment`,company,provider,equipment_data
+    where
+    equipment.company_id=company.id
+    and
+    provider.id=company.provider_id
+    and
+    equipment_data.`code`=equipment.`code`
+    and
+    equipment_data.type=0
+    AND
+    equipment.type=#{value}
+    GROUP BY fws ORDER BY num DESC
+    LIMIT 0,8;
+  </select>
+
+  <select id="providerRanking" resultType="java.util.HashMap">
+    SELECT provider.name as name1,COUNT(1) as num FROM `company`,provider WHERE company.provider_id=provider.id GROUP BY name1 ORDER BY num DESC LIMIT 0,4;
+  </select>
 </mapper>

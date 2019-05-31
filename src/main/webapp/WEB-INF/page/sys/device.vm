@@ -47,13 +47,6 @@
                                 <label class="control-label">设备类型</label>
                                 <select class="form-control" id="type">
                                     <option value="">全部</option>
-                                    <option value="0">NB-IoT烟感</option>
-                                    <option value="1">智慧用电</option>
-                                    <option value="2">NB-IoT可燃气体探测器</option>
-                                    <option value="3">NB-IoT水压探测器</option>
-                                    <option value="4">NB-IoT水位探测器</option>
-                                    <option value="5">NB-IoT插座</option>
-                                    <option value="6">视频监控</option>
                                 </select>
                             </div>
                         </div>
@@ -152,14 +145,8 @@
                 return data[value];
             }
         }, {
-            field: 'type',
+            field: 'typeName',
             title: '设备类型',
-            formatter:function (value,row,index) {
-                var data = new Array(
-                        '<span class="label label-info">烟感</span>',
-                        '<span class="label label-info">其他</span>')
-                return data[value];
-            }
         }, {
             field: 'comName',
             title: '所属企业'
@@ -280,7 +267,6 @@
             field: 'info',
             title: '运行内容',
             formatter:function (value,row,index) {
-                // alert(value);
                 var dataObj=eval("("+value+")");
                 return dataObj.msg;
             }
@@ -320,7 +306,19 @@
 </script>
 
 <script>
-
+    //加载类型
+    url = '$rc.contextPath/sys/type/list';
+    jQuery.ajax({
+        url:url,
+        async:false,
+        success:function (pdata) {
+            var html = "";
+            jQuery.each(pdata,function(idx,item){
+                html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+            });
+            $("#type").append(html);
+        }
+    })
     jQuery.ajax({
         type: "GET",
         url: "$rc.contextPath/sys/provider/ztree",

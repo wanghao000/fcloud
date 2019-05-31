@@ -7,6 +7,7 @@
        (SELECT name from sys_china where id = e.province)as p_name,
        (SELECT name from sys_china where id = e.city)as c_name,
        (SELECT name from sys_china where id = e.district)as d_name,
+       (SELECT name from equipment_type where id = e.type)as type_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
          where e.code = #{code}
     </select>
@@ -16,6 +17,7 @@
        (SELECT name from sys_china where id = e.province)as p_name,
        (SELECT name from sys_china where id = e.city)as c_name,
        (SELECT name from sys_china where id = e.district)as d_name,
+        (SELECT name from equipment_type where id = e.type)as type_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
        where 1 = 1
         <if test="name!=null and name!=''">
@@ -47,6 +49,7 @@
        (SELECT name from sys_china where id = e.province)as p_name,
        (SELECT name from sys_china where id = e.city)as c_name,
        (SELECT name from sys_china where id = e.district)as d_name,
+       (SELECT name from equipment_type where id = e.type)as type_name,
        (SELECT name from company where id = e.company_id)as com_name from equipment e
        where e.company_id = #{id}
         <if test="name!=null and name!=''">
@@ -76,6 +79,7 @@
 (SELECT name from sys_china s where s.id = e.province)as p_name,
 (SELECT name from sys_china s where s.id = e.city)as c_name,
 (SELECT name from sys_china s where s.id = e.district)as d_name,
+(SELECT name from equipment_type where id = e.type)as type_name,
 (SELECT name from company where id = e.company_id)as com_name
  FROM equipment e WHERE e.company_id in (SELECT c.id FROM company c LEFT JOIN provider p on c.provider_id = p.id WHERE p.id = #{id})
         <if test="name!=null and name!=''">

@@ -36,7 +36,7 @@
                                 <h5>设备类型</h5>
                                 <select class="form-control m-b" name="type" id="type">
                                     <option>请选择</option>
-                                    <option value="0">烟感</option>
+##                                    <option value="0">烟感</option>
                                 </select>
                             </div>
                             <div class="col-sm-4">
@@ -153,6 +153,20 @@
             radioClass: 'iradio_square-green',
         });
         var id = window.location.search.split('=')[1];
+        //加载类型
+        url = '$rc.contextPath/sys/type/list';
+        jQuery.ajax({
+            url:url,
+            async:false,
+            success:function (pdata) {
+                var html = "";
+                jQuery.each(pdata,function(idx,item){
+                    html += "<option value='" + item.id + "' exid='" + item.id + "'>" + item.name + "</option>";
+                });
+                $("#type").append(html);
+            }
+        })
+
         //加载公司
         url = '$rc.contextPath/sys/eq/companyList';
         jQuery.ajax({

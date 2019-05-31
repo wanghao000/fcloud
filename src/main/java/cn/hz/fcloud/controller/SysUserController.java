@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户功能控制器
+ */
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController {
@@ -30,22 +33,44 @@ public class SysUserController {
     @Autowired
     private CompanyService companyService;
 
+    /**
+     * 当前用户信息
+     * @return
+     */
     @RequestMapping("/info")
     public R currentInfo(){
         return R.ok().put("user",ShiroUtil.getUserEntity());
     }
+
+    /**
+     * 用户表格数据
+     * @param map
+     * @return
+     */
     @RequestMapping("/list")
     @RequiresPermissions("sys:user:list")
     public TableReturn list(@RequestBody Map<String,Object> map){
         List<SysUser> userList = sysUserService.queryList(map);
         return new TableReturn(userList,sysUserService.queryListCount(map));
     }
+
+    /**
+     * 单个用户信息显示
+     * @param id
+     * @return
+     */
     @RequestMapping("/info/{id}")
     @RequiresPermissions("sys:user:info")
     public R info(@PathVariable("id")Long id){
         SysUser info = sysUserService.selectById(id);
         return R.ok().put("info",info);
     }
+
+    /**
+     * 保存用户信息
+     * @param user
+     * @return
+     */
     @RequestMapping("/save")
     @RequiresPermissions("sys:user:save")
     public R save(@RequestBody SysUser user){
@@ -53,6 +78,11 @@ public class SysUserController {
         return R.ok();
     }
 
+    /**
+     * 删除一个用户
+     * @param id
+     * @return
+     */
     @RequestMapping("/delete/{id}")
     @RequiresPermissions("sys:user:delete")
     public R delete(@PathVariable("id")Long id){
@@ -65,6 +95,12 @@ public class SysUserController {
         }
         return R.ok();
     }
+
+    /**
+     * 更新一个用户
+     * @param user
+     * @return
+     */
     @RequestMapping("/update")
     @RequiresPermissions("sys:user:update")
     public R update(@RequestBody SysUser user){
@@ -75,6 +111,12 @@ public class SysUserController {
         return R.ok();
     }
 
+    /**
+     * 密码修改
+     * @param oldpwd
+     * @param newpwd
+     * @return
+     */
     @RequestMapping("/modify")
     public R modify(String oldpwd,String newpwd){
         SysUser sysUser = ShiroUtil.getUserEntity();
@@ -93,6 +135,11 @@ public class SysUserController {
         return R.error("更新失败!");
     }
 
+    /**
+     * 启用一个用户
+     * @param id
+     * @return
+     */
     @RequestMapping("/use/{id}")
     public R use(@PathVariable("id")Long id){
         SysUser user = new SysUser();
@@ -105,6 +152,10 @@ public class SysUserController {
         return R.ok();
     }
 
+    /**
+     * 添加用户所需下拉数据
+     * @return
+     */
     @RequestMapping("/drop")
     public R listDropDown(){
         return R.ok().put("provider",providerService.selectAll()).put("company",companyService.companyList());

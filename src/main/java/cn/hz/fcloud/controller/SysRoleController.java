@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 角色控制器
+ */
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController {

@@ -6,16 +6,46 @@ import java.util.List;
 import java.util.Map;
 
 public interface SysMenuMapper {
+    /**
+     * 根据主键删除
+     * @param menuId
+     * @return
+     */
     int deleteByPrimaryKey(Long menuId);
 
+    /**
+     * 插入
+     * @param record
+     * @return
+     */
     int insert(SysMenu record);
 
+    /**
+     * 选择性插入
+     * @param record
+     * @return
+     */
     int insertSelective(SysMenu record);
 
+    /**
+     * 根据主键查询
+     * @param menuId
+     * @return
+     */
     SysMenu selectByPrimaryKey(Long menuId);
 
+    /**
+     * 选择性更新根据主键
+     * @param record
+     * @return
+     */
     int updateByPrimaryKeySelective(SysMenu record);
 
+    /**
+     * 根据主键更新
+     * @param record
+     * @return
+     */
     int updateByPrimaryKey(SysMenu record);
     int deleteBatch(Object[] id);
     /**

@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
+/**
+ * shiro的登录认证组件
+ */
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private SysUserService sysUserService;

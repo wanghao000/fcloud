@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 首页页面的控制类
+ */
 @Controller
 @RequestMapping("/sys/main")
 public class SysMainController {
@@ -29,6 +32,10 @@ public class SysMainController {
     @Autowired
     private ProviderService providerService;
 
+    /**
+     * 首页的信息，根据账号信息执行对应代码
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/info")
     public R info() {

@@ -10,6 +10,7 @@
         <script type="text/javascript" src="http://localhost/fcloud/statics/js/sockjs.js"></script>
 
         <script>
+            <!--websocket实时报警功能-->
             var websocket;
             if ('WebSocket' in window) {
                 websocket = new WebSocket("ws://localhost/fcloud/websocketServer?userid=123");

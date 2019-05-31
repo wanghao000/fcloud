@@ -886,6 +886,6 @@ position:function(p){   //其中p为当前鼠标的位置
             myChart.resize();
         });
     }*/
-
+console.log("恭喜你，发现了彩蛋！本项目中有很多精彩等待你来发现^_^");
 
 });

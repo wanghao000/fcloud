@@ -11,6 +11,7 @@
             $(".loading").fadeOut()
         })
 
+
         $(document).ready(function () {
             var whei = $(window).width()
             $("html").css({ fontSize: whei / 20 })
@@ -22,17 +23,9 @@
     </script>
     <script type="text/javascript" src="statics/plugins/echarts/echarts.min.js"></script>
     <script type="text/javascript" language="JavaScript" src="statics/js/js.js"></script>
-    <style>
-        .m1{ width:260px; height:200px; position:fixed; top:20px; border:1px solid #ccc;right: 0px;z-index:999;background-color: #0e9aef}
-        .m2{ width:240px; height:180px; position:relative; padding:10px;}
-        .m2>ul>li{ width:100%; height:22px; line-height:22px; text-align:left;}
-        .m2>ul>li>a{ color:white; text-decoration:none;}
-        .m2>ul>li>a:hover{ text-decoration:underline; color:#000;}
-        .bar1{ width:25px; height:25PX; position:absolute;left:-25px;top:-1px; background:url(statics/img/mini_bg.png) no-repeat; display:block;background-position:-25px 0px;}
-    </style>
 </head>
 <body>
-    <!--管理员 大数据页面-->
+    <!--服务商|运营商 大数据统计页面-->
     <div class="canvas" style="opacity: 0;overflow:visible;">
         <iframe frameborder="0" src="statics/js/index.html" style="width: 100%; height: 100%"></iframe>
     </div>
@@ -40,10 +33,10 @@
         <div class="loadbox"> <img src="statics/img/loading.gif"> 页面加载中... </div>
     </div>
     <div class="head">
-        <h1>消防情况大数据统计</h1>
+        <h1>服务商大数据统计页面</h1>
         <div class="weather">
             <!--<img src="images/weather.png"><span>多云转小雨</span>-->
-            <a href="#" id="qbzs" onclick="showFull()" style="text-decoration: none;margin-left: 10px;margin-right: 20px;font-size: large;">全屏展示</a>
+            <a href="#" onclick="showFull()" style="text-decoration: none;margin-left: 10px;margin-right: 20px;font-size: large;">全屏展示</a>
             <span id="showTime"></span>
         </div>
 
@@ -67,25 +60,11 @@
 
 
     </div>
-    <div class="m1">
-        <div class="m2"><a href="javascript:" class="bar1"></a>
-            <ul>
-                <li><a href="http://www.kaiu.net/" target="_blank">全部</a></li>
-                <li><a href="http://www.kaiu.net/" target="_blank">智慧用电</a></li>
-                <li><a href="http://www.kaiu.net/" target="_blank">NB-IoT烟感</a></li>
-                <li><a href="http://www.kaiu.net/" target="_blank">NB-IoT可燃气体探测器</a></li>
-                <li><a href="http://www.kaiu.net/" target="_blank">NB-IoT水压探测器</a></li>
-                <li><a href="http://www.kaiu.net/" target="_blank">NB-IoT水位探测器</a></li>
-                <li><a href="http://www.kaiu.net/" target="_blank">NB-IoT插座</a></li>
-                <li><a href="http://www.kaiu.net/" target="_blank">视频监控</a></li>
-            </ul>
-        </div>
-    </div>
     <div class="mainbox">
         <ul class="clearfix">
             <li>
                 <div class="boxall" style="height: 3.2rem">
-                    <div class="alltitle">服务商联网单位</div>
+                    <div class="alltitle">设备种类数量</div>
                     <div class="allnav" id="echart1"></div>
                     <div class="boxfoot"></div>
                 </div>
@@ -135,12 +114,12 @@
                     <div class="boxfoot"></div>
                 </div>
                 <div class="boxall" style="height: 3.2rem">
-                    <div class="alltitle">服务商报警排行</div>
+                    <div class="alltitle">公司设备总数</div>
                     <div class="allnav" id="echart5"></div>
                     <div class="boxfoot"></div>
                 </div>
                 <div class="boxall" style="height: 3rem">
-                    <div class="alltitle">区域报警排行</div>
+                    <div class="alltitle">公司报警次数</div>
                     <div class="allnav" id="echart6"></div>
                     <div class="boxfoot"></div>
                 </div>
@@ -156,7 +135,6 @@
         function showFull(){
             var element = document.documentElement;
             if (!$('body').hasClass("full-screen")) {
-                $("#qbzs").html("退出展示")
                 $('body').addClass("full-screen");
                 $('#alarm-fullscreen-toggler').addClass("active");
                 if (element.requestFullscreen) {
@@ -170,7 +148,6 @@
                 }
 
             } else {
-                $("#qbzs").html("全屏展示")
                 $('body').removeClass("full-screen");
                 $('#alarm-fullscreen-toggler').removeClass("active");
                 if (document.exitFullscreen) {
@@ -201,23 +178,6 @@
             window.location.reload();
             setTimeout("showTime()", 1000*60*10);
         }
-    </script>
-    <script>
-        $(function(){
-            $('.m1').css('right','-262px');
-            var expanded = true;
-            $('.bar1').click(function(){
-                if (expanded) {
-                    $('.m1').animate({right:'0'},500);
-                    $('.bar1').css('background-position','-0px 0px');
-
-                }else {
-                    $('.m1').animate({right:'-262px'},500);
-                    $('.bar1').css('background-position','-25px 0px');
-                }
-                expanded = !expanded;
-            });
-        });
     </script>
 </body>
 </html>

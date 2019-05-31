@@ -19,6 +19,9 @@ import java.util.Properties;
 public class UDPServerUtil {
     private static final byte[] key = {(byte) 0xEC,(byte) 0xAD,0x51,0x5A,0x44,0x41,(byte) 0xCE,(byte) 0xDA};
 
+    /**
+     * 获取base.properties中encryption属性决定是否加解密程序
+     */
     public static boolean getEncryptionConfig(){
         ClassPathResource resource = new ClassPathResource("/base.properties");
         Properties properties = new Properties();
@@ -76,6 +79,9 @@ public class UDPServerUtil {
         }
     }
 
+    /**
+     * 向页面发送websocket提示
+     */
     public static void sendMsgIf(SysUserService sysUserService, CompanyService companyService, EquipmentService equipmentService, String imei, String msg){
         for (String username : CigaretteWebsocketHandlerInterceptor.usernames) {
             SysUser sysUser = sysUserService.queryByUserName(username);
@@ -99,6 +105,9 @@ public class UDPServerUtil {
         }
     }
 
+    /**
+     * 将要发送的数据包装成json
+     */
     public static String returnHtmlJson(String imei, String msg, int type, String date){
         JSONObject returnJson = new JSONObject();
         returnJson.put("imei", imei);

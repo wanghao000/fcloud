@@ -256,4 +256,8 @@ GROUP BY
     GROUP BY fws ORDER BY num DESC
     LIMIT 0,8;
   </select>
+
+  <select id="providerRanking" resultType="java.util.HashMap">
+    SELECT provider.name as name1,COUNT(1) as num FROM `company`,provider WHERE company.provider_id=provider.id GROUP BY name1 ORDER BY num DESC LIMIT 0,4;
+  </select>
 </mapper>

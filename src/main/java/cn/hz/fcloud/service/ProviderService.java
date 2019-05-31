@@ -37,4 +37,10 @@ public interface ProviderService {
      * @return
      */
     List<Map<String,Object>>  getProviderRanking(int type);
+
+    /**
+     * 获取服务商的排名
+     * @return
+     */
+    List<Map<String,Object>> getCompanyRanking();
 }

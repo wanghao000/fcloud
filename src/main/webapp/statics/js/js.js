@@ -1,10 +1,20 @@
 $(function () {
     $.ajax({
         type:"post",
-        url:"sys/eq/typeAndCount",
+        url:"sys/provider/cRanking",
         dataType:"json",
         success:function (data) {
-            echarts_1(data);
+            console.log(data)
+            var x =[];
+            var y =[];
+            var obj={};
+            for(var i=0;i<data.data.length;i++){
+                x.push(data.data[i].num);
+                y.push(data.data[i].name1);
+            }
+            obj["x"]=x;
+            obj["y"]=y;
+            echarts_1(obj);
         }
     });
     $.ajax({
@@ -105,7 +115,7 @@ function echarts_1(data) {
         },
         yAxis: {
             type: 'category',
-            data: ['周一','周二','周三','周四'],
+            data: data.y,
             axisLabel: {
                 //formatter: '{value} %'
                 show:true,
@@ -116,7 +126,7 @@ function echarts_1(data) {
         },
         series: [
             {
-                name: '直接访问',
+                name: '联网单位',
                 type: 'bar',
                 stack: '总量',
                 label: {
@@ -125,7 +135,7 @@ function echarts_1(data) {
                         position: 'insideRight'
                     }
                 },
-                data: [320, 302, 301, 334]
+                data: data.x
             }
         ]
     };
@@ -138,30 +148,104 @@ function echarts_1(data) {
 function echarts_2(data) {
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('echart2'));
-    var option = {
-        tooltip : {
-            formatter: "{a} <br/>{b} : {c}%"
-        },
-        toolbox: {
-            feature: {
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        series: [
-            {
-                name: '业务指标',
-                type: 'gauge',
-                detail: {formatter:'{value}%'},
-                data: [{value: 50, name: '完成率'}]
-            }
-        ]
-    };
+    var plantCap = [{
+        name: '紧急告警',
+        value: '2'
+    }, {
+        name: '一般告警',
+        value: '11'
+    }, {
+        name: '重要告警',
+        value: '5'
 
-    setInterval(function () {
-        option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
-        myChart.setOption(option, true);
-    },2000);
+    }];
+
+    var datalist = [{
+        offset: [80, 53],
+        symbolSize: 90,
+        opacity: .95,
+        color: '#ff0000'//红色
+    }, {
+        offset: [30, 80],
+        symbolSize: 60,
+        opacity: .88,
+        color: '#7aabe2'//蓝色
+    }, {
+        offset: [30, 20],
+        symbolSize: 65,
+        opacity: .84,
+        color: '#ff7123'//橙色
+
+
+    }];
+    var datas = [];
+    for (var i = 0; i < plantCap.length; i++) {
+        var item = plantCap[i];
+        var itemToStyle = datalist[i];
+        datas.push({
+            name: item.value + '\n' + item.name,
+            value: itemToStyle.offset,
+            symbolSize: itemToStyle.symbolSize,
+            label: {
+                normal: {
+                    textStyle: {
+                        fontSize: 15
+                    }
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: itemToStyle.color,
+                    opacity: itemToStyle.opacity
+                }
+            },
+        })
+    }
+    var option = {
+        grid: {
+            show: false,
+            top: 10,
+            bottom: 10
+        },
+        xAxis: [{
+            gridIndex: 0,
+            type: 'value',
+            show: false,
+            min: 0,
+            max: 100,
+            nameLocation: 'middle',
+            nameGap: 5
+        }],
+        yAxis: [{
+            gridIndex: 0,
+            min: 0,
+            show: false,
+            max: 100,
+            nameLocation: 'middle',
+            nameGap: 30
+        }],
+        series: [{
+            type: 'scatter',
+            symbol: 'circle',
+            symbolSize: 120,
+            label: {
+                normal: {
+                    show: true,
+                    formatter: '{b}',
+                    color: '#fff',
+                    textStyle: {
+                        fontSize: '20'
+                    }
+                },
+            },
+            itemStyle: {
+                normal: {
+                    color: '#00acea'
+                }
+            },
+            data: datas
+        }]
+    };
 
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(option);

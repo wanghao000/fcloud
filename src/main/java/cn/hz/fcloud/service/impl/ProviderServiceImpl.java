@@ -61,4 +61,9 @@ public class ProviderServiceImpl implements ProviderService {
     public List<Map<String, Object>> getProviderRanking(int type) {
         return providerMapper.alarmRanking(type);
     }
+
+    @Override
+    public List<Map<String, Object>> getCompanyRanking() {
+        return providerMapper.providerRanking();
+    }
 }

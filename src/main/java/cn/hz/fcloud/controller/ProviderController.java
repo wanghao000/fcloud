@@ -129,4 +129,9 @@ public class ProviderController {
         List<Map<String,Object>> data = providerService.getProviderRanking(type);
         return R.ok().put("data",data);
     }
+    @RequestMapping("/cRanking")
+    public R cranking(){
+        List<Map<String,Object>> data = providerService.getCompanyRanking();
+        return R.ok().put("data",data);
+    }
 }

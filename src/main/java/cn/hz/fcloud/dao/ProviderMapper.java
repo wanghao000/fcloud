@@ -46,4 +46,6 @@ public interface ProviderMapper {
      * @return
      */
     List<Map<String,Object>> alarmRanking(int type);
+
+    List<Map<String,Object>> providerRanking();
 }
